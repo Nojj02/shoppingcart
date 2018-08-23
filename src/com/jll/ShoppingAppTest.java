@@ -2,45 +2,76 @@ package com.jll;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class ShoppingAppTest {
-    @Test
-    void shopHasItems() throws Shop.NotEnoughItemsInShopException {
-        var firstItem = new ShoppingItem();
-        var secondItem = new ShoppingItem();
-        var items = List.of(
-                firstItem,
-                secondItem,
-                new ShoppingItem(),
-                new ShoppingItem(),
-                new ShoppingItem(),
-                new ShoppingItem(),
-                new ShoppingItem(),
-                new ShoppingItem(),
-                new ShoppingItem(),
-                new ShoppingItem()
-        );
+    public static class CreationTests {
+        @Test
+        void shopHasItems() throws Shop.NotEnoughItemsInShopException {
+            var firstItem = new ShoppingItem("Banana", 15.00);
+            var secondItem = new ShoppingItem("Tomato", 22.00);
+            var items = List.of(
+                    firstItem,
+                    secondItem,
+                    new ShoppingItem("Potato", 18.00),
+                    new ShoppingItem("Apple", 20.00),
+                    new ShoppingItem("Hammer", 175.00),
+                    new ShoppingItem("Wrench", 250.00),
+                    new ShoppingItem("Lettuce", 20.00),
+                    new ShoppingItem("Orange", 22.00),
+                    new ShoppingItem("Screwdriver", 220.00),
+                    new ShoppingItem("Pear", 25.00)
+            );
 
-        var shop = new Shop(items);
+            var shop = new Shop(items);
 
-        var itemList = shop.get_ShoppingItems().toArray();
-        Assertions.assertEquals(itemList[0], firstItem);
-        Assertions.assertEquals(itemList[1], secondItem);
+            var itemList = shop.get_ShoppingItems().toArray();
+            Assertions.assertEquals(itemList[0], firstItem);
+            Assertions.assertEquals(itemList[1], secondItem);
+        }
+
+        @Test
+        void error_shopHasLessThan10Items() {
+            var firstItem = new ShoppingItem("Banana", 15.00);
+            var secondItem = new ShoppingItem("Tomato", 22.00);
+            var items = List.of(
+                    firstItem,
+                    secondItem
+            );
+
+            Assertions.assertThrows(Shop.NotEnoughItemsInShopException.class, () -> new Shop(items));
+        }
     }
 
-    @Test
-    void error_shopHasLessThan10Items(){
-        var firstItem = new ShoppingItem();
-        var secondItem = new ShoppingItem();
-        var items = List.of(
-            firstItem,
-            secondItem
-        );
+    public static class ComputeTests {
+        @Test
+        void computesTotalCost()
+            throws Shop.NotEnoughItemsInShopException {
+            var items = List.of(
+                new ShoppingItem("Banana", 12.00),
+                new ShoppingItem("Tomato", 3.00),
+                new ShoppingItem("Potato", 18.00),
+                new ShoppingItem("Apple", 20.00),
+                new ShoppingItem("Hammer", 175.00),
+                new ShoppingItem("Wrench", 250.00),
+                new ShoppingItem("Lettuce", 20.00),
+                new ShoppingItem("Orange", 22.00),
+                new ShoppingItem("Screwdriver", 220.00),
+                new ShoppingItem("Pear", 25.00)
+            );
 
-        Assertions.assertThrows(Shop.NotEnoughItemsInShopException.class, () -> new Shop(items));
+            var shop = new Shop(items);
+
+            var itemsForPurchase = List.of(
+                new ItemForPurchase("Banana", 5),
+                new ItemForPurchase("Potato", 2)
+            );
+
+            var result = shop.Compute(itemsForPurchase);
+
+            Assertions.assertEquals(96, result);
+        }
     }
 }

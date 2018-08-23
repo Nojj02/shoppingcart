@@ -1,6 +1,7 @@
 package com.jll;
 
 import java.util.Collection;
+import java.util.List;
 
 public class Shop
 {
@@ -19,7 +20,30 @@ public class Shop
         return _shoppingItems;
     }
 
-    public class NotEnoughItemsInShopException extends Exception {
+    public double Compute(Collection<ItemForPurchase> itemsForPurchase) {
+        return itemsForPurchase.stream()
+            .mapToDouble(itemForPurchase -> {
+                try {
+                    var matchingShoppingItem = _shoppingItems.stream()
+                        .filter(shoppingItem -> shoppingItem.getItemCode() == itemForPurchase.getItemCode())
+                        .findFirst()
+                        .orElseThrow(ItemNotRegisteredException::new);
 
+                    return matchingShoppingItem.getPrice() * itemForPurchase.getQuantity();
+                } catch (ItemNotRegisteredException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException();
+                }
+            })
+            .sum();
+    }
+
+    public class ShopException extends Exception {
+    }
+
+    public class NotEnoughItemsInShopException extends ShopException {
+    }
+
+    public class ItemNotRegisteredException extends ShopException {
     }
 }
