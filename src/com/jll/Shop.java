@@ -1,7 +1,9 @@
 package com.jll;
 
+import com.google.common.collect.MoreCollectors;
+
 import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
 public class Shop
 {
@@ -22,28 +24,22 @@ public class Shop
 
     public double Compute(Collection<ItemForPurchase> itemsForPurchase) {
         return itemsForPurchase.stream()
-            .mapToDouble(itemForPurchase -> {
-                try {
-                    var matchingShoppingItem = _shoppingItems.stream()
-                        .filter(shoppingItem -> shoppingItem.getItemCode() == itemForPurchase.getItemCode())
-                        .findFirst()
-                        .orElseThrow(ItemNotRegisteredException::new);
-
-                    return matchingShoppingItem.getPrice() * itemForPurchase.getQuantity();
-                } catch (ItemNotRegisteredException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException();
-                }
-            })
+            .mapToDouble(itemForPurchase ->
+                getShoppingItem(itemForPurchase.getItemCode())
+                    .map(item -> item.getPrice() * itemForPurchase.getQuantity())
+                    .orElse(0.0))
             .sum();
+    }
+
+    public Optional<ShoppingItem> getShoppingItem(String itemCode) {
+        return _shoppingItems.stream()
+                .filter(shoppingItem -> shoppingItem.getItemCode() == itemCode)
+                .collect(MoreCollectors.toOptional());
     }
 
     public class ShopException extends Exception {
     }
 
     public class NotEnoughItemsInShopException extends ShopException {
-    }
-
-    public class ItemNotRegisteredException extends ShopException {
     }
 }
