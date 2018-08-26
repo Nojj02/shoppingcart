@@ -25,10 +25,9 @@ public class ShoppingItem
     }
 
     public double getDiscountedPrice() {
-        var percentageDiscount = this.price * (this.discount.getPercentage() / 100);
-        var fixedAmountDiscount = this.discount.getFixedAmount();
-        var discount = Math.max(percentageDiscount, fixedAmountDiscount);
-        return this.price - discount;
+        var percentageDiscount = this.discount.applyPercentageDiscount(this.price);
+        var fixedAmountDiscount = this.price - this.discount.getFixedAmount();
+        return Math.min(percentageDiscount, fixedAmountDiscount);
     }
 }
 

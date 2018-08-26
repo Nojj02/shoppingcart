@@ -18,4 +18,8 @@ public final class Discount {
     public double getPercentage() {
         return percentage;
     }
+
+    public double applyPercentageDiscount(double value) {
+        return value * (1 - (percentage / 100));
+    }
 }

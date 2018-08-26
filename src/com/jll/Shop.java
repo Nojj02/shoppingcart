@@ -3,7 +3,6 @@ package com.jll;
 import com.google.common.collect.MoreCollectors;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public class Shop
@@ -23,10 +22,6 @@ public class Shop
         return _shoppingItems;
     }
 
-    public double Compute(Collection<ItemForPurchase> itemsForPurchase) {
-        return Compute(itemsForPurchase, Optional.empty());
-    }
-
     public Optional<ShoppingItem> getShoppingItem(String itemCode) {
         return _shoppingItems.stream()
                 .filter(shoppingItem -> shoppingItem.getItemCode() == itemCode)
@@ -40,7 +35,15 @@ public class Shop
         }
     }
 
-    public double Compute(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
+    public double compute(Collection<ItemForPurchase> itemsForPurchase) {
+        return compute(itemsForPurchase, Optional.empty());
+    }
+
+    public double compute(Collection<ItemForPurchase> itemsForPurchase, Coupon coupon) {
+        return compute(itemsForPurchase, Optional.of(coupon));
+    }
+
+    public double compute(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
         return itemsForPurchase.stream()
                 .mapToDouble(itemForPurchase -> {
                     var shoppingItemOptional = getShoppingItem(itemForPurchase.getItemCode());
@@ -49,10 +52,13 @@ public class Shop
                     } else {
                         var item = shoppingItemOptional.get();
                         var totalGrossAmount = item.getPrice() * itemForPurchase.getQuantity();
-                        var couponDiscount = couponOptional.map(coupon -> coupon.getDiscount()).orElse(Discount.None);
+                        var couponDiscount = couponOptional
+                                .filter(coupon -> coupon.getItemCode() == item.getItemCode())
+                                .map(coupon -> coupon.getDiscount())
+                                .orElse(Discount.None);
                         var netAmount = Math.min(
                                 item.getDiscountedPrice() * itemForPurchase.getQuantity(),
-                                totalGrossAmount - (totalGrossAmount * (couponDiscount.getPercentage() / 100))
+                                couponDiscount.applyPercentageDiscount(totalGrossAmount)
                         );
                         return netAmount;
                     }

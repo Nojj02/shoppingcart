@@ -68,7 +68,7 @@ public class ShoppingAppTest {
                 new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.Compute(itemsForPurchase);
+            var result = shop.compute(itemsForPurchase);
 
             Assertions.assertEquals(96, result);
         }
@@ -98,7 +98,7 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.Compute(itemsForPurchase);
+            var result = shop.compute(itemsForPurchase);
 
             Assertions.assertEquals(66, result);
         }
@@ -128,7 +128,7 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.Compute(itemsForPurchase);
+            var result = shop.compute(itemsForPurchase);
 
             Assertions.assertEquals(81, result);
         }
@@ -158,7 +158,7 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.Compute(itemsForPurchase);
+            var result = shop.compute(itemsForPurchase);
 
             Assertions.assertEquals(71, result);
         }
@@ -188,7 +188,7 @@ public class ShoppingAppTest {
 
                 var coupon = new Coupon("Banana", new Discount(50, 0));
 
-                var result = shop.Compute(itemsForPurchase, coupon);
+                var result = shop.compute(itemsForPurchase, coupon);
 
                 Assertions.assertEquals(66, result);
             }
