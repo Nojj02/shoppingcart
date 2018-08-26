@@ -4,9 +4,14 @@ public class Coupon {
     private String itemCode;
     private Discount discount;
 
-    public Coupon(String itemCode, Discount discount) {
-        this.itemCode = itemCode;
-        this.discount = discount;
+    private Coupon() {
+
+    }
+
+    public static Coupon storeWide(Discount discount) {
+        var coupon = new Coupon();
+        coupon.discount = discount;
+        return coupon;
     }
 
     public String getItemCode() {

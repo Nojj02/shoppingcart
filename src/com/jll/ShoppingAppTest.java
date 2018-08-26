@@ -160,7 +160,7 @@ public class ShoppingAppTest {
         }
 
         @Test
-        void itemsAreDiscounted_storeWideCoupon() {
+        void allItemsAreDiscounted_storeWideCoupon() {
             var items = List.of(
                     new Item("Banana", 12.00),
                     new Item("Tomato", 3.00),
@@ -181,11 +181,11 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var coupon = new Coupon("Banana", new Discount(50, 0));
+            var coupon = Coupon.storeWide(new Discount(50, 0));
 
             var result = shop.compute(itemsForPurchase, coupon);
 
-            Assertions.assertEquals(66, result);
+            Assertions.assertEquals(48, result);
         }
     }
 }

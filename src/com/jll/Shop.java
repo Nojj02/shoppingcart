@@ -53,7 +53,6 @@ public class Shop
 
                         var couponDiscount =
                             couponOptional
-                                .filter(coupon -> coupon.getItemCode() == item.getItemCode())
                                 .map(coupon -> coupon.getDiscount())
                                 .orElse(Discount.None);
                         var couponDiscountNetAmount = couponDiscount.applyPercentageDiscount(totalGrossAmount);
