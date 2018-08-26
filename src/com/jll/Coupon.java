@@ -1,24 +1,18 @@
 package com.jll;
 
-public class Coupon {
-    private String itemCode;
+public abstract class Coupon {
     private Discount discount;
 
-    private Coupon() {
-
-    }
-
-    public static Coupon storeWide(Discount discount) {
-        var coupon = new Coupon();
-        coupon.discount = discount;
-        return coupon;
-    }
-
-    public String getItemCode() {
-        return itemCode;
+    protected Coupon(Discount discount) {
+        this.discount = discount;
     }
 
     public Discount getDiscount() {
         return discount;
     }
+
+    public abstract boolean appliesTo(String itemTypeCode);
 }
+
+
+
