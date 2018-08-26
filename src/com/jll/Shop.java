@@ -24,7 +24,7 @@ public class Shop
     }
 
     public double Compute(Collection<ItemForPurchase> itemsForPurchase) {
-        return Compute(itemsForPurchase, null);
+        return Compute(itemsForPurchase, Optional.empty());
     }
 
     public Optional<ShoppingItem> getShoppingItem(String itemCode) {
@@ -40,7 +40,7 @@ public class Shop
         }
     }
 
-    public double Compute(Collection<ItemForPurchase> itemsForPurchase, Coupon coupon) {
+    public double Compute(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
         return itemsForPurchase.stream()
                 .mapToDouble(itemForPurchase -> {
                     var shoppingItemOptional = getShoppingItem(itemForPurchase.getItemCode());
@@ -49,7 +49,7 @@ public class Shop
                     } else {
                         var item = shoppingItemOptional.get();
                         var totalGrossAmount = item.getPrice() * itemForPurchase.getQuantity();
-                        var couponDiscount = coupon != null && coupon.getItemCode() == item.getItemCode() ? coupon.getDiscount() : Discount.None;
+                        var couponDiscount = couponOptional.map(coupon -> coupon.getDiscount()).orElse(Discount.None);
                         var netAmount = Math.min(
                                 item.getDiscountedPrice() * itemForPurchase.getQuantity(),
                                 totalGrossAmount - (totalGrossAmount * (couponDiscount.getPercentage() / 100))
