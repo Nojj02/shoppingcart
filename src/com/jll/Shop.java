@@ -45,25 +45,24 @@ public class Shop
 
     public double compute(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
         return itemsForPurchase.stream()
-                .mapToDouble(itemForPurchase -> {
-                    var shoppingItemOptional = getShoppingItem(itemForPurchase.getItemCode());
-                    if (!shoppingItemOptional.isPresent()) {
-                        return 0;
-                    } else {
-                        var item = shoppingItemOptional.get();
+            .mapToDouble(itemForPurchase ->
+                getShoppingItem(itemForPurchase.getItemCode())
+                    .map(item -> {
                         var totalGrossAmount = item.getPrice() * itemForPurchase.getQuantity();
-                        var couponDiscount = couponOptional
+                        var perItemDiscountNetAmount = item.getDiscountedPrice() * itemForPurchase.getQuantity();
+
+                        var couponDiscount =
+                            couponOptional
                                 .filter(coupon -> coupon.getItemCode() == item.getItemCode())
                                 .map(coupon -> coupon.getDiscount())
                                 .orElse(Discount.None);
-                        var netAmount = Math.min(
-                                item.getDiscountedPrice() * itemForPurchase.getQuantity(),
-                                couponDiscount.applyPercentageDiscount(totalGrossAmount)
-                        );
-                        return netAmount;
-                    }
-                })
-                .sum();
+                        var couponDiscountNetAmount = couponDiscount.applyPercentageDiscount(totalGrossAmount);
+
+                        return Math.min(perItemDiscountNetAmount, couponDiscountNetAmount);
+                    })
+                    .orElse(0.0)
+                )
+            .sum();
     }
 
     public class ShopException extends Exception {
