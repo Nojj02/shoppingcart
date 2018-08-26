@@ -65,7 +65,7 @@ public class Shop
             .sum();
     }
 
-    public class ShopException extends Exception {
+    public class ShopException extends RuntimeException {
     }
 
     public class NotEnoughItemsInShopException extends ShopException {

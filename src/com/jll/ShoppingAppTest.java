@@ -8,7 +8,7 @@ import java.util.List;
 public class ShoppingAppTest {
     public static class CreationTests {
         @Test
-        void shopHasItems() throws Shop.NotEnoughItemsInShopException {
+        void shopHasItems() {
             var firstItem = new Item("Banana", 15.00);
             var secondItem = new Item("Tomato", 22.00);
             var items = List.of(
@@ -46,26 +46,25 @@ public class ShoppingAppTest {
 
     public static class ComputeTests {
         @Test
-        void computesTotalCost()
-            throws Shop.NotEnoughItemsInShopException {
+        void computesTotalCost() {
             var items = List.of(
-                new Item("Banana", 12.00),
-                new Item("Tomato", 3.00),
-                new Item("Potato", 18.00),
-                new Item("Apple", 20.00),
-                new Item("Hammer", 175.00),
-                new Item("Wrench", 250.00),
-                new Item("Lettuce", 20.00),
-                new Item("Orange", 22.00),
-                new Item("Screwdriver", 220.00),
-                new Item("Pear", 25.00)
+                    new Item("Banana", 12.00),
+                    new Item("Tomato", 3.00),
+                    new Item("Potato", 18.00),
+                    new Item("Apple", 20.00),
+                    new Item("Hammer", 175.00),
+                    new Item("Wrench", 250.00),
+                    new Item("Lettuce", 20.00),
+                    new Item("Orange", 22.00),
+                    new Item("Screwdriver", 220.00),
+                    new Item("Pear", 25.00)
             );
 
             var shop = new Shop(items);
 
             var itemsForPurchase = List.of(
-                new ItemForPurchase("Banana", 5),
-                new ItemForPurchase("Potato", 2)
+                    new ItemForPurchase("Banana", 5),
+                    new ItemForPurchase("Potato", 2)
             );
 
             var result = shop.compute(itemsForPurchase);
@@ -74,8 +73,7 @@ public class ShoppingAppTest {
         }
 
         @Test
-        void itemsAreDiscounted_itemsAreOnSpecialWithPercentage()
-                throws Shop.NotEnoughItemsInShopException {
+        void itemsAreDiscounted_itemsAreOnSpecialWithPercentage() {
             var items = List.of(
                     new Item("Banana", 12.00),
                     new Item("Tomato", 3.00),
@@ -104,8 +102,7 @@ public class ShoppingAppTest {
         }
 
         @Test
-        void itemsAreDiscounted_itemsAreOnSpecialWithFixedRate()
-                throws Shop.NotEnoughItemsInShopException {
+        void itemsAreDiscounted_itemsAreOnSpecialWithFixedRate() {
             var items = List.of(
                     new Item("Banana", 12.00),
                     new Item("Tomato", 3.00),
@@ -134,8 +131,7 @@ public class ShoppingAppTest {
         }
 
         @Test
-        void itemsAreDiscountedWithHighestAmount_itemsAreOnSpecialWithFixedRateAndPercentage()
-                throws Shop.NotEnoughItemsInShopException {
+        void itemsAreDiscountedWithHighestAmount_itemsAreOnSpecialWithFixedRateAndPercentage() {
             var items = List.of(
                     new Item("Banana", 12.00),
                     new Item("Tomato", 3.00),
@@ -164,33 +160,32 @@ public class ShoppingAppTest {
         }
 
         @Test
-        void itemsAreDiscounted_storeWideCoupon()
-                throws Shop.NotEnoughItemsInShopException {
-                var items = List.of(
-                        new Item("Banana", 12.00),
-                        new Item("Tomato", 3.00),
-                        new Item("Potato", 18.00),
-                        new Item("Apple", 20.00),
-                        new Item("Hammer", 175.00),
-                        new Item("Wrench", 250.00),
-                        new Item("Lettuce", 20.00),
-                        new Item("Orange", 22.00),
-                        new Item("Screwdriver", 220.00),
-                        new Item("Pear", 25.00)
-                );
+        void itemsAreDiscounted_storeWideCoupon() {
+            var items = List.of(
+                    new Item("Banana", 12.00),
+                    new Item("Tomato", 3.00),
+                    new Item("Potato", 18.00),
+                    new Item("Apple", 20.00),
+                    new Item("Hammer", 175.00),
+                    new Item("Wrench", 250.00),
+                    new Item("Lettuce", 20.00),
+                    new Item("Orange", 22.00),
+                    new Item("Screwdriver", 220.00),
+                    new Item("Pear", 25.00)
+            );
 
-                var shop = new Shop(items);
+            var shop = new Shop(items);
 
-                var itemsForPurchase = List.of(
-                        new ItemForPurchase("Banana", 5),
-                        new ItemForPurchase("Potato", 2)
-                );
+            var itemsForPurchase = List.of(
+                    new ItemForPurchase("Banana", 5),
+                    new ItemForPurchase("Potato", 2)
+            );
 
-                var coupon = new Coupon("Banana", new Discount(50, 0));
+            var coupon = new Coupon("Banana", new Discount(50, 0));
 
-                var result = shop.compute(itemsForPurchase, coupon);
+            var result = shop.compute(itemsForPurchase, coupon);
 
-                Assertions.assertEquals(66, result);
-            }
+            Assertions.assertEquals(66, result);
+        }
     }
 }
