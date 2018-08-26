@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8701db96-73db-4b95-9f88-1febd9507421" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/com/jll/Discount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/Discount.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/jll/Coupon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jll/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/Shop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/jll/ShoppingItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/ShoppingItem.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,24 +24,24 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="3" />
+          <entry key="JAVA" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.spring.boot.mvc.usages" />
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2253" />
+          <entry key="java" value="2804" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="3" />
+          <entry key="java" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2253" />
+          <entry key="JAVA" value="2804" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.spring.boot.run.usages" />
@@ -72,11 +73,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="47" column="5" lean-forward="true" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
+            <state relative-caret-position="195">
+              <caret line="51" column="105" selection-start-line="51" selection-start-column="105" selection-end-line="51" selection-end-column="105" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#626#627#0" expanded="true" />
+                <element signature="e#677#678#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="185" column="55" selection-start-line="185" selection-start-column="55" selection-end-line="185" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -84,13 +99,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jll/Coupon.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="162" column="37" selection-start-line="162" selection-start-column="37" selection-end-line="162" selection-end-column="37" />
+            <state relative-caret-position="180">
+              <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#264#265#0" expanded="true" />
+                <element signature="e#295#296#0" expanded="true" />
+                <element signature="e#332#333#0" expanded="true" />
+                <element signature="e#363#364#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -150,10 +168,11 @@
         <option value="$PROJECT_DIR$/src/com/jll/ItemForPurchase.java" />
         <option value="$PROJECT_DIR$/src/com/jll/DiscountedShoppingItem.java" />
         <option value="$PROJECT_DIR$/src/com/jll/Contract.java" />
-        <option value="$PROJECT_DIR$/src/com/jll/Shop.java" />
         <option value="$PROJECT_DIR$/src/com/jll/Discount.java" />
         <option value="$PROJECT_DIR$/src/com/jll/ShoppingItem.java" />
+        <option value="$PROJECT_DIR$/src/com/jll/Coupon.java" />
         <option value="$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java" />
+        <option value="$PROJECT_DIR$/src/com/jll/Shop.java" />
       </list>
     </option>
   </component>
@@ -417,7 +436,7 @@
     <property name="SearchEverywhereHistoryKey" value="safe delete&#9;ACTION&#9;SafeDelete" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535266538695" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535268362300" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
@@ -546,26 +565,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1534163000876</updated>
-      <workItem from="1535161270333" duration="6437000" />
+      <workItem from="1535161270333" duration="7960000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="All_in_ShoppingCart - 2018.08.25 at 10h 47m 30s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.08.25 at 10h 54m 42s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.08.25 at 10h 55m 00s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.08.25 at 11h 02m 55s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.08.25 at 11h 03m 33s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="All_in_ShoppingCart - 2018.08.26 at 14h 26m 12s.xml">
       <configuration name="All in ShoppingCart" configurationId="JUnit" />
     </history-entry>
@@ -581,9 +585,24 @@
     <history-entry file="All_in_ShoppingCart - 2018.08.26 at 14h 55m 18s.xml">
       <configuration name="All in ShoppingCart" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="All_in_ShoppingCart - 2018.08.26 at 14h 55m 41s.xml">
+      <configuration name="All in ShoppingCart" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_ShoppingCart - 2018.08.26 at 15h 20m 17s.xml">
+      <configuration name="All in ShoppingCart" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_ShoppingCart - 2018.08.26 at 15h 21m 02s.xml">
+      <configuration name="All in ShoppingCart" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_ShoppingCart - 2018.08.26 at 15h 22m 16s.xml">
+      <configuration name="All in ShoppingCart" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="All_in_ShoppingCart - 2018.08.26 at 15h 22m 27s.xml">
+      <configuration name="All in ShoppingCart" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6437000" />
+    <option name="totallyTimeSpent" value="7960000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -645,13 +664,6 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/function/Predicate.java" />
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/stream/Stream.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/jll/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/DiscountedShoppingItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -672,16 +684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="47" column="5" lean-forward="true" selection-start-line="47" selection-start-column="5" selection-end-line="47" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/ItemForPurchase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -689,6 +691,19 @@
           <folding>
             <element signature="e#341#342#0" expanded="true" />
             <element signature="e#372#373#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/Coupon.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+          <folding>
+            <element signature="e#264#265#0" expanded="true" />
+            <element signature="e#295#296#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+            <element signature="e#363#364#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -719,12 +734,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="162" column="37" selection-start-line="162" selection-start-column="37" selection-end-line="162" selection-end-column="37" />
+        <state relative-caret-position="315">
+          <caret line="185" column="55" selection-start-line="185" selection-start-column="55" selection-end-line="185" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="51" column="105" selection-start-line="51" selection-start-column="105" selection-end-line="51" selection-end-column="105" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#626#627#0" expanded="true" />
+            <element signature="e#677#678#0" expanded="true" />
           </folding>
         </state>
       </provider>
