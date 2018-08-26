@@ -9,19 +9,19 @@ public class ShoppingAppTest {
     public static class CreationTests {
         @Test
         void shopHasItems() throws Shop.NotEnoughItemsInShopException {
-            var firstItem = new ShoppingItem("Banana", 15.00);
-            var secondItem = new ShoppingItem("Tomato", 22.00);
+            var firstItem = new Item("Banana", 15.00);
+            var secondItem = new Item("Tomato", 22.00);
             var items = List.of(
                     firstItem,
                     secondItem,
-                    new ShoppingItem("Potato", 18.00),
-                    new ShoppingItem("Apple", 20.00),
-                    new ShoppingItem("Hammer", 175.00),
-                    new ShoppingItem("Wrench", 250.00),
-                    new ShoppingItem("Lettuce", 20.00),
-                    new ShoppingItem("Orange", 22.00),
-                    new ShoppingItem("Screwdriver", 220.00),
-                    new ShoppingItem("Pear", 25.00)
+                    new Item("Potato", 18.00),
+                    new Item("Apple", 20.00),
+                    new Item("Hammer", 175.00),
+                    new Item("Wrench", 250.00),
+                    new Item("Lettuce", 20.00),
+                    new Item("Orange", 22.00),
+                    new Item("Screwdriver", 220.00),
+                    new Item("Pear", 25.00)
             );
 
             var shop = new Shop(items);
@@ -33,8 +33,8 @@ public class ShoppingAppTest {
 
         @Test
         void error_shopHasLessThan10Items() {
-            var firstItem = new ShoppingItem("Banana", 15.00);
-            var secondItem = new ShoppingItem("Tomato", 22.00);
+            var firstItem = new Item("Banana", 15.00);
+            var secondItem = new Item("Tomato", 22.00);
             var items = List.of(
                     firstItem,
                     secondItem
@@ -49,16 +49,16 @@ public class ShoppingAppTest {
         void computesTotalCost()
             throws Shop.NotEnoughItemsInShopException {
             var items = List.of(
-                new ShoppingItem("Banana", 12.00),
-                new ShoppingItem("Tomato", 3.00),
-                new ShoppingItem("Potato", 18.00),
-                new ShoppingItem("Apple", 20.00),
-                new ShoppingItem("Hammer", 175.00),
-                new ShoppingItem("Wrench", 250.00),
-                new ShoppingItem("Lettuce", 20.00),
-                new ShoppingItem("Orange", 22.00),
-                new ShoppingItem("Screwdriver", 220.00),
-                new ShoppingItem("Pear", 25.00)
+                new Item("Banana", 12.00),
+                new Item("Tomato", 3.00),
+                new Item("Potato", 18.00),
+                new Item("Apple", 20.00),
+                new Item("Hammer", 175.00),
+                new Item("Wrench", 250.00),
+                new Item("Lettuce", 20.00),
+                new Item("Orange", 22.00),
+                new Item("Screwdriver", 220.00),
+                new Item("Pear", 25.00)
             );
 
             var shop = new Shop(items);
@@ -77,16 +77,16 @@ public class ShoppingAppTest {
         void itemsAreDiscounted_itemsAreOnSpecialWithPercentage()
                 throws Shop.NotEnoughItemsInShopException {
             var items = List.of(
-                    new ShoppingItem("Banana", 12.00),
-                    new ShoppingItem("Tomato", 3.00),
-                    new ShoppingItem("Potato", 18.00),
-                    new ShoppingItem("Apple", 20.00),
-                    new ShoppingItem("Hammer", 175.00),
-                    new ShoppingItem("Wrench", 250.00),
-                    new ShoppingItem("Lettuce", 20.00),
-                    new ShoppingItem("Orange", 22.00),
-                    new ShoppingItem("Screwdriver", 220.00),
-                    new ShoppingItem("Pear", 25.00)
+                    new Item("Banana", 12.00),
+                    new Item("Tomato", 3.00),
+                    new Item("Potato", 18.00),
+                    new Item("Apple", 20.00),
+                    new Item("Hammer", 175.00),
+                    new Item("Wrench", 250.00),
+                    new Item("Lettuce", 20.00),
+                    new Item("Orange", 22.00),
+                    new Item("Screwdriver", 220.00),
+                    new Item("Pear", 25.00)
             );
 
             var shop = new Shop(items);
@@ -107,16 +107,16 @@ public class ShoppingAppTest {
         void itemsAreDiscounted_itemsAreOnSpecialWithFixedRate()
                 throws Shop.NotEnoughItemsInShopException {
             var items = List.of(
-                    new ShoppingItem("Banana", 12.00),
-                    new ShoppingItem("Tomato", 3.00),
-                    new ShoppingItem("Potato", 18.00),
-                    new ShoppingItem("Apple", 20.00),
-                    new ShoppingItem("Hammer", 175.00),
-                    new ShoppingItem("Wrench", 250.00),
-                    new ShoppingItem("Lettuce", 20.00),
-                    new ShoppingItem("Orange", 22.00),
-                    new ShoppingItem("Screwdriver", 220.00),
-                    new ShoppingItem("Pear", 25.00)
+                    new Item("Banana", 12.00),
+                    new Item("Tomato", 3.00),
+                    new Item("Potato", 18.00),
+                    new Item("Apple", 20.00),
+                    new Item("Hammer", 175.00),
+                    new Item("Wrench", 250.00),
+                    new Item("Lettuce", 20.00),
+                    new Item("Orange", 22.00),
+                    new Item("Screwdriver", 220.00),
+                    new Item("Pear", 25.00)
             );
 
             var shop = new Shop(items);
@@ -137,16 +137,16 @@ public class ShoppingAppTest {
         void itemsAreDiscountedWithHighestAmount_itemsAreOnSpecialWithFixedRateAndPercentage()
                 throws Shop.NotEnoughItemsInShopException {
             var items = List.of(
-                    new ShoppingItem("Banana", 12.00),
-                    new ShoppingItem("Tomato", 3.00),
-                    new ShoppingItem("Potato", 18.00),
-                    new ShoppingItem("Apple", 20.00),
-                    new ShoppingItem("Hammer", 175.00),
-                    new ShoppingItem("Wrench", 250.00),
-                    new ShoppingItem("Lettuce", 20.00),
-                    new ShoppingItem("Orange", 22.00),
-                    new ShoppingItem("Screwdriver", 220.00),
-                    new ShoppingItem("Pear", 25.00)
+                    new Item("Banana", 12.00),
+                    new Item("Tomato", 3.00),
+                    new Item("Potato", 18.00),
+                    new Item("Apple", 20.00),
+                    new Item("Hammer", 175.00),
+                    new Item("Wrench", 250.00),
+                    new Item("Lettuce", 20.00),
+                    new Item("Orange", 22.00),
+                    new Item("Screwdriver", 220.00),
+                    new Item("Pear", 25.00)
             );
 
             var shop = new Shop(items);
@@ -167,16 +167,16 @@ public class ShoppingAppTest {
         void itemsAreDiscounted_storeWideCoupon()
                 throws Shop.NotEnoughItemsInShopException {
                 var items = List.of(
-                        new ShoppingItem("Banana", 12.00),
-                        new ShoppingItem("Tomato", 3.00),
-                        new ShoppingItem("Potato", 18.00),
-                        new ShoppingItem("Apple", 20.00),
-                        new ShoppingItem("Hammer", 175.00),
-                        new ShoppingItem("Wrench", 250.00),
-                        new ShoppingItem("Lettuce", 20.00),
-                        new ShoppingItem("Orange", 22.00),
-                        new ShoppingItem("Screwdriver", 220.00),
-                        new ShoppingItem("Pear", 25.00)
+                        new Item("Banana", 12.00),
+                        new Item("Tomato", 3.00),
+                        new Item("Potato", 18.00),
+                        new Item("Apple", 20.00),
+                        new Item("Hammer", 175.00),
+                        new Item("Wrench", 250.00),
+                        new Item("Lettuce", 20.00),
+                        new Item("Orange", 22.00),
+                        new Item("Screwdriver", 220.00),
+                        new Item("Pear", 25.00)
                 );
 
                 var shop = new Shop(items);

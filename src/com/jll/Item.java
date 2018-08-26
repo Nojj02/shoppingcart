@@ -1,12 +1,12 @@
 package com.jll;
 
-public class ShoppingItem
+public class Item
 {
     private String itemCode;
     private double price;
     private Discount discount;
 
-    public ShoppingItem(String itemCode, double price) {
+    public Item(String itemCode, double price) {
         this.itemCode = itemCode;
         this.price = price;
         this.discount = Discount.None;

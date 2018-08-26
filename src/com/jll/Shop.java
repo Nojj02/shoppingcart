@@ -7,29 +7,29 @@ import java.util.Optional;
 
 public class Shop
 {
-    private Collection<ShoppingItem> _shoppingItems;
+    private Collection<Item> items;
 
-    public Shop(Collection<ShoppingItem> items)
+    public Shop(Collection<Item> items)
         throws NotEnoughItemsInShopException {
         if (items.size() < 10) {
             throw new NotEnoughItemsInShopException();
         }
-        _shoppingItems = items;
+        this.items = items;
     }
 
-    public Collection<ShoppingItem> get_ShoppingItems()
+    public Collection<Item> get_ShoppingItems()
     {
-        return _shoppingItems;
+        return items;
     }
 
-    public Optional<ShoppingItem> getShoppingItem(String itemCode) {
-        return _shoppingItems.stream()
-                .filter(shoppingItem -> shoppingItem.getItemCode() == itemCode)
+    public Optional<Item> getItem(String itemCode) {
+        return items.stream()
+                .filter(item -> item.getItemCode() == itemCode)
                 .collect(MoreCollectors.toOptional());
     }
 
     public void setDiscount(String itemCode, Discount discount) {
-        var itemOptional = getShoppingItem(itemCode);
+        var itemOptional = getItem(itemCode);
         if (itemOptional.isPresent()) {
             itemOptional.get().setDiscount(discount);
         }
@@ -46,7 +46,7 @@ public class Shop
     public double compute(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
         return itemsForPurchase.stream()
             .mapToDouble(itemForPurchase ->
-                getShoppingItem(itemForPurchase.getItemCode())
+                getItem(itemForPurchase.getItemCode())
                     .map(item -> {
                         var totalGrossAmount = item.getPrice() * itemForPurchase.getQuantity();
                         var perItemDiscountNetAmount = item.getDiscountedPrice() * itemForPurchase.getQuantity();
