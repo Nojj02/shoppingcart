@@ -1,21 +1,14 @@
 package com.jll;
 
 public final class Discount {
-    public static final Discount None = new Discount();
+    public static final Discount None = new Discount(0, 0);
 
     private int fixedAmount;
     private double percentage;
 
-    public static Discount Fixed(int amountDiscounted) {
-        var discount = new Discount();
-        discount.fixedAmount = amountDiscounted;
-        return discount;
-    }
-
-    public static Discount percentage(double percentageDiscounted) {
-        var discount = new Discount();
-        discount.percentage = percentageDiscounted;
-        return discount;
+    public Discount(double percentage, int fixedAmount) {
+        this.percentage = percentage;
+        this.fixedAmount = fixedAmount;
     }
 
     public int getFixedAmount() {

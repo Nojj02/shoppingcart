@@ -91,7 +91,7 @@ public class ShoppingAppTest {
 
             var shop = new Shop(items);
 
-            shop.setDiscount("Banana", Discount.percentage(50.00));
+            shop.setDiscount("Banana", new Discount(50.00, 0));
 
             var itemsForPurchase = List.of(
                     new ItemForPurchase("Banana", 5),
@@ -121,7 +121,7 @@ public class ShoppingAppTest {
 
             var shop = new Shop(items);
 
-            shop.setDiscount("Banana", Discount.Fixed(3));
+            shop.setDiscount("Banana", new Discount(0, 3));
 
             var itemsForPurchase = List.of(
                     new ItemForPurchase("Banana", 5),
@@ -131,6 +131,36 @@ public class ShoppingAppTest {
             var result = shop.Compute(itemsForPurchase);
 
             Assertions.assertEquals(81, result);
+        }
+
+        @Test
+        void itemsAreDiscountedWithHighestAmount_itemsAreOnSpecialWithFixedRateAndPercentage()
+                throws Shop.NotEnoughItemsInShopException {
+            var items = List.of(
+                    new ShoppingItem("Banana", 12.00),
+                    new ShoppingItem("Tomato", 3.00),
+                    new ShoppingItem("Potato", 18.00),
+                    new ShoppingItem("Apple", 20.00),
+                    new ShoppingItem("Hammer", 175.00),
+                    new ShoppingItem("Wrench", 250.00),
+                    new ShoppingItem("Lettuce", 20.00),
+                    new ShoppingItem("Orange", 22.00),
+                    new ShoppingItem("Screwdriver", 220.00),
+                    new ShoppingItem("Pear", 25.00)
+            );
+
+            var shop = new Shop(items);
+
+            shop.setDiscount("Banana", new Discount(10.0, 5));
+
+            var itemsForPurchase = List.of(
+                    new ItemForPurchase("Banana", 5),
+                    new ItemForPurchase("Potato", 2)
+            );
+
+            var result = shop.Compute(itemsForPurchase);
+
+            Assertions.assertEquals(71, result);
         }
     }
 }
