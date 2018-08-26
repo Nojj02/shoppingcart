@@ -26,7 +26,7 @@ public class Shop
         return itemsForPurchase.stream()
             .mapToDouble(itemForPurchase ->
                 getShoppingItem(itemForPurchase.getItemCode())
-                    .map(item -> item.getPrice() * itemForPurchase.getQuantity())
+                    .map(item -> item.getDiscountedPrice() * itemForPurchase.getQuantity())
                     .orElse(0.0))
             .sum();
     }
@@ -35,6 +35,13 @@ public class Shop
         return _shoppingItems.stream()
                 .filter(shoppingItem -> shoppingItem.getItemCode() == itemCode)
                 .collect(MoreCollectors.toOptional());
+    }
+
+    public void setDiscount(String itemCode, Discount discount) {
+        var itemOptional = getShoppingItem(itemCode);
+        if (itemOptional.isPresent()) {
+            itemOptional.get().setDiscount(discount);
+        }
     }
 
     public class ShopException extends Exception {
