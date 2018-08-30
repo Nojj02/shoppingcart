@@ -5,16 +5,22 @@ public class Item
     private String itemCode;
     private ItemType itemType;
     private double price;
+    private Weight weight;
     private Discount discount;
 
     public Item(String itemCode, double price) {
-        this(itemCode, ItemType.Unknown, price);
+        this(itemCode, ItemType.Unknown, price, Weight.ZERO);
     }
 
     public Item(String itemCode, ItemType itemType, double price) {
+        this(itemCode, itemType, price, Weight.ZERO);
+    }
+
+    public Item(String itemCode, ItemType itemType, double price, Weight weight) {
         this.itemCode = itemCode;
         this.itemType = itemType;
         this.price = price;
+        this.weight = weight;
         this.discount = Discount.None;
     }
 
@@ -38,6 +44,10 @@ public class Item
 
     public ItemType getItemType() {
         return itemType;
+    }
+
+    public Weight getWeight() {
+        return weight;
     }
 }
 
