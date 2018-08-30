@@ -36,6 +36,12 @@ public class Item
         this.discount = discount;
     }
 
+    public double getDiscountAmount() {
+        var percentageDiscount = this.discount.computeDiscount(this.price);
+        var fixedAmountDiscount = this.discount.getFixedAmount();
+        return Math.max(percentageDiscount, fixedAmountDiscount);
+    }
+
     public double getDiscountedPrice() {
         var percentageDiscount = this.discount.applyPercentageDiscount(this.price);
         var fixedAmountDiscount = this.price - this.discount.getFixedAmount();

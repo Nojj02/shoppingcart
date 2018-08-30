@@ -67,9 +67,10 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.compute(itemsForPurchase);
+            var cost = shop.compute(itemsForPurchase);
 
-            Assertions.assertEquals(96, result);
+            Assertions.assertEquals(0, cost.discountAmount);
+            Assertions.assertEquals(96, cost.grossAmount);
         }
 
         @Test
@@ -96,9 +97,10 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.compute(itemsForPurchase);
+            var cost = shop.compute(itemsForPurchase);
 
-            Assertions.assertEquals(66, result);
+            Assertions.assertEquals(30, cost.discountAmount);
+            Assertions.assertEquals(96, cost.grossAmount);
         }
 
         @Test
@@ -125,9 +127,10 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.compute(itemsForPurchase);
+            var cost = shop.compute(itemsForPurchase);
 
-            Assertions.assertEquals(81, result);
+            Assertions.assertEquals(15, cost.discountAmount);
+            Assertions.assertEquals(96, cost.grossAmount);
         }
 
         @Test
@@ -154,9 +157,10 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var result = shop.compute(itemsForPurchase);
+            var cost = shop.compute(itemsForPurchase);
 
-            Assertions.assertEquals(71, result);
+            Assertions.assertEquals(25, cost.discountAmount);
+            Assertions.assertEquals(96, cost.grossAmount);
         }
 
         @Test
@@ -183,9 +187,10 @@ public class ShoppingAppTest {
 
             var coupon = new StoreWideCoupon(new Discount(50, 0));
 
-            var result = shop.compute(itemsForPurchase, coupon);
+            var cost = shop.compute(itemsForPurchase, coupon);
 
-            Assertions.assertEquals(48, result);
+            Assertions.assertEquals(48, cost.discountAmount);
+            Assertions.assertEquals(96, cost.grossAmount);
         }
 
         @Test
@@ -216,9 +221,10 @@ public class ShoppingAppTest {
 
             var coupon = new ItemTypeCoupon("Vegetable", new Discount(25, 0));
 
-            var cost = shop.computeNew(itemsForPurchase, coupon);
+            var cost = shop.compute(itemsForPurchase, coupon);
 
-            Assertions.assertEquals(117, cost.discountedCost);
+            Assertions.assertEquals(19, cost.discountAmount);
+            Assertions.assertEquals(136, cost.grossAmount);
         }
 
         @Test
@@ -246,7 +252,7 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var cost = shop.computeNew(itemsForPurchase);
+            var cost = shop.compute(itemsForPurchase);
 
             Assertions.assertEquals(24.50, cost.shippingCost);
             Assertions.assertEquals(120.50, cost.getTotalCost());
@@ -277,9 +283,9 @@ public class ShoppingAppTest {
                     new ItemForPurchase("Potato", 2)
             );
 
-            var cost = shop.computeNew(itemsForPurchase);
+            var cost = shop.compute(itemsForPurchase);
 
-            Assertions.assertEquals(96.00, cost.discountedCost);
+            Assertions.assertEquals(96.00, cost.grossAmount);
             Assertions.assertEquals(47.00, cost.shippingCost);
             Assertions.assertEquals(143.00, cost.getTotalCost());
         }

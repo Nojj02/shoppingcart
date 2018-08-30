@@ -40,89 +40,62 @@ public class Shop
         }
     }
 
-    public double compute(Collection<ItemForPurchase> itemsForPurchase) {
+    public Cost compute(Collection<ItemForPurchase> itemsForPurchase) {
         return compute(itemsForPurchase, Optional.empty());
     }
 
-    public double compute(Collection<ItemForPurchase> itemsForPurchase, Coupon coupon) {
+    public Cost compute(Collection<ItemForPurchase> itemsForPurchase, Coupon coupon) {
         return compute(itemsForPurchase, Optional.of(coupon));
     }
 
-    public double compute(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
-        return itemsForPurchase.stream()
-            .mapToDouble(itemForPurchase ->
-                getItem(itemForPurchase.getItemCode())
-                    .map(item -> {
-                        var totalGrossAmount = item.getPrice() * itemForPurchase.getQuantity();
-                        var perItemDiscountNetAmount = item.getDiscountedPrice() * itemForPurchase.getQuantity();
-
-                        var couponDiscount =
-                            couponOptional
-                                .filter(coupon -> coupon.appliesTo(item.getItemType().getItemTypeCode()))
-                                .map(coupon -> coupon.getDiscount())
-                                .orElse(Discount.None);
-                        var couponDiscountNetAmount = couponDiscount.applyPercentageDiscount(totalGrossAmount);
-
-                        return Math.min(perItemDiscountNetAmount, couponDiscountNetAmount);
-                    })
-                    .orElse(0.0)
-                )
-            .sum();
-    }
-
-    public Cost computeNew(Collection<ItemForPurchase> itemsForPurchase) {
-        return computeNew(itemsForPurchase, Optional.empty());
-    }
-
-    public Cost computeNew(Collection<ItemForPurchase> itemsForPurchase, Coupon coupon) {
-        return computeNew(itemsForPurchase, Optional.of(coupon));
-    }
-
-    public Cost computeNew(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
+    public Cost compute(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
         var totalCost = itemsForPurchase.stream()
                 .map(itemForPurchase ->
                         getItem(itemForPurchase.getItemCode())
                                 .map(item -> {
                                     var totalGrossAmount = item.getPrice() * itemForPurchase.getQuantity();
-                                    var perItemDiscountNetAmount = item.getDiscountedPrice() * itemForPurchase.getQuantity();
+                                    var perItemDiscountAmount = item.getDiscountAmount() * itemForPurchase.getQuantity();
 
                                     var couponDiscount =
                                             couponOptional
                                                     .filter(coupon -> coupon.appliesTo(item.getItemType().getItemTypeCode()))
                                                     .map(coupon -> coupon.getDiscount())
                                                     .orElse(Discount.None);
-                                    var couponDiscountNetAmount = couponDiscogunt.applyPercentageDiscount(totalGrossAmount);
+                                    var couponDiscountAmount = couponDiscount.computeDiscount(totalGrossAmount);
 
-                                    var netItemAmount = Math.min(perItemDiscountNetAmount, couponDiscountNetAmount);
+                                    var discountAmount = Math.max(perItemDiscountAmount, couponDiscountAmount);
 
                                     var shippingCost = shippingCostCalculator.compute(item.getWeight()) * itemForPurchase.getQuantity();
 
-                                    return new Cost(netItemAmount, shippingCost);
+                                    return new Cost(totalGrossAmount, discountAmount, shippingCost);
                                 })
-                                .orElse(new Cost(0.0, 0.0))
+                                .orElse(new Cost(0.0, 0.0, 0.0))
                 )
-                .reduce(new Cost(0, 0), (a, b) -> a.add(b));
+                .reduce(new Cost(0, 0,0), (a, b) -> a.add(b));
 
         return totalCost;
     }
 
     public class Cost {
-        public double discountedCost;
+        public double grossAmount;
+        public double discountAmount;
         public double shippingCost;
 
-        public Cost(double discountedCost, double shippingCost) {
+        public Cost(double grossAmount, double discountAmount, double shippingCost) {
 
-            this.discountedCost = discountedCost;
+            this.grossAmount = grossAmount;
+            this.discountAmount = discountAmount;
             this.shippingCost = shippingCost;
         }
 
         public Cost add(Cost other) {
-            return new Cost(this.discountedCost + other.discountedCost,
+            return new Cost(this.grossAmount + other.grossAmount,
+                    this.discountAmount + other.discountAmount,
                     this.shippingCost + other.shippingCost);
         }
 
         public double getTotalCost() {
-            return discountedCost + shippingCost;
+            return grossAmount + shippingCost - discountAmount;
         }
     }
 
