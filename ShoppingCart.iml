@@ -20,5 +20,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="com.google.guava:guava:26.0-jre" level="project" />
+    <orderEntry type="library" name="org.postgresql:postgresql:42.2.5.jre7" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.8.5" level="project" />
   </component>
 </module>

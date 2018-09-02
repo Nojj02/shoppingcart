@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8701db96-73db-4b95-9f88-1febd9507421" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/jll/ShippingCostCalculatorTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_postgresql_postgresql_42_2_5_jre7.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/jll/DbTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/jll/ShippingCostCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/ShippingCostCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/jll/Weight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/Weight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ShoppingCart.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ShoppingCart.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,6 +16,51 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="6d9b600a:PostgresImplModel$Database" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="postgres@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="postgres: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="public: schema" type="a16502c0:PostgresImplModel$Schema" />
+      </path>
+    </expand>
+    <select />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1651327052">
@@ -24,24 +72,34 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="14" />
+          <entry key="JAVA" value="15" />
+          <entry key="SQL" value="1" />
+          <entry key="Scratch" value="2" />
+          <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.spring.boot.mvc.usages" />
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7065" />
+          <entry key="java" value="7526" />
+          <entry key="sql" value="72" />
+          <entry key="yml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="14" />
+          <entry key="java" value="15" />
+          <entry key="sql" value="3" />
+          <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7065" />
+          <entry key="JAVA" value="7516" />
+          <entry key="SQL" value="53" />
+          <entry key="Scratch" value="29" />
+          <entry key="YAML" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.spring.boot.run.usages" />
@@ -50,19 +108,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" selection-start-line="9" selection-end-line="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jll/Item.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="372">
-              <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
               <folding>
                 <element signature="e#172#173#0" expanded="true" />
                 <element signature="e#209#210#0" expanded="true" />
@@ -87,7 +136,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="203">
-              <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
+              <caret line="57" selection-start-line="57" selection-end-line="57" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#281#282#0" expanded="true" />
@@ -102,8 +151,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jll/Discount.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
+            <state relative-caret-position="105">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
               <folding>
                 <element signature="e#500#501#0" expanded="true" />
                 <element signature="e#549#550#0" expanded="true" />
@@ -115,10 +164,40 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/jll/DbTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="363">
+              <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/c0fe5c00-1c0e-4ad3-ba18-f07d3afba7d3/console.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="31" selection-start-column="31" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/db/data/setup.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" column="10" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jll/ShippingCostCalculator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="43">
-              <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+            <state relative-caret-position="180">
+              <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -130,7 +209,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/jll/ShippingCostCalculatorTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="450">
-              <caret line="59" column="49" lean-forward="true" selection-start-line="59" selection-start-column="49" selection-end-line="59" selection-end-column="49" />
+              <caret line="59" column="49" selection-start-line="59" selection-start-column="49" selection-end-line="59" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -138,8 +217,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4050">
-              <caret line="270" column="55" lean-forward="true" selection-start-line="270" selection-start-column="55" selection-end-line="270" selection-end-column="55" />
+            <state relative-caret-position="160">
+              <caret line="107" column="32" selection-start-line="107" selection-start-column="32" selection-end-line="109" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -150,8 +229,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jll/Weight.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
+            <state relative-caret-position="135">
+              <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
               <folding>
                 <element signature="e#278#279#0" expanded="true" />
                 <element signature="e#314#315#0" expanded="true" />
@@ -166,41 +245,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/Coupon.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
-              <folding>
-                <element signature="e#121#122#0" expanded="true" />
-                <element signature="e#151#152#0" expanded="true" />
-                <element signature="e#625#626#0" expanded="true" />
-                <element signature="e#656#657#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/StoreWideCoupon.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="8" column="49" lean-forward="true" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
-              <folding>
-                <element signature="e#208#209#0" expanded="true" />
-                <element signature="e#235#236#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -209,9 +260,11 @@
       <find>throws Shop.NotEnoughItemsInSHopException</find>
       <find>itemsForPurchase.stream()</find>
       <find>3.50</find>
+      <find>ridesharing</find>
     </findStrings>
     <replaceStrings>
       <replace />
+      <replace>shoppingcart</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -239,6 +292,10 @@
         <option value="$PROJECT_DIR$/src/com/jll/ShippingCostCalculatorTest.java" />
         <option value="$PROJECT_DIR$/src/com/jll/Weight.java" />
         <option value="$PROJECT_DIR$/src/com/jll/ShippingCostCalculator.java" />
+        <option value="$PROJECT_DIR$/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/db/data/setup.sql" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c0fe5c00-1c0e-4ad3-ba18-f07d3afba7d3/console.sql" />
+        <option value="$PROJECT_DIR$/src/com/jll/DbTest.java" />
       </list>
     </option>
   </component>
@@ -496,16 +553,18 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="format&#9;ACTION&#9;ReformatCode&#10;replace&#9;ACTION&#9;Replace&#10;safe delete&#9;ACTION&#9;SafeDelete" />
+    <property name="SearchEverywhereHistoryKey" value="library&#9;ACTION&#9;Editor.JSLibrariesMenu.LibraryList&#10;format&#9;ACTION&#9;ReformatCode&#10;replace&#9;ACTION&#9;Replace&#10;safe delete&#9;ACTION&#9;SafeDelete" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535737857856" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535864436831" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
+    <property name="database.console.LAST_STATE" value="true" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -534,23 +593,29 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All in ShoppingCart">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.jll.Main" />
-      <module name="ShoppingCart" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.DbTest.Test">
     <configuration name="All in ShoppingCart" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ShoppingCart" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
       <option name="VM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DbTest.Test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ShoppingCart" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.jll.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.jll" />
+      <option name="MAIN_CLASS_NAME" value="com.jll.DbTest" />
+      <option name="METHOD_NAME" value="Test" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -606,14 +671,15 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.ShoppingAppTest.shopHasItems" />
       <item itemvalue="JUnit.ShoppingAppTest" />
       <item itemvalue="JUnit.ShoppingAppTest$CreationTests" />
       <item itemvalue="JUnit.All in ShoppingCart" />
+      <item itemvalue="JUnit.DbTest.Test" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.DbTest.Test" />
         <item itemvalue="JUnit.All in ShoppingCart" />
         <item itemvalue="JUnit.ShoppingAppTest$CreationTests" />
         <item itemvalue="JUnit.ShoppingAppTest" />
@@ -636,39 +702,39 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 29m 43s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 30m 05s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 30m 18s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 39m 35s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 41m 44s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 42m 33s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 42m 41s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 43m 48s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 48m 58s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 49m 03s.xml">
       <configuration name="All in ShoppingCart" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 00h 10m 59s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 00h 12m 56s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 09h 55m 26s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 10h 27m 07s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 10h 27m 34s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 11h 19m 24s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 12h 55m 40s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 12h 56m 08s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 12h 57m 13s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22956000" />
+    <option name="totallyTimeSpent" value="27974000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -682,7 +748,7 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Learn" order="7" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Console" weight="0.32891566" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31084338" />
@@ -690,12 +756,11 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3299363" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32891566" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32866243" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32771084" />
-      <window_info anchor="right" x="0" y="0" width="310" height="677" id="Documentation" side_tool="true" weight="0.3297568" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Database Changes" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -704,6 +769,8 @@
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info anchor="right" x="0" y="0" width="310" height="677" id="Documentation" order="8" side_tool="true" weight="0.3297568" />
+      <window_info anchor="right" auto_hide="true" id="Database" order="9" weight="0.3297568" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -730,19 +797,7 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/function/Predicate.java" />
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/stream/Stream.java" />
-    <entry file="file://$PROJECT_DIR$/src/com/jll/DiscountedShoppingItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="31" lean-forward="true" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-          <folding>
-            <element signature="e#337#338#0" expanded="true" />
-            <element signature="e#368#369#0" expanded="true" />
-            <element signature="e#413#414#0" expanded="true" />
-            <element signature="e#454#455#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/DiscountedShoppingItem.java" />
     <entry file="file://$PROJECT_DIR$/src/com/jll/Contract.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -791,7 +846,7 @@
     <entry file="file://$PROJECT_DIR$/src/com/jll/StoreWideCoupon.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
-          <caret line="8" column="49" lean-forward="true" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
+          <caret line="8" column="49" selection-start-line="8" selection-start-column="49" selection-end-line="8" selection-end-column="49" />
           <folding>
             <element signature="e#208#209#0" expanded="true" />
             <element signature="e#235#236#0" expanded="true" />
@@ -802,7 +857,7 @@
     <entry file="file://$PROJECT_DIR$/src/com/jll/Coupon.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="16" lean-forward="true" selection-start-column="16" selection-end-column="16" />
+          <caret column="16" selection-start-column="16" selection-end-column="16" />
           <folding>
             <element signature="e#121#122#0" expanded="true" />
             <element signature="e#151#152#0" expanded="true" />
@@ -812,23 +867,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jll/Discount.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
-          <folding>
-            <element signature="e#500#501#0" expanded="true" />
-            <element signature="e#549#550#0" expanded="true" />
-            <element signature="e#508#509#0" expanded="true" />
-            <element signature="e#563#564#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/Item.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="372">
-          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="e#172#173#0" expanded="true" />
             <element signature="e#209#210#0" expanded="true" />
@@ -858,7 +900,7 @@
     <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="203">
-          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#281#282#0" expanded="true" />
@@ -869,37 +911,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jll/WeightTest.java">
+    <entry file="file://$PROJECT_DIR$/src/com/jll/WeightTest.java" />
+    <entry file="file://$PROJECT_DIR$/src/com/jll/Discount.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#549#550#0" expanded="true" />
+            <element signature="e#508#509#0" expanded="true" />
+            <element signature="e#563#564#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4050">
-          <caret line="270" column="55" lean-forward="true" selection-start-line="270" selection-start-column="55" selection-end-line="270" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jll/ShippingCostCalculatorTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="59" column="49" lean-forward="true" selection-start-line="59" selection-start-column="49" selection-end-line="59" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/Weight.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
+        <state relative-caret-position="135">
+          <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
           <folding>
             <element signature="e#278#279#0" expanded="true" />
             <element signature="e#314#315#0" expanded="true" />
@@ -913,10 +942,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docker-compose.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="45" selection-start-line="11" selection-start-column="45" selection-end-line="11" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/ShippingCostCalculatorTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="59" column="49" selection-start-line="59" selection-start-column="49" selection-end-line="59" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="107" column="32" selection-start-line="107" selection-start-column="32" selection-end-line="109" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/c0fe5c00-1c0e-4ad3-ba18-f07d3afba7d3/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="31" selection-start-column="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/ShippingCostCalculator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+        <state relative-caret-position="180">
+          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/data/setup.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="10" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/DbTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1000,7 +1077,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>com.google.guava:guava:26.0-jre</last-edited>
+          <last-edited>com.google.code.gson:gson:2.8.5</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
