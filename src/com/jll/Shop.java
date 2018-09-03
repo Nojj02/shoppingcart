@@ -4,26 +4,26 @@ import com.google.common.collect.MoreCollectors;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 public class Shop
 {
     private Collection<Item> items;
-    private ShippingCostCalculator shippingCostCalculator;
+    private UUID id;
 
-    public Shop(Collection<Item> items) {
-        this(items, new ShippingCostCalculator());
-    }
-
-    public Shop(Collection<Item> items, ShippingCostCalculator shippingCostCalculator){
+    public Shop(UUID id, Collection<Item> items) {
+        this.id = id;
         if (items.size() < 10) {
             throw new NotEnoughItemsInShopException();
         }
         this.items = items;
-        this.shippingCostCalculator = shippingCostCalculator;
     }
 
-    public Collection<Item> get_ShoppingItems()
-    {
+    public UUID getId() {
+        return id;
+    }
+
+    public Collection<Item> getShoppingItems() {
         return items;
     }
 
@@ -65,7 +65,7 @@ public class Shop
 
                                     var discountAmount = Math.max(perItemDiscountAmount, couponDiscountAmount);
 
-                                    var shippingCost = shippingCostCalculator.compute(item.getWeight()) * itemForPurchase.getQuantity();
+                                    var shippingCost = new ShippingCostCalculator().compute(item.getWeight()) * itemForPurchase.getQuantity();
 
                                     return new Cost(totalGrossAmount, discountAmount, shippingCost);
                                 })

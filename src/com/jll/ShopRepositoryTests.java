@@ -5,14 +5,15 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
-public class DbTest {
+public class ShopRepositoryTests {
     private final String url = "jdbc:postgresql://localhost:5432/postgres";
     private final String user = "postgres";
     private final String password = "thepassword";
 
     @Test
-    public void Test() throws SQLException {
+    public void saveAndGet() throws SQLException {
         var items = List.of(
                 new Item("Banana", 12.00),
                 new Item("Tomato", 3.00),
@@ -26,10 +27,15 @@ public class DbTest {
                 new Item("Pear", 25.00)
         );
 
-        var shop = new Shop(items);
+        var id = UUID.randomUUID();
+
+        var shop = new Shop(id, items);
 
         var shopRepository = new ShopRepository(getConnectionManager());
         shopRepository.save(shop);
+
+        var retrievedShop = shopRepository.get(id);
+        Assertions.assertNotNull(retrievedShop);
     }
 
     public ConnectionManager getConnectionManager() {

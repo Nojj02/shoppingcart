@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ShoppingAppTest {
     public static class CreationTests {
@@ -24,9 +25,9 @@ public class ShoppingAppTest {
                     new Item("Pear", 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
-            var itemList = shop.get_ShoppingItems().toArray();
+            var itemList = shop.getShoppingItems().toArray();
             Assertions.assertEquals(itemList[0], firstItem);
             Assertions.assertEquals(itemList[1], secondItem);
         }
@@ -40,7 +41,7 @@ public class ShoppingAppTest {
                     secondItem
             );
 
-            Assertions.assertThrows(Shop.NotEnoughItemsInShopException.class, () -> new Shop(items));
+            Assertions.assertThrows(Shop.NotEnoughItemsInShopException.class, () -> new Shop(UUID.randomUUID(), items));
         }
     }
 
@@ -60,7 +61,7 @@ public class ShoppingAppTest {
                     new Item("Pear", 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             var itemsForPurchase = List.of(
                     new ItemForPurchase("Banana", 5),
@@ -88,7 +89,7 @@ public class ShoppingAppTest {
                     new Item("Pear", 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             shop.setDiscount("Banana", new Discount(50.00, 0));
 
@@ -118,7 +119,7 @@ public class ShoppingAppTest {
                     new Item("Pear", 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             shop.setDiscount("Banana", new Discount(0, 3));
 
@@ -148,7 +149,7 @@ public class ShoppingAppTest {
                     new Item("Pear", 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             shop.setDiscount("Banana", new Discount(10.0, 5));
 
@@ -178,7 +179,7 @@ public class ShoppingAppTest {
                     new Item("Pear", 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             var itemsForPurchase = List.of(
                     new ItemForPurchase("Banana", 5),
@@ -211,7 +212,7 @@ public class ShoppingAppTest {
                     new Item("Pear", fruitItemType, 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             var itemsForPurchase = List.of(
                     new ItemForPurchase("Banana", 5),
@@ -245,7 +246,7 @@ public class ShoppingAppTest {
                     new Item("Pear", fruitItemType, 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             var itemsForPurchase = List.of(
                     new ItemForPurchase("Banana", 5),
@@ -276,7 +277,7 @@ public class ShoppingAppTest {
                     new Item("Pear", fruitItemType, 25.00)
             );
 
-            var shop = new Shop(items);
+            var shop = new Shop(UUID.randomUUID(), items);
 
             var itemsForPurchase = List.of(
                     new ItemForPurchase("Banana", 5),
