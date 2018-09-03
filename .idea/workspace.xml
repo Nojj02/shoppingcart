@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8701db96-73db-4b95-9f88-1febd9507421" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_postgresql_postgresql_42_2_5_jre7.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/jll/DbTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/jll/ConnectionInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/jll/ConnectionManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/jll/ShopRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ShoppingCart.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ShoppingCart.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jll/DbTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/DbTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jll/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jll/Shop.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -72,7 +71,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="15" />
+          <entry key="JAVA" value="19" />
           <entry key="SQL" value="1" />
           <entry key="Scratch" value="2" />
           <entry key="YAML" value="1" />
@@ -81,14 +80,14 @@
       <usages-collector id="statistics.spring.boot.mvc.usages" />
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7526" />
+          <entry key="java" value="8605" />
           <entry key="sql" value="72" />
           <entry key="yml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="15" />
+          <entry key="java" value="19" />
           <entry key="sql" value="3" />
           <entry key="yml" value="1" />
         </counts>
@@ -96,7 +95,7 @@
       <usages-collector id="statistics.js.language.service.starts" />
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7516" />
+          <entry key="JAVA" value="8595" />
           <entry key="SQL" value="53" />
           <entry key="Scratch" value="29" />
           <entry key="YAML" value="18" />
@@ -107,27 +106,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/Item.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/jll/DbTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="43" selection-start-line="43" selection-end-line="43" />
+            <state relative-caret-position="465">
+              <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
               <folding>
-                <element signature="e#172#173#0" expanded="true" />
-                <element signature="e#209#210#0" expanded="true" />
-                <element signature="e#367#368#0" expanded="true" />
-                <element signature="e#427#428#0" expanded="true" />
-                <element signature="e#681#682#0" expanded="true" />
-                <element signature="e#714#715#0" expanded="true" />
-                <element signature="e#749#750#0" expanded="true" />
-                <element signature="e#785#786#0" expanded="true" />
-                <element signature="e#835#836#0" expanded="true" />
-                <element signature="e#875#876#0" expanded="true" />
-                <element signature="e#1189#1190#0" expanded="true" />
-                <element signature="e#1220#1221#0" expanded="true" />
-                <element signature="e#1253#1254#0" expanded="true" />
-                <element signature="e#1282#1283#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1061#1062#0" expanded="true" />
+                <element signature="e#1126#1127#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jll/ShopRepository.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="29" column="28" lean-forward="true" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -135,41 +132,34 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="57" selection-start-line="57" selection-end-line="57" />
+            <state>
+              <caret lean-forward="true" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#281#282#0" expanded="true" />
                 <element signature="e#338#339#0" expanded="true" />
-                <element signature="e#4662#4663#0" expanded="true" />
-                <element signature="e#4694#4695#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/Discount.java">
+        <entry file="file://$PROJECT_DIR$/src/com/jll/ConnectionInfo.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
-              <folding>
-                <element signature="e#500#501#0" expanded="true" />
-                <element signature="e#549#550#0" expanded="true" />
-                <element signature="e#508#509#0" expanded="true" />
-                <element signature="e#563#564#0" expanded="true" />
-              </folding>
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/DbTest.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jll/ConnectionManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
+            <state relative-caret-position="360">
+              <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#245#246#0" expanded="true" />
+                <element signature="e#297#298#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -179,7 +169,7 @@
         <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/c0fe5c00-1c0e-4ad3-ba18-f07d3afba7d3/console.sql">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="31" selection-start-column="31" selection-end-column="31" />
+              <caret column="31" lean-forward="true" selection-start-column="31" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -221,25 +211,6 @@
               <caret line="107" column="32" selection-start-line="107" selection-start-column="32" selection-end-line="109" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jll/Weight.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="10" column="5" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-              <folding>
-                <element signature="e#278#279#0" expanded="true" />
-                <element signature="e#314#315#0" expanded="true" />
-                <element signature="e#422#423#0" expanded="true" />
-                <element signature="e#450#451#0" expanded="true" />
-                <element signature="e#719#720#0" expanded="true" />
-                <element signature="e#753#754#0" expanded="true" />
-                <element signature="e#834#835#0" expanded="true" />
-                <element signature="e#861#862#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -287,7 +258,6 @@
         <option value="$PROJECT_DIR$/src/com/jll/Discount.java" />
         <option value="$PROJECT_DIR$/src/com/jll/Item.java" />
         <option value="$PROJECT_DIR$/src/com/jll/ShoppingAppTest.java" />
-        <option value="$PROJECT_DIR$/src/com/jll/Shop.java" />
         <option value="$PROJECT_DIR$/src/com/jll/WeightTest.java" />
         <option value="$PROJECT_DIR$/src/com/jll/ShippingCostCalculatorTest.java" />
         <option value="$PROJECT_DIR$/src/com/jll/Weight.java" />
@@ -295,6 +265,11 @@
         <option value="$PROJECT_DIR$/docker-compose.yml" />
         <option value="$PROJECT_DIR$/db/data/setup.sql" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/c0fe5c00-1c0e-4ad3-ba18-f07d3afba7d3/console.sql" />
+        <option value="$PROJECT_DIR$/src/com/jll/ConnectionFactory.java" />
+        <option value="$PROJECT_DIR$/src/com/jll/ConnectionInfo.java" />
+        <option value="$PROJECT_DIR$/src/com/jll/ShopRepository.java" />
+        <option value="$PROJECT_DIR$/src/com/jll/ConnectionManager.java" />
+        <option value="$PROJECT_DIR$/src/com/jll/Shop.java" />
         <option value="$PROJECT_DIR$/src/com/jll/DbTest.java" />
       </list>
     </option>
@@ -306,8 +281,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="x" value="-1920" />
+    <option name="width" value="1920" />
+    <option name="height" value="1200" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -560,11 +536,11 @@
     <property name="SearchEverywhereHistoryKey" value="library&#9;ACTION&#9;Editor.JSLibrariesMenu.LibraryList&#10;format&#9;ACTION&#9;ReformatCode&#10;replace&#9;ACTION&#9;Replace&#10;safe delete&#9;ACTION&#9;SafeDelete" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535864436831" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535982244533" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
-    <property name="database.console.LAST_STATE" value="true" />
+    <property name="database.console.LAST_STATE" value="false" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -702,12 +678,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="All_in_ShoppingCart - 2018.09.01 at 01h 49m 03s.xml">
-      <configuration name="All in ShoppingCart" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="DbTest_Test - 2018.09.02 at 00h 10m 59s.xml">
-      <configuration name="DbTest.Test" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="DbTest_Test - 2018.09.02 at 00h 12m 56s.xml">
       <configuration name="DbTest.Test" configurationId="JUnit" />
     </history-entry>
@@ -732,15 +702,21 @@
     <history-entry file="DbTest_Test - 2018.09.02 at 12h 57m 13s.xml">
       <configuration name="DbTest.Test" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.02 at 13h 00m 40s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="DbTest_Test - 2018.09.03 at 21h 35m 55s.xml">
+      <configuration name="DbTest.Test" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27974000" />
+    <option name="totallyTimeSpent" value="31587000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="-1920" y="0" width="1920" height="1200" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18240343" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.13578275" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -748,10 +724,10 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Learn" order="7" />
-      <window_info anchor="bottom" id="Database Console" weight="0.32891566" />
+      <window_info anchor="bottom" id="Database Console" weight="0.24159291" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31084338" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.3283186" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31061947" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -897,20 +873,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#281#282#0" expanded="true" />
-            <element signature="e#338#339#0" expanded="true" />
-            <element signature="e#4662#4663#0" expanded="true" />
-            <element signature="e#4694#4695#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/WeightTest.java" />
     <entry file="file://$PROJECT_DIR$/src/com/jll/Discount.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -966,13 +928,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/c0fe5c00-1c0e-4ad3-ba18-f07d3afba7d3/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="31" selection-start-column="31" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jll/ShippingCostCalculator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -990,12 +945,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jll/DbTest.java">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/c0fe5c00-1c0e-4ad3-ba18-f07d3afba7d3/console.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
+        <state>
+          <caret column="31" lean-forward="true" selection-start-column="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/ConnectionInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/ShopRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="29" column="28" lean-forward="true" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/ConnectionManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="26" column="20" selection-start-line="26" selection-start-column="20" selection-end-line="26" selection-end-column="20" />
+          <folding>
+            <element signature="e#245#246#0" expanded="true" />
+            <element signature="e#297#298#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/Shop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#281#282#0" expanded="true" />
+            <element signature="e#338#339#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jll/DbTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="34" selection-start-line="31" selection-start-column="34" selection-end-line="31" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1061#1062#0" expanded="true" />
+            <element signature="e#1126#1127#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,12 +1,10 @@
 package com.jll;
 
-import com.google.gson.Gson;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.postgresql.util.PGobject;
 
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 
 public class DbTest {
     private final String url = "jdbc:postgresql://localhost:5432/postgres";
@@ -14,7 +12,7 @@ public class DbTest {
     private final String password = "thepassword";
 
     @Test
-    public void Test() {
+    public void Test() throws SQLException {
         var items = List.of(
                 new Item("Banana", 12.00),
                 new Item("Tomato", 3.00),
@@ -30,43 +28,12 @@ public class DbTest {
 
         var shop = new Shop(items);
 
-        var sql =
-            "INSERT INTO shoppingcart.shop (" +
-                    "id" +
-                    ",content" +
-                    ",timestamp" +
-                    ") VALUES (" +
-                    "?" +
-                    ",?" +
-                    ",?" +
-                    ")";
-
-        var gson = new Gson();
-        try (var connection = connect();
-             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
-            var date = new java.util.Date();
-            var timestampNow = new Timestamp(date.getTime());
-            PGobject jsonShop = new PGobject();
-            jsonShop.setType("jsonb");
-            jsonShop.setValue(gson.toJson(shop));
-            preparedStatement.setObject(1, UUID.randomUUID());
-            preparedStatement.setObject(2, jsonShop);
-            preparedStatement.setObject(3, timestampNow);
-            preparedStatement.execute();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        var shopRepository = new ShopRepository(getConnectionManager());
+        shopRepository.save(shop);
     }
 
-    public Connection connect() {
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to the PostgreSQL server successfully.");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return conn;
+    public ConnectionManager getConnectionManager() {
+        return new ConnectionManager(url, user, password);
     }
 }
+

@@ -105,4 +105,3 @@ public class Shop
     public class NotEnoughItemsInShopException extends ShopException {
     }
 }
-
