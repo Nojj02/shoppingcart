@@ -539,7 +539,7 @@
     <property name="SearchEverywhereHistoryKey" value="library&#9;ACTION&#9;Editor.JSLibrariesMenu.LibraryList&#10;format&#9;ACTION&#9;ReformatCode&#10;replace&#9;ACTION&#9;Replace&#10;safe delete&#9;ACTION&#9;SafeDelete" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536157187305" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536157288682" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
