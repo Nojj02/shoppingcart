@@ -5,7 +5,7 @@ CREATE SCHEMA "shoppingcart"
     AUTHORIZATION postgres;
 
 -- ride table
-CREATE TABLE "shoppingcart"."shop"
+CREATE TABLE "shoppingcart"."item"
 (
     "db_id" bigserial NOT NULL,
     "id" uuid NOT NULL,
@@ -14,9 +14,9 @@ CREATE TABLE "shoppingcart"."shop"
     --"event" jsonb NOT NULL,
     "content" jsonb NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
-    CONSTRAINT "shop_pkey" PRIMARY KEY ("db_id")
+    CONSTRAINT "item_pkey" PRIMARY KEY ("db_id")
     --,CONSTRAINT "version_uq" UNIQUE ("id", "version")
 );
 
-ALTER TABLE "shoppingcart"."shop"
+ALTER TABLE "shoppingcart"."item"
     OWNER to postgres;

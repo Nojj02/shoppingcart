@@ -1,4 +1,4 @@
-package com.jll;
+package com.jll.utilities;
 
 public class ConnectionInfo {
     public String Url;
