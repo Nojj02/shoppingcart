@@ -1,4 +1,4 @@
-package hello;
+package com.jll.hello;
 
 public class Greeting {
     private final long id;
