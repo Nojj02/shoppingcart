@@ -5,11 +5,12 @@ import com.jll.models.Item;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
+import javax.swing.text.html.Option;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.UUID;
+import java.util.*;
 
 public class ItemRepository {
     private ConnectionManager connectionManager;
@@ -49,7 +50,28 @@ public class ItemRepository {
         }
     }
 
-    public Item get(UUID id) throws SQLException {
+    public Collection<Item> get(int count) throws SQLException {
+        var sql = "SELECT * FROM shoppingcart.item LIMIT " + count;
+
+        var gson = new Gson();
+        try (var connection = this.connectionManager.connect();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+
+            var result = preparedStatement.executeQuery();
+            var items = new ArrayList<Item>();
+            while (result.next()) {
+                var content = result.getString("content");
+
+                items.add(gson.fromJson(content, Item.class));
+            }
+
+            return items;
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
+    public Optional<Item> get(UUID id) throws SQLException {
         var sql = "SELECT * FROM shoppingcart.item WHERE id = ?";
 
         var gson = new Gson();
@@ -64,9 +86,9 @@ public class ItemRepository {
                 if (result.next()) {
                     throw new SQLException("Expected only 1 record. Returned more than 1.");
                 }
-                return gson.fromJson(content, Item.class);
+                return Optional.of(gson.fromJson(content, Item.class));
             } else {
-                return null;
+                return Optional.empty();
             }
 
         } catch (SQLException e) {
