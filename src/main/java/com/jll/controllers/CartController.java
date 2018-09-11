@@ -1,11 +1,7 @@
 package com.jll.controllers;
 
-import java.sql.SQLException;
-import java.util.UUID;
-
 import com.jll.dtos.ItemDto;
 import com.jll.dtos.PostItemDto;
-
 import com.jll.models.Item;
 import com.jll.models.ItemType;
 import com.jll.models.Weight;
@@ -15,9 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/items")
-public class ItemController {
+@RequestMapping("/carts")
+public class CartController {
 
     @GetMapping()
     public ResponseEntity get() {

@@ -1,12 +1,10 @@
-package com.jll.repository;
+package com.jll.repositories;
 
 import com.google.gson.Gson;
 import com.jll.models.Item;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
-import javax.swing.text.html.Option;
-import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;

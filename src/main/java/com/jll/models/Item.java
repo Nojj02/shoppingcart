@@ -1,6 +1,5 @@
 package com.jll.models;
 
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class Item
@@ -39,6 +38,10 @@ public class Item
 
     public String getItemCode() {
         return this.itemCode;
+    }
+
+    public Discount getDiscount() {
+        return this.discount;
     }
 
     public void setDiscount(Discount discount) {

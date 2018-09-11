@@ -1,4 +1,4 @@
-package com.jll.repository;
+package com.jll.repositories;
 
 import com.jll.models.Item;
 import com.jll.utilities.ConnectionManager;
