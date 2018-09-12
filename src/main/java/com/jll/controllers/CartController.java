@@ -74,21 +74,22 @@ public class CartController {
                             .collect(Collectors.toMap(
                                     cartItem -> cartItem,
                                     cartItem -> queriedItems.stream()
-                                            .filter(item -> item.getId() == cartItem.ItemId)
+                                            .filter(item -> item.getId().equals(cartItem.ItemId))
                                             .collect(MoreCollectors.toOptional())));
 
             var missingCartItems =
                     matchingItemsMap.entrySet().stream()
-                            .filter(pair -> pair.getValue().isPresent())
+                            .filter(pair -> !pair.getValue().isPresent())
                             .map(pair -> pair.getKey())
                             .collect(Collectors.toList());
 
             if (!missingCartItems.isEmpty()) {
-                var missingItemIds = missingCartItems.stream().map(cartItemDto -> cartItemDto.ItemId.toString()).collect(Collectors.joining(","));
+                var missingItemIds = missingCartItems.stream()
+                        .map(cartItemDto -> cartItemDto.ItemId.toString())
+                        .collect(Collectors.joining(","));
                 return ResponseEntity.badRequest()
                         .body("The following Items could not be found: " + missingItemIds);
             }
-
 
             var itemsForPurchase =
                     matchingItemsMap.entrySet().stream()
@@ -112,7 +113,7 @@ public class CartController {
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Could not save the Item");
+                    .body("Could not save the Cart");
         }
     }
 }
