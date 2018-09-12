@@ -3,6 +3,7 @@ package com.jll.models;
 import java.util.UUID;
 
 public class ItemForPurchase {
+    public static final ItemForPurchase Unknown = new ItemForPurchase(null, 0, Discount.None);
     private String itemTypeCode;
     private String itemCode;
     private final int quantity;
@@ -10,11 +11,6 @@ public class ItemForPurchase {
     private UUID itemId;
     private double price;
     private Weight weight;
-
-    public ItemForPurchase(String itemCode, int quantity) {
-        this.itemCode = itemCode;
-        this.quantity = quantity;
-    }
 
     public ItemForPurchase(Item item, int quantity, Discount discount) {
         this.itemId = item.getId();

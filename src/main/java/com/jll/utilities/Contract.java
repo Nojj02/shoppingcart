@@ -1,4 +1,4 @@
-package com.jll;
+package com.jll.utilities;
 
 public final class Contract {
     public void NotNull(Object obj) {

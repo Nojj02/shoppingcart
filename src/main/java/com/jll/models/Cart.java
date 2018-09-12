@@ -20,7 +20,7 @@ public class Cart {
     ) {
         this.id = id;
         this.cartItems = newCartItems(itemsForPurchase);
-        this.cost = computeCost(this.cartItems);
+        this.cost = computeCost(this.getCartItems());
     }
 
     public UUID getId() {
@@ -74,20 +74,24 @@ public class Cart {
         return Math.max(perItemDiscountAmount, couponDiscountAmount);
     }
 
-    public double computeHighestItemDiscountAmount(double itemPrice, Discount itemDiscount) {
+    private double computeHighestItemDiscountAmount(double itemPrice, Discount itemDiscount) {
         var percentageDiscount = itemDiscount.computeDiscount(itemPrice);
         var fixedAmountDiscount = itemDiscount.getFixedAmount();
         return Math.max(percentageDiscount, fixedAmountDiscount);
     }
 
     public void applyCoupon(Coupon coupon) {
-        for(var cartItem : this.cartItems) {
+        for(var cartItem : this.getCartItems()) {
             var newDiscount = computeTotalDiscountAmount(cartItem.getItemForPurchase(), Optional.of(coupon));
             var cost = cartItem.getCost();
             cartItem.updateCost(new Cost(cost.grossAmount, newDiscount, cost.shippingCost));
         }
-        this.cost = computeCost(this.cartItems);
+        this.cost = computeCost(this.getCartItems());
         this.coupon = coupon;
+    }
+
+    public Collection<CartItem> getCartItems() {
+        return cartItems;
     }
 }
 
