@@ -27,29 +27,29 @@ public class CartController {
 
     @GetMapping()
     public ResponseEntity get() {
-        var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+        var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
         try {
-            var itemDtos = itemRepository.get(20).stream()
-                    .map(item -> new ItemDto(item));
-            return ResponseEntity.ok(itemDtos);
+            var cartDtos = cartRepository.get(20).stream()
+                    .map(cart -> new CartDto(cart));
+            return ResponseEntity.ok(cartDtos);
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Could not retrieve Items");
+                    .body("Could not retrieve Carts");
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable UUID id) {
-        var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+        var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
         try {
-            return itemRepository.get(id)
-                    .map(item -> (ResponseEntity) ResponseEntity.ok(new ItemDto(item)))
-                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item " + id + " does not exist"));
+            return cartRepository.get(id)
+                    .map(cart -> (ResponseEntity) ResponseEntity.ok(new CartDto(cart)))
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart " + id + " does not exist"));
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Could not retrieve an Item");
+                    .body("Could not retrieve an Cart");
         }
     }
 
