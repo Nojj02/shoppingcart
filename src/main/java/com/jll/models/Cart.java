@@ -41,18 +41,18 @@ public class Cart {
         return newCartItems(itemsForPurchase, Optional.empty());
     }
 
-    private List<CartItem> newCartItems(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> couponOptional) {
+    private List<CartItem> newCartItems(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> optionalCoupon) {
         return itemsForPurchase.stream()
-                .map(itemForPurchase -> newCartItem(itemForPurchase, couponOptional))
+                .map(itemForPurchase -> newCartItem(itemForPurchase, optionalCoupon))
                 .collect(Collectors.toList());
     }
 
-    private CartItem newCartItem(ItemForPurchase itemForPurchase, Optional<Coupon> couponOptional)
+    private CartItem newCartItem(ItemForPurchase itemForPurchase, Optional<Coupon> optionalCoupon)
     {
         var totalGrossAmount = itemForPurchase.getPrice() * itemForPurchase.getQuantity();
         var shippingCost = new ShippingCostCalculator().compute(itemForPurchase.getWeight()) * itemForPurchase.getQuantity();
 
-        var discountAmount = computeTotalDiscountAmount(itemForPurchase, couponOptional);
+        var discountAmount = computeTotalDiscountAmount(itemForPurchase, optionalCoupon);
         var cost =  new Cost(totalGrossAmount, discountAmount, shippingCost);
 
         return new CartItem(itemForPurchase, cost);
@@ -60,12 +60,12 @@ public class Cart {
 
     private double computeTotalDiscountAmount(
             ItemForPurchase itemForPurchase,
-            Optional<Coupon> couponOptional) {
+            Optional<Coupon> optionalCoupon) {
         var totalGrossAmount = itemForPurchase.getPrice() * itemForPurchase.getQuantity();
         var perItemDiscountAmount = computeHighestItemDiscountAmount(itemForPurchase.getPrice(), itemForPurchase.getDiscount()) * itemForPurchase.getQuantity();
 
         var couponDiscount =
-                couponOptional
+                optionalCoupon
                         .filter(coupon -> coupon.appliesTo(itemForPurchase.getItemTypeCode()))
                         .map(coupon -> coupon.getDiscount())
                         .orElse(Discount.None);
