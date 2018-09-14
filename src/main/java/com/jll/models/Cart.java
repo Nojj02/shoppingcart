@@ -8,8 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class Cart {
-    private final UUID id;
+public class Cart extends AggregateRoot {
     private Cost cost;
     private Collection<CartItem> cartItems;
     private Coupon coupon;
@@ -18,17 +17,27 @@ public class Cart {
             UUID id,
             Collection<ItemForPurchase> itemsForPurchase
     ) {
-        this.id = id;
+        super(id);
         this.cartItems = newCartItems(itemsForPurchase);
         this.cost = computeCost(this.getCartItems());
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     public Cost getCost() {
         return cost;
+    }
+
+    public Collection<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void applyCoupon(Coupon coupon) {
+        for(var cartItem : this.getCartItems()) {
+            var newDiscount = computeTotalDiscountAmount(cartItem.getItemForPurchase(), Optional.of(coupon));
+            var cost = cartItem.getCost();
+            cartItem.updateCost(new Cost(cost.grossAmount, newDiscount, cost.shippingCost));
+        }
+        this.cost = computeCost(this.getCartItems());
+        this.coupon = coupon;
     }
 
     private Cost computeCost(Collection<CartItem> cartItems) {
@@ -78,20 +87,6 @@ public class Cart {
         var percentageDiscount = itemDiscount.computeDiscount(itemPrice);
         var fixedAmountDiscount = itemDiscount.getFixedAmount();
         return Math.max(percentageDiscount, fixedAmountDiscount);
-    }
-
-    public void applyCoupon(Coupon coupon) {
-        for(var cartItem : this.getCartItems()) {
-            var newDiscount = computeTotalDiscountAmount(cartItem.getItemForPurchase(), Optional.of(coupon));
-            var cost = cartItem.getCost();
-            cartItem.updateCost(new Cost(cost.grossAmount, newDiscount, cost.shippingCost));
-        }
-        this.cost = computeCost(this.getCartItems());
-        this.coupon = coupon;
-    }
-
-    public Collection<CartItem> getCartItems() {
-        return cartItems;
     }
 }
 

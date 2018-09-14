@@ -2,10 +2,9 @@ package com.jll.models;
 
 import java.util.UUID;
 
-public class Item
+public class Item extends AggregateRoot
 {
-    private UUID id;
-    private String itemCode;
+    private final String itemCode;
     private ItemType itemType;
     private double price;
     private Weight weight;
@@ -20,16 +19,12 @@ public class Item
     }
 
     public Item(UUID id, String itemCode, ItemType itemType, double price, Weight weight) {
-        this.id = id;
+        super(id);
         this.itemCode = itemCode;
         this.itemType = itemType;
         this.price = price;
         this.weight = weight;
         this.discount = Discount.None;
-    }
-
-    public UUID getId() {
-        return this.id;
     }
 
     public double getPrice() {
@@ -46,18 +41,6 @@ public class Item
 
     public void setDiscount(Discount discount) {
         this.discount = discount;
-    }
-
-    public double getDiscountAmount() {
-        var percentageDiscount = this.discount.computeDiscount(this.price);
-        var fixedAmountDiscount = this.discount.getFixedAmount();
-        return Math.max(percentageDiscount, fixedAmountDiscount);
-    }
-
-    public double getDiscountedPrice() {
-        var percentageDiscount = this.discount.applyPercentageDiscount(this.price);
-        var fixedAmountDiscount = this.price - this.discount.getFixedAmount();
-        return Math.min(percentageDiscount, fixedAmountDiscount);
     }
 
     public ItemType getItemType() {
