@@ -21,4 +21,16 @@ public class Cost {
     public double getTotalCost() {
         return grossAmount + shippingCost - discountAmount;
     }
+
+    public double getGrossAmount() {
+        return this.grossAmount;
+    }
+
+    public double getDiscountAmount() {
+        return this.discountAmount;
+    }
+
+    public double getShippingCost() {
+        return this.shippingCost;
+    }
 }
