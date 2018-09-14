@@ -1,10 +1,7 @@
 package com.jll.controllers;
 
 import com.google.common.collect.MoreCollectors;
-import com.jll.dtos.CartDto;
-import com.jll.dtos.ItemDto;
-import com.jll.dtos.PostCartDto;
-import com.jll.dtos.PostItemDto;
+import com.jll.dtos.*;
 import com.jll.models.*;
 import com.jll.repositories.CartRepository;
 import com.jll.repositories.ItemRepository;
@@ -114,6 +111,37 @@ public class CartController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Could not save the Cart");
+        }
+    }
+
+    @GetMapping("/{id}/addItem")
+    public ResponseEntity addItem(@PathVariable UUID id, AddItemDto addItemDto) {
+        var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
+        var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+        try {
+            var optionalCart = cartRepository.get(id);
+            if(!optionalCart.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart " + id + " does not exist");
+            }
+
+            var optionalItem = itemRepository.get(addItemDto.ItemId);
+
+            var itemForPurchase =
+                    new ItemForPurchase(
+                            optionalItem.get(),
+                            addItemDto.Quantity,
+                            Discount.None
+                    );
+
+            var cart = optionalCart.get();
+            cart.addItem(itemForPurchase);
+
+            cartRepository.save(cart);
+            return ResponseEntity.ok(cart);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Could not retrieve an Cart");
         }
     }
 }

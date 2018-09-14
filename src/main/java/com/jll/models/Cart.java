@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class Cart extends AggregateRoot {
     private Cost cost;
-    private Collection<CartItem> cartItems;
+    private List<CartItem> cartItems;
     private Coupon coupon;
 
     public Cart(
@@ -30,6 +30,8 @@ public class Cart extends AggregateRoot {
         return cartItems;
     }
 
+    public Optional<Coupon> getOptionalCoupon() { return Optional.ofNullable(this.coupon); }
+
     public void applyCoupon(Coupon coupon) {
         for(var cartItem : this.getCartItems()) {
             var newDiscount = computeTotalDiscountAmount(cartItem.getItemForPurchase(), Optional.of(coupon));
@@ -43,7 +45,7 @@ public class Cart extends AggregateRoot {
     private Cost computeCost(Collection<CartItem> cartItems) {
         return cartItems.stream()
                 .map(x -> x.getCost())
-                .reduce(new Cost(0, 0,0), (a, b) -> a.add(b));
+                .reduce(Cost.Zero, (a, b) -> a.add(b));
     }
 
     private List<CartItem> newCartItems(Collection<ItemForPurchase> itemsForPurchase) {
@@ -87,6 +89,11 @@ public class Cart extends AggregateRoot {
         var percentageDiscount = itemDiscount.computeDiscount(itemPrice);
         var fixedAmountDiscount = itemDiscount.getFixedAmount();
         return Math.max(percentageDiscount, fixedAmountDiscount);
+    }
+
+    public void addItem(ItemForPurchase itemForPurchase) {
+        cartItems.add(newCartItem(itemForPurchase, getOptionalCoupon()));
+        this.cost = computeCost(this.getCartItems());
     }
 }
 

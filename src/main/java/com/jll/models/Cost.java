@@ -5,6 +5,8 @@ public class Cost {
     public double discountAmount;
     public double shippingCost;
 
+    public static Cost Zero = new Cost(0, 0, 0);
+
     public Cost(double grossAmount, double discountAmount, double shippingCost) {
 
         this.grossAmount = grossAmount;

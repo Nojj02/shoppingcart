@@ -166,4 +166,23 @@ public class CartTests {
             Assertions.assertEquals(143.00, cost.getTotalCost());
         }
     }
+
+    public static class AddItemTests {
+        @Test
+        public void addItem() {
+            Item banana = new Item(UUID.randomUUID(), "Banana", 12.00);
+            Item potato = new Item(UUID.randomUUID(), "Potato", 18.00);
+
+            var itemsForPurchase = List.of(
+                    new ItemForPurchase(banana, 5)
+            );
+
+            var cart = new Cart(UUID.randomUUID(), itemsForPurchase);
+            cart.addItem(new ItemForPurchase(potato, 2));
+
+            var cost = cart.getCost();
+            Assertions.assertEquals(0, cost.discountAmount);
+            Assertions.assertEquals(96, cost.grossAmount);
+        }
+    }
 }
