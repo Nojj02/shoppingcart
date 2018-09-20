@@ -18,10 +18,14 @@ public abstract class Repository<T extends AggregateRoot> {
     private final Class<T> classOfT;
     private final String tableName;
 
-    public Repository(ConnectionManager connectionManager, Class<T> classOfT, String tableName) {
+    protected Repository(ConnectionManager connectionManager, Class<T> classOfT, String tableName) {
         this.connectionManager = connectionManager;
         this.classOfT = classOfT;
         this.tableName = tableName;
+    }
+
+    private Class<T> getClassOfT() {
+        return classOfT;
     }
 
     public void save(T item)
@@ -30,9 +34,11 @@ public abstract class Repository<T extends AggregateRoot> {
                 "INSERT INTO shoppingcart." + this.tableName + " (" +
                         "id" +
                         ",content" +
+                        ",type" +
                         ",timestamp" +
                         ") VALUES (" +
                         "?" +
+                        ",?" +
                         ",?" +
                         ",?" +
                         ")";
@@ -47,7 +53,8 @@ public abstract class Repository<T extends AggregateRoot> {
             jsonShop.setValue(gson.toJson(item));
             preparedStatement.setObject(1, item.getId());
             preparedStatement.setObject(2, jsonShop);
-            preparedStatement.setObject(3, timestampNow);
+            preparedStatement.setObject(3, item.getClass().getName());
+            preparedStatement.setObject(4, timestampNow);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw e;
@@ -66,7 +73,7 @@ public abstract class Repository<T extends AggregateRoot> {
             while (result.next()) {
                 var content = result.getString("content");
 
-                entities.add(gson.fromJson(content, this.classOfT));
+                entities.add(gson.fromJson(content, this.getClassOfT()));
             }
 
             return entities;
@@ -90,7 +97,7 @@ public abstract class Repository<T extends AggregateRoot> {
                 if (result.next()) {
                     throw new SQLException("Expected only 1 record. Returned more than 1.");
                 }
-                return Optional.of(gson.fromJson(content, this.classOfT));
+                return Optional.of(gson.fromJson(content, this.getClassOfT()));
             } else {
                 return Optional.empty();
             }
@@ -123,7 +130,7 @@ public abstract class Repository<T extends AggregateRoot> {
             while (result.next()) {
                 var content = result.getString("content");
 
-                entities.add(gson.fromJson(content, this.classOfT));
+                entities.add(gson.fromJson(content, this.getClassOfT()));
             }
 
             return entities;

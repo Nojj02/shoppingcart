@@ -92,7 +92,7 @@ public class CartTests {
 
             var cart = new Cart(UUID.randomUUID(), itemsForPurchase);
 
-            var coupon = new StoreWideCoupon(new Discount(50, 0));
+            var coupon = new StoreWideCoupon(UUID.randomUUID(), "ALL50", new Discount(50, 0));
 
             cart.applyCoupon(coupon);
 
@@ -118,7 +118,7 @@ public class CartTests {
 
             var cart = new Cart(UUID.randomUUID(), itemsForPurchase);
 
-            var coupon = new ItemTypeCoupon("Vegetable", new Discount(25, 0));
+            var coupon = new ItemTypeCoupon(UUID.randomUUID(), "VEG25", "Vegetable", new Discount(25, 0));
 
             cart.applyCoupon(coupon);
             var cost = cart.getCost();

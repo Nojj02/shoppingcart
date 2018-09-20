@@ -1,10 +1,19 @@
 package com.jll.models;
 
-public abstract class Coupon {
+import java.util.UUID;
+
+public abstract class Coupon extends AggregateRoot {
+    private String couponCode;
     private Discount discount;
 
-    protected Coupon(Discount discount) {
+    protected Coupon(UUID id, String couponCode, Discount discount) {
+        super(id);
+        this.couponCode = couponCode;
         this.discount = discount;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
     }
 
     public Discount getDiscount() {

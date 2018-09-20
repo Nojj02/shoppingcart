@@ -1,10 +1,12 @@
 package com.jll.models;
 
+import java.util.UUID;
+
 public class ItemTypeCoupon extends Coupon {
     private String itemTypeCode;
 
-    public ItemTypeCoupon(String itemTypeCode, Discount discount) {
-        super(discount);
+    public ItemTypeCoupon(UUID id, String code, String itemTypeCode, Discount discount) {
+        super(id, code, discount);
         this.itemTypeCode = itemTypeCode;
     }
 
