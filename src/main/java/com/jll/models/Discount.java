@@ -3,15 +3,15 @@ package com.jll.models;
 public final class Discount {
     public static final Discount None = new Discount(0, 0);
 
-    private int fixedAmount;
+    private double fixedAmount;
     private double percentage;
 
-    public Discount(double percentage, int fixedAmount) {
+    public Discount(double percentage, double fixedAmount) {
         this.percentage = percentage;
         this.fixedAmount = fixedAmount;
     }
 
-    public int getFixedAmount() {
+    public double getFixedAmount() {
         return fixedAmount;
     }
 
