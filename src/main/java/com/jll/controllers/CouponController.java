@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/coupon")
+@RequestMapping("/coupons")
 public class CouponController {
 
     @GetMapping()
