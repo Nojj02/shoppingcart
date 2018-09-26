@@ -1,8 +1,11 @@
 package com.jll.controllers;
 
 import com.jll.dtos.CouponDto;
+import com.jll.dtos.CouponType;
 import com.jll.dtos.PostCouponDto;
+import com.jll.models.Coupon;
 import com.jll.models.Discount;
+import com.jll.models.ItemTypeCoupon;
 import com.jll.models.StoreWideCoupon;
 import com.jll.repositories.CouponRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
@@ -47,11 +50,23 @@ public class CouponController {
 
     @PostMapping()
     public ResponseEntity save(@RequestBody PostCouponDto postCouponDto) {
-        var coupon = new StoreWideCoupon(
-                UUID.randomUUID(),
-                postCouponDto.CouponCode,
-                new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage)
-        );
+        Coupon coupon;
+        if (postCouponDto.CouponType == CouponType.StoreWide) {
+            coupon = new StoreWideCoupon(
+                    UUID.randomUUID(),
+                    postCouponDto.CouponCode,
+                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage)
+            );
+        } else if(postCouponDto.CouponType == CouponType.ItemType) {
+            coupon = new ItemTypeCoupon(
+                    UUID.randomUUID(),
+                    postCouponDto.CouponCode,
+                    postCouponDto.ItemTypeCode,
+                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage)
+            );
+        } else {
+            return ResponseEntity.badRequest().body("Unknown Coupon Type");
+        }
 
         var couponRepository = new CouponRepository(LocalConnectionManagerFactory.Get());
         try {
