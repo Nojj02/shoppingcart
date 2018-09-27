@@ -116,7 +116,7 @@ public class CartController {
     }
 
     @GetMapping("/{id}/addItem")
-    public ResponseEntity addItem(@PathVariable UUID id, AddItemDto addItemDto) {
+    public ResponseEntity addItem(@PathVariable UUID id, @RequestBody AddItemDto addItemDto) {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
         var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
         try {
@@ -138,7 +138,8 @@ public class CartController {
             cart.addItem(itemForPurchase);
 
             cartRepository.save(cart);
-            return ResponseEntity.ok(cart);
+            var cartDto = new CartDto(cart);
+            return ResponseEntity.ok(cartDto);
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -146,19 +147,19 @@ public class CartController {
         }
     }
 
-    @GetMapping("/{id}/applyCoupon")
-    public ResponseEntity applyCoupon(@PathVariable UUID id, ApplyCouponDto applyCouponDto) {
+    @PostMapping("/{id}/applyCoupon")
+    public ResponseEntity applyCoupon(@PathVariable UUID id, @RequestBody ApplyCouponDto applyCouponDto) {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
         var couponRepository = new CouponRepository(LocalConnectionManagerFactory.Get());
         try {
             var optionalCart = cartRepository.get(id);
             if(!optionalCart.isPresent()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart " + id + " does not exist");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cart " + id + " does not exist.");
             }
 
             var optionalCoupon = couponRepository.getByCouponCode(applyCouponDto.CouponCode);
             if(!optionalCoupon.isPresent()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coupon " + applyCouponDto.CouponCode + " does not exist");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Coupon " + applyCouponDto.CouponCode + " does not exist.");
             }
 
             var cart = optionalCart.get();
@@ -166,12 +167,13 @@ public class CartController {
 
             cart.applyCoupon(coupon);
 
-            cartRepository.save(cart);
-            return ResponseEntity.ok(cart);
+            cartRepository.update(cart);
+            var cartDto = new CartDto(cart);
+            return ResponseEntity.ok(cartDto);
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Could not retrieve an Cart");
+                    .body("An unknown error occurred. Could not complete request.");
         }
     }
 }

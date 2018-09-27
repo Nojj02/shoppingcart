@@ -15,7 +15,7 @@ public class CouponRepository extends Repository<Coupon> {
     }
 
     public Optional<Coupon> getByCouponCode(String couponCode) throws SQLException {
-        var sql = "SELECT * FROM shoppingcart." + getTableName() + " WHERE content::json#>{'couponCode'} = ?";
+        var sql = "SELECT * FROM shoppingcart." + getTableName() + " WHERE content::json#>>'{couponCode}' = ?";
 
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {

@@ -67,6 +67,25 @@ public abstract class Repository<T extends AggregateRoot> {
         }
     }
 
+    public void update(T item)
+            throws SQLException {
+        var sql =
+                "UPDATE shoppingcart." + getTableName() + " SET content = ? WHERE id = ?";
+
+        try (var connection = this.connectionManager.connect();
+             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+            var date = new java.util.Date();
+            PGobject jsonObject = new PGobject();
+            jsonObject.setType("jsonb");
+            jsonObject.setValue(gson.toJson(item));
+            preparedStatement.setObject(1, jsonObject);
+            preparedStatement.setObject(2, item.getId());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw e;
+        }
+    }
+
     public Collection<T> get(int count) throws SQLException {
         var sql = "SELECT * FROM shoppingcart." + getTableName() + " LIMIT " + count;
 
@@ -92,7 +111,6 @@ public abstract class Repository<T extends AggregateRoot> {
     public Optional<T> get(UUID id) throws SQLException {
         var sql = "SELECT * FROM shoppingcart." + getTableName() + " WHERE id = ?";
 
-        var gson = new Gson();
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             preparedStatement.setObject(1, id);

@@ -18,6 +18,7 @@ public class CouponDto {
             CouponType = CouponType.StoreWide;
         } else if (coupon instanceof ItemTypeCoupon) {
             var itemTypeCoupon = (ItemTypeCoupon)coupon;
+            CouponType = CouponType.ItemType;
             ItemTypeCode = itemTypeCoupon.getItemTypeCode();
         }
     }
