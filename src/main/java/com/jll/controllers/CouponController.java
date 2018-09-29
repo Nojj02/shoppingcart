@@ -1,12 +1,10 @@
 package com.jll.controllers;
 
 import com.jll.dtos.CouponDto;
-import com.jll.dtos.CouponType;
+import com.jll.models.CouponType;
 import com.jll.dtos.PostCouponDto;
 import com.jll.models.Coupon;
 import com.jll.models.Discount;
-import com.jll.models.ItemTypeCoupon;
-import com.jll.models.StoreWideCoupon;
 import com.jll.repositories.CouponRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;
@@ -52,17 +50,17 @@ public class CouponController {
     public ResponseEntity save(@RequestBody PostCouponDto postCouponDto) {
         Coupon coupon;
         if (postCouponDto.CouponType == CouponType.StoreWide) {
-            coupon = new StoreWideCoupon(
+            coupon = Coupon.StoreWide(
                     UUID.randomUUID(),
                     postCouponDto.CouponCode,
                     new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage)
             );
         } else if(postCouponDto.CouponType == CouponType.ItemType) {
-            coupon = new ItemTypeCoupon(
+            coupon = Coupon.ForItemType(
                     UUID.randomUUID(),
                     postCouponDto.CouponCode,
-                    postCouponDto.ItemTypeCode,
-                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage)
+                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage),
+                    postCouponDto.ItemTypeCode
             );
         } else {
             return ResponseEntity.badRequest().body("Unknown Coupon Type");
