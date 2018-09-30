@@ -10,6 +10,11 @@ public class Item extends AggregateRoot
     private Weight weight;
     private Discount discount;
 
+    private Item() {
+        super(new UUID(0, 0));
+        itemCode = null;
+    }
+
     public Item(UUID id, String itemCode, double price) {
         this(id, itemCode, ItemType.Unknown, price, Weight.ZERO);
     }

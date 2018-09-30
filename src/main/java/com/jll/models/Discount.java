@@ -6,6 +6,9 @@ public final class Discount {
     private double fixedAmount;
     private double percentage;
 
+    private Discount() {
+    }
+
     public Discount(double percentage, double fixedAmount) {
         this.percentage = percentage;
         this.fixedAmount = fixedAmount;

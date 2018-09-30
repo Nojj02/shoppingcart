@@ -13,6 +13,10 @@ public class Cart extends AggregateRoot {
     private List<CartItem> cartItems;
     private Coupon coupon;
 
+    private Cart() {
+        super(new UUID(0, 0));
+    }
+
     public Cart(
             UUID id,
             Collection<ItemForPurchase> itemsForPurchase

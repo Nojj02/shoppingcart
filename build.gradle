@@ -28,7 +28,6 @@ targetCompatibility = 1.10
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    implementation "com.google.code.gson:gson:2.8.5"
     implementation "org.postgresql:postgresql:42.2.5.jre7"
     implementation "com.google.guava:guava:26.0-jre"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"

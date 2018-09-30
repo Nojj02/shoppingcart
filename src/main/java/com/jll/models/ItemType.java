@@ -5,6 +5,9 @@ public class ItemType {
 
     private String itemTypeCode;
 
+    private ItemType() {
+    }
+
     public ItemType(String itemTypeCode) {
         this.itemTypeCode = itemTypeCode;
     }

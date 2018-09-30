@@ -1,6 +1,5 @@
 package com.jll.repositories;
 
-import com.google.gson.Gson;
 import com.jll.models.Cart;
 import com.jll.models.Item;
 import com.jll.utilities.ConnectionManager;

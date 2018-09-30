@@ -28,6 +28,10 @@ public class Coupon extends AggregateRoot {
         return coupon;
     }
 
+    private Coupon() {
+        super(new UUID(0, 0));
+    }
+
     protected Coupon(UUID id, String couponCode, Discount discount) {
         super(id);
         this.couponCode = couponCode;

@@ -1,10 +1,15 @@
 package com.jll.repositories;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jll.models.AggregateRoot;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,13 +23,15 @@ public abstract class Repository<T extends AggregateRoot> {
     private final Class<T> classOfT;
     protected ConnectionManager connectionManager;
     private final String tableName;
-    private Gson gson;
+    private ObjectMapper objectMapper;
 
     protected Repository(ConnectionManager connectionManager, Class<T> classOfT, String tableName) {
         this.connectionManager = connectionManager;
         this.classOfT = classOfT;
         this.tableName = tableName;
-        this.gson = new Gson();
+        this.objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     protected Class<T> getClassOfT() {
@@ -35,7 +42,7 @@ public abstract class Repository<T extends AggregateRoot> {
         return this.tableName;
     }
 
-    public void save(T item)
+    public void save(T entity)
             throws SQLException {
         var sql =
                 "INSERT INTO shoppingcart." + getTableName() + " (" +
@@ -54,35 +61,38 @@ public abstract class Repository<T extends AggregateRoot> {
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             var date = new java.util.Date();
             var timestampNow = new Timestamp(date.getTime());
-            PGobject jsonShop = new PGobject();
-            jsonShop.setType("jsonb");
-            jsonShop.setValue(gson.toJson(item));
-            preparedStatement.setObject(1, item.getId());
-            preparedStatement.setObject(2, jsonShop);
-            preparedStatement.setObject(3, item.getClass().getName());
+            PGobject jsonObject = new PGobject();
+            jsonObject.setType("jsonb");
+            jsonObject.setValue(objectMapper.writeValueAsString(entity));
+            preparedStatement.setObject(1, entity.getId());
+            preparedStatement.setObject(2, jsonObject);
+            preparedStatement.setObject(3, entity.getClass().getName());
             preparedStatement.setObject(4, timestampNow);
             preparedStatement.execute();
         } catch (SQLException e) {
             throw e;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert entity to JSON", e);
         }
     }
 
-    public void update(T item)
+    public void update(T entity)
             throws SQLException {
         var sql =
                 "UPDATE shoppingcart." + getTableName() + " SET content = ? WHERE id = ?";
 
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
-            var date = new java.util.Date();
             PGobject jsonObject = new PGobject();
             jsonObject.setType("jsonb");
-            jsonObject.setValue(gson.toJson(item));
+            jsonObject.setValue(objectMapper.writeValueAsString(entity));
             preparedStatement.setObject(1, jsonObject);
-            preparedStatement.setObject(2, item.getId());
+            preparedStatement.setObject(2, entity.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw e;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Failed to convert entity to JSON", e);
         }
     }
 
@@ -103,8 +113,6 @@ public abstract class Repository<T extends AggregateRoot> {
             return entities;
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException e) {
-            throw new UnknownEntityTypeException(e);
         }
     }
 
@@ -129,8 +137,6 @@ public abstract class Repository<T extends AggregateRoot> {
 
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException e) {
-            throw new UnknownEntityTypeException(e);
         }
     }
 
@@ -163,15 +169,16 @@ public abstract class Repository<T extends AggregateRoot> {
 
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException e) {
-            throw new UnknownEntityTypeException(e);
         }
     }
 
-    protected T getEntityFromResultSet(ResultSet result) throws SQLException, ClassNotFoundException {
+    protected T getEntityFromResultSet(ResultSet result) throws SQLException {
         var content = result.getString("content");
-        var type = result.getString("type");
-        return gson.fromJson(content, Class.forName(type).asSubclass(getClassOfT()));
+        try {
+            return objectMapper.readValue(content, getClassOfT());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to convert JSON back to " + getClassOfT().getName(), e);
+        }
     }
 }
 

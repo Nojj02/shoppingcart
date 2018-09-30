@@ -1,7 +1,5 @@
 package com.jll.repositories;
 
-import com.google.gson.Gson;
-import com.jll.models.Cart;
 import com.jll.models.Coupon;
 import com.jll.utilities.ConnectionManager;
 
@@ -35,8 +33,6 @@ public class CouponRepository extends Repository<Coupon> {
 
         } catch (SQLException e) {
             throw e;
-        } catch (ClassNotFoundException e) {
-            throw new UnknownEntityTypeException(e);
         }
     }
 }

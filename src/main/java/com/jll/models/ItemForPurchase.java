@@ -11,6 +11,10 @@ public class ItemForPurchase {
     private double price;
     private Weight weight;
 
+    private ItemForPurchase(){
+        quantity = 0;
+    }
+
     public ItemForPurchase(Item item, int quantity, Discount discount) {
         this.itemId = item.getId();
         this.itemCode = item.getItemCode();

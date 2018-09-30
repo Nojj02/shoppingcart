@@ -1,8 +1,13 @@
 package com.jll.models;
 
+import java.util.UUID;
+
 public class CartItem {
     private ItemForPurchase itemForPurchase;
     private Cost cost;
+
+    private CartItem() {
+    }
 
     public CartItem(
             ItemForPurchase itemForPurchase,
