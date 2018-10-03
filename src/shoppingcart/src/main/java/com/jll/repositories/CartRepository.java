@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 
-public class CartRepository extends Repository<Cart> {
+public class CartRepository extends EventingRepository<Cart> {
     public CartRepository(ConnectionManager connectionManager) {
         super(connectionManager, Cart.class, "cart");
     }

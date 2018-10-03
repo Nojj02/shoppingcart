@@ -4,10 +4,30 @@ import com.jll.models.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class CartTests {
+    public static class GetVersionTests {
+        @Test
+        public void Returns0_CreatedObject() {
+            var cart = new Cart(UUID.randomUUID(), new ArrayList<>());
+
+            Assertions.assertEquals(0, cart.getVersion());
+        }
+
+        @Test
+        public void Returns1_AnEventHappened() {
+            Item banana = new Item(UUID.randomUUID(), "Banana", 12.00);
+
+            var cart = new Cart(UUID.randomUUID(), new ArrayList<>());
+            cart.addItem(new ItemForPurchase(banana, 1, Discount.None));
+
+            Assertions.assertEquals(1, cart.getVersion());
+        }
+    }
+
     public static class ComputeTests {
         @Test
         void computesTotalCost() {

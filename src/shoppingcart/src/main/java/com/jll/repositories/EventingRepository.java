@@ -6,6 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jll.models.AggregateRoot;
+import com.jll.models.Cart;
+import com.jll.models.CartEvent;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
@@ -19,13 +21,13 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class Repository<T extends AggregateRoot> {
+public abstract class EventingRepository<T extends Cart> {
     private final Class<T> classOfT;
     protected ConnectionManager connectionManager;
     private final String tableName;
     private ObjectMapper objectMapper;
 
-    protected Repository(ConnectionManager connectionManager, Class<T> classOfT, String tableName) {
+    protected EventingRepository(ConnectionManager connectionManager, Class<T> classOfT, String tableName) {
         this.connectionManager = connectionManager;
         this.classOfT = classOfT;
         this.tableName = tableName;
@@ -44,38 +46,44 @@ public abstract class Repository<T extends AggregateRoot> {
 
     public void save(T entity)
             throws SQLException {
-        var sql =
-                "INSERT INTO shoppingcart." + getTableName() + " (" +
-                        "id" +
-                        ",content" +
-                        ",type" +
-                        ",timestamp" +
-                        ") VALUES (" +
-                        "?" +
-                        ",?" +
-                        ",?" +
-                        ",?" +
-                        ")";
-
+        var sql = "";
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
-            var date = new java.util.Date();
-            var timestampNow = new Timestamp(date.getTime());
-            PGobject jsonObject = new PGobject();
-            jsonObject.setType("jsonb");
-            jsonObject.setValue(objectMapper.writeValueAsString(entity));
-            preparedStatement.setObject(1, entity.getId());
-            preparedStatement.setObject(2, jsonObject);
-            preparedStatement.setObject(3, entity.getClass().getName());
-            preparedStatement.setObject(4, timestampNow);
-            preparedStatement.execute();
+            for (var anEvent : entity.getEvents()) {
+                sql +=
+                        "INSERT INTO shoppingcart." + getTableName() + " (" +
+                                "id" +
+                                ",version" +
+                                ",event_type" +
+                                ",event" +
+                                ",timestamp" +
+                                ") VALUES (" +
+                                "?" +
+                                ",?" +
+                                ",?" +
+                                ",?" +
+                                ",?" +
+                                "); ";
+
+                var date = new java.util.Date();
+                var timestampNow = new Timestamp(date.getTime());
+                PGobject jsonObject = new PGobject();
+                jsonObject.setType("jsonb");
+                jsonObject.setValue(objectMapper.writeValueAsString(entity));
+                preparedStatement.setObject(1, entity.getId());
+                preparedStatement.setObject(2, anEvent.version);
+                preparedStatement.setObject(3, anEvent.getClass().getName());
+                preparedStatement.setObject(4, jsonObject);
+                preparedStatement.setObject(5, timestampNow);
+                preparedStatement.execute();
+            }
         } catch (SQLException e) {
             throw e;
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert entity to JSON", e);
         }
     }
-
+/*
     public void update(T entity)
             throws SQLException {
         var sql =
@@ -115,31 +123,34 @@ public abstract class Repository<T extends AggregateRoot> {
             throw e;
         }
     }
-
-    public Optional<T> get(UUID id) throws SQLException {
+*/
+    public Optional<Cart> get(UUID id) throws SQLException {
         var sql = "SELECT * FROM shoppingcart." + getTableName() + " WHERE id = ?";
 
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
             preparedStatement.setObject(1, id);
 
+            var events = new ArrayList<CartEvent>();
             var result = preparedStatement.executeQuery();
-            if (result.next()) {
-                T entity = getEntityFromResultSet(result);
+            while (result.next()) {
+                CartEvent anEvent = getEntityFromResultSet(result);
 
-                if (result.next()) {
-                    throw new SQLException("Expected only 1 record. Returned more than 1.");
-                }
-                return Optional.of(entity);
-            } else {
+                events.add(anEvent);
+            }
+
+            if (events.isEmpty()) {
                 return Optional.empty();
+            } else
+            {
+                return Optional.of(Cart.reconstitute(events));
             }
 
         } catch (SQLException e) {
             throw e;
         }
     }
-
+    /*
     public Collection<T> get(Collection<UUID> ids) throws SQLException {
         if (ids.isEmpty()) return new ArrayList<>();
         var idsList = new ArrayList<>(ids);
@@ -157,12 +168,19 @@ public abstract class Repository<T extends AggregateRoot> {
                 preparedStatement.setObject(index, idsList.get(index - 1));
             }
 
+            var events = new ArrayList<CartEvent>();
             var result = preparedStatement.executeQuery();
             var entities = new ArrayList<T>();
             while (result.next()) {
-                T entity = getEntityFromResultSet(result);
+                CartEvent anEvent = getEntityFromResultSet(result);
 
-                entities.add(entity);
+                events.add(anEvent);
+            }
+
+            if (events.isEmpty()) {
+                return Optional.empty();
+            } else {
+                return Optional.of(Cart.reconstitute(events));
             }
 
             return entities;
@@ -170,16 +188,17 @@ public abstract class Repository<T extends AggregateRoot> {
         } catch (SQLException e) {
             throw e;
         }
-    }
+    }*/
 
-    protected T getEntityFromResultSet(ResultSet result) throws SQLException {
-        var content = result.getString("content");
+    protected CartEvent getEntityFromResultSet(ResultSet result) throws SQLException {
+        var content = result.getString("event");
+        var eventType = result.getString("event_type");
         try {
-            return objectMapper.readValue(content, getClassOfT());
+            return (CartEvent)objectMapper.readValue(content, Class.forName(eventType));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to convert JSON back to " + getClassOfT().getName(), e);
+            throw new RuntimeException("Failed to convert JSON back to " + eventType, e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Failed to convert JSON back to " + eventType, e);
         }
     }
 }
-
-

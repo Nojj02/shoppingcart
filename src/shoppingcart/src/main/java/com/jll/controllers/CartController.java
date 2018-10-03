@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/carts")
 public class CartController {
 
-    @GetMapping()
+  /*  @GetMapping()
     public ResponseEntity get() {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
         try {
@@ -35,7 +35,7 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Could not retrieve Carts");
         }
-    }
+    }*/
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable UUID id) {
@@ -146,7 +146,7 @@ public class CartController {
                     .body("Could not retrieve an Cart");
         }
     }
-
+/*
     @PostMapping("/{id}/applyCoupon")
     public ResponseEntity applyCoupon(@PathVariable UUID id, @RequestBody ApplyCouponDto applyCouponDto) {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
@@ -175,5 +175,5 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An unknown error occurred. Could not complete request.");
         }
-    }
+    }*/
 }
