@@ -1,9 +1,9 @@
 package com.jll.models;
 
 public class Cost {
-    public double grossAmount;
-    public double discountAmount;
-    public double shippingCost;
+    private double grossAmount;
+    private double discountAmount;
+    private double shippingCost;
 
     public static Cost Zero = new Cost(0, 0, 0);
 

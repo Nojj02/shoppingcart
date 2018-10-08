@@ -23,7 +23,7 @@ public final class Discount {
     }
 
     public double computeDiscount(double value) {
-        return value * (percentage / 100);
+        return Math.max(value * (percentage / 100), fixedAmount);
     }
 
     public double applyPercentageDiscount(double value) {

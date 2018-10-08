@@ -144,7 +144,7 @@ public class Cart extends AggregateRoot {
         for(var cartItem : this.getCartItems()) {
             var newDiscount = computeTotalDiscountAmount(cartItem.getItemForPurchase(), Optional.of(e.coupon));
             var cost = cartItem.getCost();
-            cartItem.updateCost(new Cost(cost.grossAmount, newDiscount, cost.shippingCost));
+            cartItem.updateCost(new Cost(cost.getGrossAmount(), newDiscount, cost.getShippingCost()));
         }
         this.cost = computeCost(this.getCartItems());
         this.coupon = e.coupon;

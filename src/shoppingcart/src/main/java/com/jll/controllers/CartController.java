@@ -146,7 +146,7 @@ public class CartController {
                     .body("Could not retrieve an Cart");
         }
     }
-/*
+
     @PostMapping("/{id}/applyCoupon")
     public ResponseEntity applyCoupon(@PathVariable UUID id, @RequestBody ApplyCouponDto applyCouponDto) {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
@@ -175,5 +175,5 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An unknown error occurred. Could not complete request.");
         }
-    }*/
+    }
 }

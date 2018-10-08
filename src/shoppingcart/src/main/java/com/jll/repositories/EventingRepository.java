@@ -84,27 +84,48 @@ public abstract class EventingRepository<T extends Cart> {
             throw new RuntimeException("Failed to convert entity to JSON", e);
         }
     }
-/*
+
     public void update(T entity)
             throws SQLException {
-        var sql =
-                "UPDATE shoppingcart." + getTableName() + " SET content = ? WHERE id = ?";
-
+        var sql = "INSERT INTO shoppingcart." + getTableName() + " (" +
+                "id" +
+                ",version" +
+                ",event_type" +
+                ",event" +
+                ",timestamp" +
+                ") VALUES (" +
+                "?" +
+                ",?" +
+                ",?" +
+                ",?" +
+                ",?" +
+                "); ";
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
-            PGobject jsonObject = new PGobject();
-            jsonObject.setType("jsonb");
-            jsonObject.setValue(objectMapper.writeValueAsString(entity));
-            preparedStatement.setObject(1, jsonObject);
-            preparedStatement.setObject(2, entity.getId());
-            preparedStatement.execute();
+            connection.setAutoCommit(false);
+
+            for (var anEvent : entity.getNewCartEvents()) {
+                var date = new java.util.Date();
+                var timestampNow = new Timestamp(date.getTime());
+                PGobject jsonObject = new PGobject();
+                jsonObject.setType("jsonb");
+                jsonObject.setValue(objectMapper.writeValueAsString(anEvent));
+                preparedStatement.setObject(1, entity.getId());
+                preparedStatement.setObject(2, anEvent.version);
+                preparedStatement.setObject(3, anEvent.getClass().getName());
+                preparedStatement.setObject(4, jsonObject);
+                preparedStatement.setObject(5, timestampNow);
+                preparedStatement.execute();
+            }
+
+            connection.commit();
         } catch (SQLException e) {
             throw e;
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert entity to JSON", e);
         }
     }
-*/
+
 
     // Needs a read model
     public Collection<Cart> get(int count) throws SQLException {

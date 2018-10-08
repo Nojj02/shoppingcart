@@ -53,13 +53,13 @@ public class CouponController {
             coupon = Coupon.StoreWide(
                     UUID.randomUUID(),
                     postCouponDto.CouponCode,
-                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage)
+                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.FixedAmount)
             );
         } else if(postCouponDto.CouponType == CouponType.ItemType) {
             coupon = Coupon.ForItemType(
                     UUID.randomUUID(),
                     postCouponDto.CouponCode,
-                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.Percentage),
+                    new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.FixedAmount),
                     postCouponDto.ItemTypeCode
             );
         } else {

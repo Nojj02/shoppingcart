@@ -13,6 +13,5 @@ public class CouponDto {
         Discount = new DiscountDto(coupon.getDiscount());
         CouponType = coupon.getCouponType();
         ItemTypeCode = coupon.getItemTypeCode();
-
     }
 }
