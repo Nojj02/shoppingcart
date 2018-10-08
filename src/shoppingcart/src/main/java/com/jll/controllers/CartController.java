@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/carts")
 public class CartController {
 
-  /*  @GetMapping()
+    @GetMapping()
     public ResponseEntity get() {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
         try {
@@ -35,7 +35,7 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Could not retrieve Carts");
         }
-    }*/
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable UUID id) {

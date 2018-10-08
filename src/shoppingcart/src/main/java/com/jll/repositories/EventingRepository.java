@@ -11,15 +11,15 @@ import com.jll.models.CartEvent;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
+import javax.xml.stream.util.EventReaderDelegate;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public abstract class EventingRepository<T extends Cart> {
     private final Class<T> classOfT;
@@ -104,27 +104,57 @@ public abstract class EventingRepository<T extends Cart> {
             throw new RuntimeException("Failed to convert entity to JSON", e);
         }
     }
+*/
 
-    public Collection<T> get(int count) throws SQLException {
-        var sql = "SELECT * FROM shoppingcart." + getTableName() + " LIMIT " + count;
+    // Needs a read model
+    public Collection<Cart> get(int count) throws SQLException {
+        var sql = "SELECT * FROM shoppingcart." + getTableName();
 
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
 
             var result = preparedStatement.executeQuery();
-            var entities = new ArrayList<T>();
-            while (result.next()) {
-                T entity = getEntityFromResultSet(result);
+            var eventRecords = new ArrayList<EventRecord>();
 
+            while (result.next()) {
+                var eventRecord = new EventRecord(result);
+                eventRecords.add(eventRecord);
+            }
+
+            var entities = new ArrayList<Cart>();
+            Map<UUID, List<EventRecord>> entityByIdGroups =
+                    eventRecords.stream()
+                        .collect(groupingBy(eventRecord -> eventRecord.id));
+            for (var entityByIdGroup : entityByIdGroups.entrySet()) {
+                var events = new ArrayList<CartEvent>();
+                for(var eventRecord : entityByIdGroup.getValue()) {
+                    CartEvent anEvent = getEntityFromResultSet(eventRecord);
+                    events.add(anEvent);
+                }
+
+                var entity = Cart.reconstitute(entityByIdGroup.getKey(), events);
                 entities.add(entity);
             }
+
 
             return entities;
         } catch (SQLException e) {
             throw e;
         }
     }
-*/
+
+    private class EventRecord {
+        public UUID id;
+        public String event;
+        public String eventType;
+
+        public EventRecord(ResultSet result) throws SQLException {
+            this.id = result.getObject("id", UUID.class);
+            this.event = result.getString("event");
+            this.eventType = result.getString("event_type");
+        }
+    }
+
     public Optional<Cart> get(UUID id) throws SQLException {
         var sql = "SELECT * FROM shoppingcart." + getTableName() + " WHERE id = ?";
 
@@ -135,7 +165,8 @@ public abstract class EventingRepository<T extends Cart> {
             var events = new ArrayList<CartEvent>();
             var result = preparedStatement.executeQuery();
             while (result.next()) {
-                CartEvent anEvent = getEntityFromResultSet(result);
+                var eventRecord = new EventRecord(result);
+                CartEvent anEvent = getEntityFromResultSet(eventRecord);
 
                 events.add(anEvent);
             }
@@ -190,15 +221,13 @@ public abstract class EventingRepository<T extends Cart> {
         }
     }*/
 
-    protected CartEvent getEntityFromResultSet(ResultSet result) throws SQLException {
-        var content = result.getString("event");
-        var eventType = result.getString("event_type");
+    protected CartEvent getEntityFromResultSet(EventRecord eventRecord) {
         try {
-            return (CartEvent)objectMapper.readValue(content, Class.forName(eventType));
+            return (CartEvent)objectMapper.readValue(eventRecord.event, Class.forName(eventRecord.eventType));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to convert JSON back to " + eventType, e);
+            throw new RuntimeException("Failed to convert JSON back to " + eventRecord.eventType, e);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Failed to convert JSON back to " + eventType, e);
+            throw new RuntimeException("Failed to convert JSON back to " + eventRecord.eventType, e);
         }
     }
 }
