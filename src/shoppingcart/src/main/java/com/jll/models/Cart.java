@@ -10,8 +10,12 @@ public class Cart extends AggregateRoot {
     private List<CartItem> cartItems;
     private Coupon coupon;
 
-    private Cart() {
-        super(new UUID(0, 0));
+    public static Cart reconstitute(UUID id, Collection<CartEvent> cartEvents) {
+        var cart = new Cart(id);
+        for (var e : cartEvents) {
+            _eventRouter.get(e.getClass()).apply(cart, e);
+        }
+        return cart;
     }
 
     private Cart(UUID id) {
@@ -112,14 +116,6 @@ public class Cart extends AggregateRoot {
                 .map(x -> x.version)
                 .max(Comparator.comparing(Integer::valueOf))
                 .orElse(-1);
-    }
-
-    public static Cart reconstitute(Collection<CartEvent> cartEvents) {
-        var cart = new Cart();
-        for (var e : cartEvents) {
-            _eventRouter.get(e.getClass()).apply(cart, e);
-        }
-        return cart;
     }
 
     public List<CartEvent> getEvents() {

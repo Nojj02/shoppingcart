@@ -46,30 +46,29 @@ public abstract class EventingRepository<T extends Cart> {
 
     public void save(T entity)
             throws SQLException {
-        var sql = "";
+        var sql = "INSERT INTO shoppingcart." + getTableName() + " (" +
+                        "id" +
+                        ",version" +
+                        ",event_type" +
+                        ",event" +
+                        ",timestamp" +
+                        ") VALUES (" +
+                        "?" +
+                        ",?" +
+                        ",?" +
+                        ",?" +
+                        ",?" +
+                        "); ";
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
-            for (var anEvent : entity.getEvents()) {
-                sql +=
-                        "INSERT INTO shoppingcart." + getTableName() + " (" +
-                                "id" +
-                                ",version" +
-                                ",event_type" +
-                                ",event" +
-                                ",timestamp" +
-                                ") VALUES (" +
-                                "?" +
-                                ",?" +
-                                ",?" +
-                                ",?" +
-                                ",?" +
-                                "); ";
+            connection.setAutoCommit(false);
 
+            for (var anEvent : entity.getEvents()) {
                 var date = new java.util.Date();
                 var timestampNow = new Timestamp(date.getTime());
                 PGobject jsonObject = new PGobject();
                 jsonObject.setType("jsonb");
-                jsonObject.setValue(objectMapper.writeValueAsString(entity));
+                jsonObject.setValue(objectMapper.writeValueAsString(anEvent));
                 preparedStatement.setObject(1, entity.getId());
                 preparedStatement.setObject(2, anEvent.version);
                 preparedStatement.setObject(3, anEvent.getClass().getName());
@@ -77,6 +76,8 @@ public abstract class EventingRepository<T extends Cart> {
                 preparedStatement.setObject(5, timestampNow);
                 preparedStatement.execute();
             }
+
+            connection.commit();
         } catch (SQLException e) {
             throw e;
         } catch (JsonProcessingException e) {
@@ -141,9 +142,8 @@ public abstract class EventingRepository<T extends Cart> {
 
             if (events.isEmpty()) {
                 return Optional.empty();
-            } else
-            {
-                return Optional.of(Cart.reconstitute(events));
+            } else {
+                return Optional.of(Cart.reconstitute(id, events));
             }
 
         } catch (SQLException e) {

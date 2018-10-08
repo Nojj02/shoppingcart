@@ -1,7 +1,8 @@
 package com.jll.models;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public class CartCreatedEvent extends CartEvent {
-    Collection<ItemForPurchase> itemsForPurchase;
+    public Collection<ItemForPurchase> itemsForPurchase;
 }
