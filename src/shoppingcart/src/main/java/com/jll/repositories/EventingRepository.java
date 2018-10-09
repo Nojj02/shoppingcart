@@ -5,16 +5,13 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jll.models.AggregateRoot;
 import com.jll.models.Cart;
 import com.jll.models.CartEvent;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
-import javax.xml.stream.util.EventReaderDelegate;
 import java.io.IOException;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -22,22 +19,16 @@ import java.util.*;
 import static java.util.stream.Collectors.groupingBy;
 
 public abstract class EventingRepository<T extends Cart> {
-    private final Class<T> classOfT;
     protected ConnectionManager connectionManager;
     private final String tableName;
     private ObjectMapper objectMapper;
 
-    protected EventingRepository(ConnectionManager connectionManager, Class<T> classOfT, String tableName) {
+    protected EventingRepository(ConnectionManager connectionManager, String tableName) {
         this.connectionManager = connectionManager;
-        this.classOfT = classOfT;
         this.tableName = tableName;
         this.objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
-
-    protected Class<T> getClassOfT() {
-        return classOfT;
     }
 
     protected String getTableName() {
@@ -138,14 +129,14 @@ public abstract class EventingRepository<T extends Cart> {
             var eventRecords = new ArrayList<EventRecord>();
 
             while (result.next()) {
-                var eventRecord = new EventRecord(result);
+                var eventRecord = EventRecord.fromResultSet(result);
                 eventRecords.add(eventRecord);
             }
 
             var entities = new ArrayList<Cart>();
             Map<UUID, List<EventRecord>> entityByIdGroups =
                     eventRecords.stream()
-                        .collect(groupingBy(eventRecord -> eventRecord.id));
+                        .collect(groupingBy(eventRecord -> eventRecord.getId()));
             for (var entityByIdGroup : entityByIdGroups.entrySet()) {
                 var events = new ArrayList<CartEvent>();
                 for(var eventRecord : entityByIdGroup.getValue()) {
@@ -164,18 +155,6 @@ public abstract class EventingRepository<T extends Cart> {
         }
     }
 
-    private class EventRecord {
-        public UUID id;
-        public String event;
-        public String eventType;
-
-        public EventRecord(ResultSet result) throws SQLException {
-            this.id = result.getObject("id", UUID.class);
-            this.event = result.getString("event");
-            this.eventType = result.getString("event_type");
-        }
-    }
-
     public Optional<Cart> get(UUID id) throws SQLException {
         var sql = "SELECT * FROM shoppingcart." + getTableName() + " WHERE id = ?";
 
@@ -186,7 +165,7 @@ public abstract class EventingRepository<T extends Cart> {
             var events = new ArrayList<CartEvent>();
             var result = preparedStatement.executeQuery();
             while (result.next()) {
-                var eventRecord = new EventRecord(result);
+                var eventRecord = EventRecord.fromResultSet(result);
                 CartEvent anEvent = getEntityFromResultSet(eventRecord);
 
                 events.add(anEvent);
@@ -202,53 +181,15 @@ public abstract class EventingRepository<T extends Cart> {
             throw e;
         }
     }
-    /*
-    public Collection<T> get(Collection<UUID> ids) throws SQLException {
-        if (ids.isEmpty()) return new ArrayList<>();
-        var idsList = new ArrayList<>(ids);
-
-        var sql = "SELECT * FROM shoppingcart." + getTableName() + " WHERE id IN (";
-        for (var ignored : ids) {
-            sql += "?,";
-        }
-        sql = sql.substring(0, sql.length() - 1);
-        sql += ")";
-
-        try (var connection = this.connectionManager.connect();
-             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
-            for (int index = 1; index <= ids.size(); index++) {
-                preparedStatement.setObject(index, idsList.get(index - 1));
-            }
-
-            var events = new ArrayList<CartEvent>();
-            var result = preparedStatement.executeQuery();
-            var entities = new ArrayList<T>();
-            while (result.next()) {
-                CartEvent anEvent = getEntityFromResultSet(result);
-
-                events.add(anEvent);
-            }
-
-            if (events.isEmpty()) {
-                return Optional.empty();
-            } else {
-                return Optional.of(Cart.reconstitute(events));
-            }
-
-            return entities;
-
-        } catch (SQLException e) {
-            throw e;
-        }
-    }*/
 
     protected CartEvent getEntityFromResultSet(EventRecord eventRecord) {
         try {
-            return (CartEvent)objectMapper.readValue(eventRecord.event, Class.forName(eventRecord.eventType));
+            return (CartEvent)objectMapper.readValue(eventRecord.getEvent(), Class.forName(eventRecord.getEventType()));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to convert JSON back to " + eventRecord.eventType, e);
+            throw new RuntimeException("Failed to convert JSON back to " + eventRecord.getEventType(), e);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Failed to convert JSON back to " + eventRecord.eventType, e);
+            throw new RuntimeException("Failed to convert JSON back to " + eventRecord.getEventType(), e);
         }
     }
 }
+

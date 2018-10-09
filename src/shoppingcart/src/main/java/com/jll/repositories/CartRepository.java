@@ -13,6 +13,6 @@ import java.util.*;
 
 public class CartRepository extends EventingRepository<Cart> {
     public CartRepository(ConnectionManager connectionManager) {
-        super(connectionManager, Cart.class, "cart");
+        super(connectionManager, "cart");
     }
 }
