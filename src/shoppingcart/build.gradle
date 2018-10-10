@@ -27,6 +27,7 @@ targetCompatibility = 1.10
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-hateoas")
     testCompile('org.springframework.boot:spring-boot-starter-test')
     implementation "org.postgresql:postgresql:42.2.5.jre7"
     implementation "com.google.guava:guava:26.0-jre"
