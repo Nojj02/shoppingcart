@@ -1,4 +1,4 @@
-package com.jll.models;
+package com.jll.dtos;
 
 import org.springframework.hateoas.Link;
 

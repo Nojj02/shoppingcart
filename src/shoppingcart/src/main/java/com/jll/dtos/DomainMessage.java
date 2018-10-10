@@ -1,4 +1,4 @@
-package com.jll.models;
+package com.jll.dtos;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

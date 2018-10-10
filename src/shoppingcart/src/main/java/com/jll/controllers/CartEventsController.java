@@ -3,8 +3,8 @@ package com.jll.controllers;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 
-import com.jll.models.DomainEventToDtoMapper;
-import com.jll.models.TransportMessage;
+import com.jll.dtos.DomainEventToDtoMapper;
+import com.jll.dtos.TransportMessage;
 import com.jll.repositories.EventRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;
