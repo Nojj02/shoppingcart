@@ -32,11 +32,17 @@ public class EventRepository {
     }
 
     // Needs a read model
-    public Collection<EventRecord> get(int count) throws SQLException {
-        var sql = "SELECT * FROM shoppingcart." + getTableName() + " LIMIT " + count;
+    public Collection<EventRecord> get(long startEventNumber, long endEventNumber) throws SQLException {
+        var sql = "SELECT * FROM shoppingcart." + getTableName()
+                + " ORDER BY db_id"
+                + " OFFSET ? LIMIT ?";
 
         try (var connection = this.connectionManager.connect();
              PreparedStatement preparedStatement = connection.prepareCall(sql)) {
+
+            int i = 1;
+            preparedStatement.setLong(i++, startEventNumber);
+            preparedStatement.setLong(i++, endEventNumber);
 
             var result = preparedStatement.executeQuery();
             var eventRecords = new ArrayList<EventRecord>();

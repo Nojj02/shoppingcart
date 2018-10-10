@@ -26,12 +26,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/events/carts")
 public class CartEventsController {
-
-    @GetMapping()
-    public ResponseEntity get() {
+    @GetMapping("/{startEventNumber}-{endEventNumber}")
+    public ResponseEntity get(@PathVariable long startEventNumber,@PathVariable long endEventNumber) {
         var eventRepository = new EventRepository(LocalConnectionManagerFactory.Get(), "cart");
         try {
-            var eventDtos = eventRepository.get(20).stream()
+            var eventDtos = eventRepository.get(startEventNumber, endEventNumber).stream()
                     .map(eventRecord -> {
                         try {
                             return new EventDto(eventRecord);
