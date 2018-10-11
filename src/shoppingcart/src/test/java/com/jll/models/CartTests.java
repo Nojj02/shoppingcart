@@ -42,8 +42,8 @@ public class CartTests {
             var cart = new Cart(UUID.randomUUID(), itemsForPurchase);
 
             var cost = cart.getCost();
-            Assertions.assertEquals(0, cost.discountAmount);
-            Assertions.assertEquals(96, cost.grossAmount);
+            Assertions.assertEquals(0, cost.getDiscountAmount());
+            Assertions.assertEquals(96, cost.getGrossAmount());
         }
 
         @Test
@@ -60,8 +60,8 @@ public class CartTests {
 
             var cost = cart.getCost();
 
-            Assertions.assertEquals(30, cost.discountAmount);
-            Assertions.assertEquals(96, cost.grossAmount);
+            Assertions.assertEquals(30, cost.getDiscountAmount());
+            Assertions.assertEquals(96, cost.getGrossAmount());
         }
 
         @Test
@@ -78,8 +78,8 @@ public class CartTests {
 
             var cost = cart.getCost();
 
-            Assertions.assertEquals(15, cost.discountAmount);
-            Assertions.assertEquals(96, cost.grossAmount);
+            Assertions.assertEquals(15, cost.getDiscountAmount());
+            Assertions.assertEquals(96, cost.getGrossAmount());
         }
 
         @Test
@@ -96,8 +96,8 @@ public class CartTests {
 
             var cost = cart.getCost();
 
-            Assertions.assertEquals(25, cost.discountAmount);
-            Assertions.assertEquals(96, cost.grossAmount);
+            Assertions.assertEquals(25, cost.getDiscountAmount());
+            Assertions.assertEquals(96, cost.getGrossAmount());
         }
 
         @Test
@@ -122,8 +122,8 @@ public class CartTests {
 
             var cost = cart.getCost();
 
-            Assertions.assertEquals(48, cost.discountAmount);
-            Assertions.assertEquals(96, cost.grossAmount);
+            Assertions.assertEquals(48, cost.getDiscountAmount());
+            Assertions.assertEquals(96, cost.getGrossAmount());
         }
 
         @Test
@@ -151,8 +151,8 @@ public class CartTests {
             cart.applyCoupon(coupon);
             var cost = cart.getCost();
 
-            Assertions.assertEquals(19, cost.discountAmount);
-            Assertions.assertEquals(136, cost.grossAmount);
+            Assertions.assertEquals(19, cost.getDiscountAmount());
+            Assertions.assertEquals(136, cost.getGrossAmount());
         }
 
         @Test
@@ -170,7 +170,7 @@ public class CartTests {
             var cart = new Cart(UUID.randomUUID(), itemsForPurchase);
             var cost = cart.getCost();
 
-            Assertions.assertEquals(24.50, cost.shippingCost);
+            Assertions.assertEquals(24.50, cost.getShippingCost());
             Assertions.assertEquals(120.50, cost.getTotalCost());
         }
 
@@ -189,8 +189,8 @@ public class CartTests {
             var cart = new Cart(UUID.randomUUID(), itemsForPurchase);
             var cost = cart.getCost();
 
-            Assertions.assertEquals(96.00, cost.grossAmount);
-            Assertions.assertEquals(47.00, cost.shippingCost);
+            Assertions.assertEquals(96.00, cost.getGrossAmount());
+            Assertions.assertEquals(47.00, cost.getShippingCost());
             Assertions.assertEquals(143.00, cost.getTotalCost());
         }
     }
@@ -209,8 +209,8 @@ public class CartTests {
             cart.addItem(new ItemForPurchase(potato, 2));
 
             var cost = cart.getCost();
-            Assertions.assertEquals(0, cost.discountAmount);
-            Assertions.assertEquals(96, cost.grossAmount);
+            Assertions.assertEquals(0, cost.getDiscountAmount());
+            Assertions.assertEquals(96, cost.getGrossAmount());
         }
     }
 }

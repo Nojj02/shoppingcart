@@ -1,7 +1,8 @@
 package com.jll.controllers;
 
+import com.jll.dtos.DomainMessage;
+import com.jll.utilities.web.TransportMessageLinkBuilder;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 
 import com.jll.dtos.DomainEventToDtoMapper;
 import com.jll.dtos.TransportMessage;
@@ -12,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 
 @RestController
 @RequestMapping("/events/carts")
@@ -22,16 +25,14 @@ public class CartEventsController {
         var eventRepository = new EventRepository(LocalConnectionManagerFactory.Get(), "cart");
         try {
             var eventRecords = eventRepository.get(startEventNumber, endEventNumber);
-            var domainMessages = DomainEventToDtoMapper.map(eventRecords);
+            Collection<DomainMessage> domainMessages = DomainEventToDtoMapper.map(new ArrayList(eventRecords), startEventNumber);
 
-            var links =
-                    Arrays.asList(
-                            ControllerLinkBuilder
-                                    .linkTo(
-                                            ControllerLinkBuilder.methodOn(CartEventsController.class)
-                                                    .get(startEventNumber, endEventNumber))
-                                    .withSelfRel()
-                    );
+            var latestRetrievedEventNumberInRange =
+                    domainMessages.stream()
+                        .map(x -> x.eventNumber)
+                        .max(Comparator.comparingLong(x -> x))
+                        .orElse(startEventNumber);
+            var links = TransportMessageLinkBuilder.Build(startEventNumber, endEventNumber, latestRetrievedEventNumberInRange);
 
             var transportMessage = new TransportMessage();
             transportMessage.messages = domainMessages;

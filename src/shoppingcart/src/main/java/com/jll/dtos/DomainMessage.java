@@ -16,5 +16,6 @@ public class DomainMessage {
     public String eventType;
     public long version;
     public Timestamp timestamp;
+    public long eventNumber;
 }
 
