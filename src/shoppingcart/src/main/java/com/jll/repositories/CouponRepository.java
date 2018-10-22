@@ -1,13 +1,14 @@
 package com.jll.repositories;
 
 import com.jll.models.Coupon;
+import com.jll.models.CouponIdentity;
 import com.jll.utilities.ConnectionManager;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class CouponRepository extends Repository<Coupon> {
+public class CouponRepository extends Repository<Coupon, CouponIdentity> {
     public CouponRepository(ConnectionManager connectionManager) {
         super(connectionManager, Coupon.class, "coupon");
     }

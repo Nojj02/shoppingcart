@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jll.models.Cart;
-import com.jll.models.CartEvent;
 import com.jll.utilities.ConnectionManager;
 
 import java.sql.PreparedStatement;

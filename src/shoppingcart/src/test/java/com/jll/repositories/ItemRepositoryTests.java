@@ -1,6 +1,7 @@
 package com.jll.repositories;
 
 import com.jll.models.Item;
+import com.jll.models.ItemIdentity;
 import com.jll.utilities.ConnectionManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,8 @@ public class ItemRepositoryTests {
     @Test
     public void saveAndGet() throws SQLException {
         var items = List.of(
-                new Item(UUID.randomUUID(), "Banana", 12.00),
-                new Item(UUID.randomUUID(), "Tomato", 3.00)
+                new Item(new ItemIdentity(UUID.randomUUID()), "Banana", 12.00),
+                new Item(new ItemIdentity(UUID.randomUUID()), "Tomato", 3.00)
         );
 
         var itemRepository = new ItemRepository(getConnectionManager());
@@ -27,7 +28,7 @@ public class ItemRepositoryTests {
         }
 
         for(var item : items) {
-            var retrievedItem = itemRepository.get(item.getId());
+            var retrievedItem = itemRepository.get(item.getId2());
             Assertions.assertNotNull(retrievedItem);
         }
     }

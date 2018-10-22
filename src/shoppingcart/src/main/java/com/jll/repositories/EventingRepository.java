@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jll.models.Cart;
-import com.jll.models.CartEvent;
+import com.jll.models.cartModel.Cart;
+import com.jll.models.cartModel.CartIdentity;
+import com.jll.models.cartModel.events.CartEvent;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
@@ -15,8 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
-
-import static java.util.stream.Collectors.groupingBy;
 
 public abstract class EventingRepository<T extends Cart> {
     protected ConnectionManager connectionManager;
@@ -60,7 +59,7 @@ public abstract class EventingRepository<T extends Cart> {
                 PGobject jsonObject = new PGobject();
                 jsonObject.setType("jsonb");
                 jsonObject.setValue(objectMapper.writeValueAsString(anEvent));
-                preparedStatement.setObject(1, entity.getId());
+                preparedStatement.setObject(1, entity.getId2());
                 preparedStatement.setObject(2, anEvent.version);
                 preparedStatement.setObject(3, anEvent.getClass().getName());
                 preparedStatement.setObject(4, jsonObject);
@@ -101,7 +100,7 @@ public abstract class EventingRepository<T extends Cart> {
                 PGobject jsonObject = new PGobject();
                 jsonObject.setType("jsonb");
                 jsonObject.setValue(objectMapper.writeValueAsString(anEvent));
-                preparedStatement.setObject(1, entity.getId());
+                preparedStatement.setObject(1, entity.getId2());
                 preparedStatement.setObject(2, anEvent.version);
                 preparedStatement.setObject(3, anEvent.getClass().getName());
                 preparedStatement.setObject(4, jsonObject);
@@ -114,44 +113,6 @@ public abstract class EventingRepository<T extends Cart> {
             throw e;
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to convert entity to JSON", e);
-        }
-    }
-
-
-    // Needs a read model
-    public Collection<Cart> get(int count) throws SQLException {
-        var sql = "SELECT * FROM shoppingcart." + getTableName();
-
-        try (var connection = this.connectionManager.connect();
-             PreparedStatement preparedStatement = connection.prepareCall(sql)) {
-
-            var result = preparedStatement.executeQuery();
-            var eventRecords = new ArrayList<EventRecord>();
-
-            while (result.next()) {
-                var eventRecord = EventRecord.fromResultSet(result);
-                eventRecords.add(eventRecord);
-            }
-
-            var entities = new ArrayList<Cart>();
-            Map<UUID, List<EventRecord>> entityByIdGroups =
-                    eventRecords.stream()
-                        .collect(groupingBy(eventRecord -> eventRecord.getId()));
-            for (var entityByIdGroup : entityByIdGroups.entrySet()) {
-                var events = new ArrayList<CartEvent>();
-                for(var eventRecord : entityByIdGroup.getValue()) {
-                    CartEvent anEvent = getEntityFromResultSet(eventRecord);
-                    events.add(anEvent);
-                }
-
-                var entity = Cart.reconstitute(entityByIdGroup.getKey(), events);
-                entities.add(entity);
-            }
-
-
-            return entities;
-        } catch (SQLException e) {
-            throw e;
         }
     }
 
@@ -174,7 +135,7 @@ public abstract class EventingRepository<T extends Cart> {
             if (events.isEmpty()) {
                 return Optional.empty();
             } else {
-                return Optional.of(Cart.reconstitute(id, events));
+                return Optional.of(Cart.reconstitute(new CartIdentity(id), events));
             }
 
         } catch (SQLException e) {

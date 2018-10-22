@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jll.models.AggregateRoot;
+import com.jll.models.Identity;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
@@ -19,7 +20,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class Repository<T extends AggregateRoot> {
+public abstract class Repository<T extends AggregateRoot<TId>, TId extends Identity> {
     private final Class<T> classOfT;
     protected ConnectionManager connectionManager;
     private final String tableName;
@@ -64,7 +65,7 @@ public abstract class Repository<T extends AggregateRoot> {
             PGobject jsonObject = new PGobject();
             jsonObject.setType("jsonb");
             jsonObject.setValue(objectMapper.writeValueAsString(entity));
-            preparedStatement.setObject(1, entity.getId());
+            preparedStatement.setObject(1, entity.getId2());
             preparedStatement.setObject(2, jsonObject);
             preparedStatement.setObject(3, entity.getClass().getName());
             preparedStatement.setObject(4, timestampNow);
@@ -87,7 +88,7 @@ public abstract class Repository<T extends AggregateRoot> {
             jsonObject.setType("jsonb");
             jsonObject.setValue(objectMapper.writeValueAsString(entity));
             preparedStatement.setObject(1, jsonObject);
-            preparedStatement.setObject(2, entity.getId());
+            preparedStatement.setObject(2, entity.getId2());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw e;
@@ -181,5 +182,3 @@ public abstract class Repository<T extends AggregateRoot> {
         }
     }
 }
-
-

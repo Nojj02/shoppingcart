@@ -1,16 +1,19 @@
-package com.jll.models;
+package com.jll.models.cartModel;
 
-import com.jll.services.ShippingCostCalculator;
+import com.jll.models.*;
+import com.jll.models.cartModel.events.CartCreatedEvent;
+import com.jll.models.cartModel.events.CartEvent;
+import com.jll.models.cartModel.events.CouponAppliedToCartEvent;
+import com.jll.models.cartModel.events.ItemAddedToCartEvent;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Cart extends AggregateRoot {
-    private Cost cost;
+public class Cart extends AggregateRoot<CartIdentity> {
+    //private Cost cost;
     private List<CartItem> cartItems;
-    private Coupon coupon;
 
-    public static Cart reconstitute(UUID id, Collection<CartEvent> cartEvents) {
+    public static Cart reconstitute(CartIdentity id, Collection<CartEvent> cartEvents) {
         var cart = new Cart(id);
         for (var e : cartEvents) {
             _eventRouter.get(e.getClass()).apply(cart, e);
@@ -18,12 +21,12 @@ public class Cart extends AggregateRoot {
         return cart;
     }
 
-    private Cart(UUID id) {
+    private Cart(CartIdentity id) {
         super(id);
     }
 
     public Cart(
-            UUID id,
+            CartIdentity id,
             Collection<ItemForPurchase> itemsForPurchase
     ) {
         super(id);
@@ -33,21 +36,21 @@ public class Cart extends AggregateRoot {
         apply(e, true);
     }
 
-    public Cost getCost() {
+    /*public Cost getCost() {
         return cost;
-    }
+    }*/
 
     public Collection<CartItem> getCartItems() {
         return cartItems;
     }
 
-    public Optional<Coupon> getOptionalCoupon() { return Optional.ofNullable(this.coupon); }
+    /*public Optional<Coupon> getOptionalCoupon() { return Optional.ofNullable(this.coupon); }*/
 
     public void applyCoupon(Coupon coupon) {
         var e = new CouponAppliedToCartEvent();
         e.version = getVersion() + 1;
         e.coupon = coupon;
-        apply(e, true);
+        //apply(e, true);
     }
 
     public void addItem(ItemForPurchase itemForPurchase) {
@@ -57,11 +60,11 @@ public class Cart extends AggregateRoot {
         apply(e, true);
     }
 
-    private Cost computeCost(Collection<CartItem> cartItems) {
+    /*private Cost computeCost(Collection<CartItem> cartItems) {
         return cartItems.stream()
                 .map(x -> x.getCost())
                 .reduce(Cost.Zero, (a, b) -> a.add(b));
-    }
+    }*/
 
     private List<CartItem> newCartItems(Collection<ItemForPurchase> itemsForPurchase) {
         return newCartItems(itemsForPurchase, Optional.empty());
@@ -69,22 +72,22 @@ public class Cart extends AggregateRoot {
 
     private List<CartItem> newCartItems(Collection<ItemForPurchase> itemsForPurchase, Optional<Coupon> optionalCoupon) {
         return itemsForPurchase.stream()
-                .map(itemForPurchase -> newCartItem(itemForPurchase, optionalCoupon))
+                .map(itemForPurchase -> newCartItem(itemForPurchase))
                 .collect(Collectors.toList());
     }
 
-    private CartItem newCartItem(ItemForPurchase itemForPurchase, Optional<Coupon> optionalCoupon)
+    private CartItem newCartItem(ItemForPurchase itemForPurchase)
     {
-        var totalGrossAmount = itemForPurchase.getPrice() * itemForPurchase.getQuantity();
+        /*var totalGrossAmount = itemForPurchase.getPrice() * itemForPurchase.getQuantity();
         var shippingCost = new ShippingCostCalculator().compute(itemForPurchase.getWeight()) * itemForPurchase.getQuantity();
 
         var discountAmount = computeTotalDiscountAmount(itemForPurchase, optionalCoupon);
-        var cost =  new Cost(totalGrossAmount, discountAmount, shippingCost);
+        var cost =  new Cost(totalGrossAmount, discountAmount, shippingCost);*/
 
-        return new CartItem(itemForPurchase, cost);
+        return new CartItem(itemForPurchase);
     }
 
-    private double computeTotalDiscountAmount(
+    /*private double computeTotalDiscountAmount(
             ItemForPurchase itemForPurchase,
             Optional<Coupon> optionalCoupon) {
         var totalGrossAmount = itemForPurchase.getPrice() * itemForPurchase.getQuantity();
@@ -98,7 +101,7 @@ public class Cart extends AggregateRoot {
 
         var couponDiscountAmount = couponDiscount.computeDiscount(totalGrossAmount);
         return Math.max(perItemDiscountAmount, couponDiscountAmount);
-    }
+    }*/
 
     private double computeHighestItemDiscountAmount(double itemPrice, Discount itemDiscount) {
         var percentageDiscount = itemDiscount.computeDiscount(itemPrice);
@@ -135,12 +138,12 @@ public class Cart extends AggregateRoot {
 
     private void apply(CartCreatedEvent e, boolean isNew) {
         this.cartItems = newCartItems(e.itemsForPurchase);
-        this.cost = computeCost(this.getCartItems());
+        //this.cost = computeCost(this.getCartItems());
 
         addEvent(e, isNew);
     }
 
-    private void apply(CouponAppliedToCartEvent e, boolean isNew) {
+    /*private void apply(CouponAppliedToCartEvent e, boolean isNew) {
         for(var cartItem : this.getCartItems()) {
             var newDiscount = computeTotalDiscountAmount(cartItem.getItemForPurchase(), Optional.of(e.coupon));
             var cost = cartItem.getCost();
@@ -150,11 +153,11 @@ public class Cart extends AggregateRoot {
         this.coupon = e.coupon;
 
         addEvent(e, isNew);
-    }
+    }*/
 
     private void apply(ItemAddedToCartEvent e, boolean isNew) {
-        cartItems.add(newCartItem(e.itemForPurchase, getOptionalCoupon()));
-        this.cost = computeCost(this.getCartItems());
+        cartItems.add(newCartItem(e.itemForPurchase));
+        //this.cost = computeCost(this.getCartItems());
         addEvent(e, isNew);
     }
 
@@ -162,7 +165,7 @@ public class Cart extends AggregateRoot {
         var eventRouter = new HashMap<Class, CartEventOperator>();
 
         eventRouter.put(CartCreatedEvent.class, (Cart c, CartEvent e) -> c.apply((CartCreatedEvent)e, false));
-        eventRouter.put(CouponAppliedToCartEvent.class, (Cart c, CartEvent e) -> c.apply((CouponAppliedToCartEvent)e, false));
+        //eventRouter.put(CouponAppliedToCartEvent.class, (Cart c, CartEvent e) -> c.apply((CouponAppliedToCartEvent)e, false));
         eventRouter.put(ItemAddedToCartEvent.class, (Cart c, CartEvent e) -> c.apply((ItemAddedToCartEvent)e, false));
         return eventRouter;
     }

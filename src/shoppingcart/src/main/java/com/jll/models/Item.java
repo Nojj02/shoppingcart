@@ -1,8 +1,6 @@
 package com.jll.models;
 
-import java.util.UUID;
-
-public class Item extends AggregateRoot
+public class Item extends AggregateRoot<ItemIdentity>
 {
     private final String itemCode;
     private ItemType itemType;
@@ -11,19 +9,19 @@ public class Item extends AggregateRoot
     private Discount discount;
 
     private Item() {
-        super(new UUID(0, 0));
+        super(ItemIdentity.Unknown);
         itemCode = null;
     }
 
-    public Item(UUID id, String itemCode, double price) {
+    public Item(ItemIdentity id, String itemCode, double price) {
         this(id, itemCode, ItemType.Unknown, price, Weight.ZERO);
     }
 
-    public Item(UUID id, String itemCode, ItemType itemType, double price) {
+    public Item(ItemIdentity id, String itemCode, ItemType itemType, double price) {
         this(id, itemCode, itemType, price, Weight.ZERO);
     }
 
-    public Item(UUID id, String itemCode, ItemType itemType, double price, Weight weight) {
+    public Item(ItemIdentity id, String itemCode, ItemType itemType, double price, Weight weight) {
         super(id);
         this.itemCode = itemCode;
         this.itemType = itemType;

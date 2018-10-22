@@ -2,14 +2,18 @@ package com.jll.models;
 
 import java.util.UUID;
 
-public class AggregateRoot {
-    private final UUID id;
+public class AggregateRoot<T extends Identity> {
+    private T id;
 
-    public AggregateRoot(UUID id) {
+    public AggregateRoot(T id) {
         this.id = id;
     }
 
-    public UUID getId() {
+    public UUID getId2() {
+        return null;
+    }
+
+    public T getId() {
         return this.id;
     }
 }

@@ -1,6 +1,7 @@
 package com.jll.controllers;
 
 import com.jll.dtos.CouponDto;
+import com.jll.models.CouponIdentity;
 import com.jll.models.CouponType;
 import com.jll.dtos.PostCouponDto;
 import com.jll.models.Coupon;
@@ -50,14 +51,14 @@ public class CouponController {
     public ResponseEntity save(@RequestBody PostCouponDto postCouponDto) {
         Coupon coupon;
         if (postCouponDto.CouponType == CouponType.StoreWide) {
-            coupon = Coupon.StoreWide(
-                    UUID.randomUUID(),
+            coupon = Coupon.storeWide(
+                    new CouponIdentity(UUID.randomUUID()),
                     postCouponDto.CouponCode,
                     new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.FixedAmount)
             );
         } else if(postCouponDto.CouponType == CouponType.ItemType) {
-            coupon = Coupon.ForItemType(
-                    UUID.randomUUID(),
+            coupon = Coupon.forItemType(
+                    new CouponIdentity(UUID.randomUUID()),
                     postCouponDto.CouponCode,
                     new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.FixedAmount),
                     postCouponDto.ItemTypeCode

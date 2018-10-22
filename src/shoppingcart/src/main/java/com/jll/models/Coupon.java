@@ -2,14 +2,14 @@ package com.jll.models;
 
 import java.util.UUID;
 
-public class Coupon extends AggregateRoot {
+public class Coupon extends AggregateRoot<CouponIdentity> {
     private String couponCode;
     private Discount discount;
     private CouponType couponType;
     private String itemTypeCode;
 
-    public static Coupon StoreWide(
-            UUID id,
+    public static Coupon storeWide(
+            CouponIdentity id,
             String couponCode,
             Discount discount) {
         var coupon = new Coupon(id, couponCode, discount);
@@ -17,8 +17,8 @@ public class Coupon extends AggregateRoot {
         return coupon;
     }
 
-    public static Coupon ForItemType(
-            UUID id,
+    public static Coupon forItemType(
+            CouponIdentity id,
             String couponCode,
             Discount discount,
             String itemTypeCode) {
@@ -29,10 +29,10 @@ public class Coupon extends AggregateRoot {
     }
 
     private Coupon() {
-        super(new UUID(0, 0));
+        super(CouponIdentity.Unknown);
     }
 
-    protected Coupon(UUID id, String couponCode, Discount discount) {
+    protected Coupon(CouponIdentity id, String couponCode, Discount discount) {
         super(id);
         this.couponCode = couponCode;
         this.discount = discount;
@@ -61,6 +61,5 @@ public class Coupon extends AggregateRoot {
         return false;
     }
 }
-
 
 

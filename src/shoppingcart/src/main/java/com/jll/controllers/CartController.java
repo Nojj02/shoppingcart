@@ -2,40 +2,24 @@ package com.jll.controllers;
 
 import com.google.common.collect.MoreCollectors;
 import com.jll.dtos.*;
-import com.jll.models.*;
+import com.jll.models.cartModel.Cart;
+import com.jll.models.cartModel.CartIdentity;
+import com.jll.models.cartModel.ItemForPurchase;
 import com.jll.repositories.CartRepository;
 import com.jll.repositories.CouponRepository;
 import com.jll.repositories.ItemRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.cert.CollectionCertStoreParameters;
 import java.sql.SQLException;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/carts")
 public class CartController {
-
-    @GetMapping()
-    public ResponseEntity get() {
-        var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
-        try {
-            var cartDtos = cartRepository.get(20).stream()
-                    .map(cart -> new CartDto(cart));
-            return ResponseEntity.ok(cartDtos);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Could not retrieve Carts");
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable UUID id) {
@@ -55,12 +39,12 @@ public class CartController {
     public ResponseEntity save(@RequestBody PostCartDto postCartDto) {
         if (postCartDto.CartItems == null || postCartDto.CartItems.isEmpty()) {
             return ResponseEntity.badRequest()
-                    .body("There should be at least one Item in your cart");
+                    .body("There should be at least one ItemIdentity in your cart");
         }
 
         var itemIds =
                 postCartDto.CartItems.stream()
-                        .map(cartItemDto -> cartItemDto.ItemId)
+                        .map(cartItemDto -> cartItemDto.itemId)
                         .collect(Collectors.toList());
 
         try {
@@ -72,7 +56,7 @@ public class CartController {
                             .collect(Collectors.toMap(
                                     cartItem -> cartItem,
                                     cartItem -> queriedItems.stream()
-                                            .filter(item -> item.getId().equals(cartItem.ItemId))
+                                            .filter(item -> item.getId().matches(cartItem.itemId))
                                             .collect(MoreCollectors.toOptional())));
 
             var missingCartItems =
@@ -83,7 +67,7 @@ public class CartController {
 
             if (!missingCartItems.isEmpty()) {
                 var missingItemIds = missingCartItems.stream()
-                        .map(cartItemDto -> cartItemDto.ItemId.toString())
+                        .map(cartItemDto -> cartItemDto.itemId.toString())
                         .collect(Collectors.joining(","));
                 return ResponseEntity.badRequest()
                         .body("The following Items could not be found: " + missingItemIds);
@@ -92,14 +76,14 @@ public class CartController {
             var itemsForPurchase =
                     matchingItemsMap.entrySet().stream()
                             .filter(pair -> pair.getValue().isPresent())
-                            .map(pair -> new ItemForPurchase(
-                                    pair.getValue().get(),
-                                    pair.getKey().Quantity
+                            .map(pair -> ItemForPurchase.createItemForPurchase(
+                                    pair.getValue().get().getId(),
+                                    pair.getKey().quantity
                             ))
                             .collect(Collectors.toList());
 
             var cart = new Cart(
-                    UUID.randomUUID(),
+                    new CartIdentity(UUID.randomUUID()),
                     itemsForPurchase
             );
 
@@ -128,10 +112,9 @@ public class CartController {
             var optionalItem = itemRepository.get(addItemDto.ItemId);
 
             var itemForPurchase =
-                    new ItemForPurchase(
-                            optionalItem.get(),
-                            addItemDto.Quantity,
-                            Discount.None
+                    ItemForPurchase.createItemForPurchase(
+                            optionalItem.get().getId(),
+                            addItemDto.Quantity
                     );
 
             var cart = optionalCart.get();

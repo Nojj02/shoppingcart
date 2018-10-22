@@ -1,7 +1,8 @@
-package com.jll.models;
+package com.jll.models.cartModel.events;
+
+import com.jll.models.cartModel.ItemForPurchase;
 
 import java.util.Collection;
-import java.util.UUID;
 
 public class CartCreatedEvent extends CartEvent {
     public Collection<ItemForPurchase> itemsForPurchase;

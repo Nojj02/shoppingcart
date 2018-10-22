@@ -9,6 +9,7 @@ import com.jll.dtos.PostItemDto;
 import com.jll.models.Item;
 import com.jll.models.ItemType;
 import com.jll.models.Weight;
+import com.jll.models.ItemIdentity;
 import com.jll.repositories.ItemRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,18 +40,18 @@ public class ItemController {
         try {
             return itemRepository.get(id)
                     .map(item -> (ResponseEntity)ResponseEntity.ok(new ItemDto(item)))
-                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item " + id + " does not exist"));
+                    .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body("ItemIdentity " + id + " does not exist"));
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Could not retrieve an Item");
+                    .body("Could not retrieve an ItemIdentity");
         }
     }
 
     @PostMapping()
     public ResponseEntity save(@RequestBody PostItemDto postItemDto) {
         var item = new Item(
-                UUID.randomUUID(),
+                new ItemIdentity(UUID.randomUUID()),
                 postItemDto.ItemCode,
                 ItemType.Unknown,
                 postItemDto.Price,
@@ -66,7 +67,7 @@ public class ItemController {
         } catch (SQLException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Could not save the Item");
+                    .body("Could not save the ItemIdentity");
         }
     }
 }
