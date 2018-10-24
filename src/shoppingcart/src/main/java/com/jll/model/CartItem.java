@@ -1,4 +1,4 @@
-package com.jll.models.cartModel;
+package com.jll.model;
 
 public class CartItem {
     private ItemForPurchase itemForPurchase;

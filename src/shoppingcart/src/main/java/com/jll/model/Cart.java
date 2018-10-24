@@ -1,10 +1,9 @@
-package com.jll.models.cartModel;
+package com.jll.model;
 
-import com.jll.models.*;
-import com.jll.models.cartModel.events.CartCreatedEvent;
-import com.jll.models.cartModel.events.CartEvent;
-import com.jll.models.cartModel.events.CouponAppliedToCartEvent;
-import com.jll.models.cartModel.events.ItemAddedToCartEvent;
+import com.jll.model.events.CartCreatedEvent;
+import com.jll.model.events.CartEvent;
+import com.jll.model.events.CouponAppliedToCartEvent;
+import com.jll.model.events.ItemAddedToCartEvent;
 
 import java.util.*;
 import java.util.stream.Collectors;

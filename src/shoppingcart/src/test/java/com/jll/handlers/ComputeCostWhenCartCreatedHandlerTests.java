@@ -1,14 +1,14 @@
 package com.jll.handlers;
 
-import com.jll.models.ItemIdentity;
-import com.jll.models.cartModel.events.CartCreatedEvent;
-import com.jll.models.cartModel.ItemForPurchase;
+import com.jll.model.ItemIdentity;
+import com.jll.model.events.CartCreatedEvent;
+import com.jll.model.ItemForPurchase;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.UUID;
 
-public class ComputeCostWhenCartCreatedTests {
+public class ComputeCostWhenCartCreatedHandlerTests {
     @Test
     public void cartCostSaved_newCartCreatedEvent() {
         var itemId = new ItemIdentity(UUID.randomUUID());

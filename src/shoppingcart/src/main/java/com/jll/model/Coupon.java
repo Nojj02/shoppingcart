@@ -1,6 +1,4 @@
-package com.jll.models;
-
-import java.util.UUID;
+package com.jll.model;
 
 public class Coupon extends AggregateRoot<CouponIdentity> {
     private String couponCode;

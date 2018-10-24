@@ -1,6 +1,4 @@
-package com.jll.models.cartModel;
-
-import com.jll.models.Identity;
+package com.jll.model;
 
 import java.util.UUID;
 

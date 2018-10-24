@@ -1,4 +1,4 @@
-package com.jll.models;
+package com.jll.model;
 
 public final class Discount {
     public static final Discount None = new Discount(0, 0);

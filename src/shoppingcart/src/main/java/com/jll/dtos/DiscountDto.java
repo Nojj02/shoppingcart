@@ -1,6 +1,6 @@
 package com.jll.dtos;
 
-import com.jll.models.Discount;
+import com.jll.model.Discount;
 
 public class DiscountDto {
     public double FixedAmount;

@@ -1,8 +1,5 @@
-package com.jll.models;
+package com.jll.model;
 
-import com.jll.models.cartModel.Cart;
-import com.jll.models.cartModel.CartIdentity;
-import com.jll.models.cartModel.ItemForPurchase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

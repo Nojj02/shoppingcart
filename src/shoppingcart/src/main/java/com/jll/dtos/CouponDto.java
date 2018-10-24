@@ -1,11 +1,11 @@
 package com.jll.dtos;
 
-import com.jll.models.*;
+import com.jll.model.*;
 
 public class CouponDto {
     public String CouponCode;
     public DiscountDto Discount;
-    public com.jll.models.CouponType CouponType;
+    public com.jll.model.CouponType CouponType;
     public String ItemTypeCode;
 
     public CouponDto(Coupon coupon) {

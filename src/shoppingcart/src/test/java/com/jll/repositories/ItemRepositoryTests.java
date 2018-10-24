@@ -1,7 +1,7 @@
 package com.jll.repositories;
 
-import com.jll.models.Item;
-import com.jll.models.ItemIdentity;
+import com.jll.model.Item;
+import com.jll.model.ItemIdentity;
 import com.jll.utilities.ConnectionManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

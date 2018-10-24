@@ -1,7 +1,7 @@
 package com.jll.dtos;
 
-import com.jll.models.cartModel.CartItem;
-import com.jll.models.cartModel.ItemForPurchase;
+import com.jll.model.CartItem;
+import com.jll.model.ItemForPurchase;
 
 public class CartItemDto {
     public IdentityDto itemId;

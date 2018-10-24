@@ -1,11 +1,11 @@
 package com.jll.controllers;
 
 import com.jll.dtos.CouponDto;
-import com.jll.models.CouponIdentity;
-import com.jll.models.CouponType;
+import com.jll.model.CouponIdentity;
+import com.jll.model.CouponType;
 import com.jll.dtos.PostCouponDto;
-import com.jll.models.Coupon;
-import com.jll.models.Discount;
+import com.jll.model.Coupon;
+import com.jll.model.Discount;
 import com.jll.repositories.CouponRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;

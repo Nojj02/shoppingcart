@@ -1,6 +1,6 @@
 package com.jll.services;
 
-import com.jll.models.Weight;
+import com.jll.model.Weight;
 
 import java.util.ArrayList;
 import java.util.List;

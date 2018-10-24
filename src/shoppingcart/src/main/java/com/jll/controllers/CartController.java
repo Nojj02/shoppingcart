@@ -2,9 +2,9 @@ package com.jll.controllers;
 
 import com.google.common.collect.MoreCollectors;
 import com.jll.dtos.*;
-import com.jll.models.cartModel.Cart;
-import com.jll.models.cartModel.CartIdentity;
-import com.jll.models.cartModel.ItemForPurchase;
+import com.jll.model.Cart;
+import com.jll.model.CartIdentity;
+import com.jll.model.ItemForPurchase;
 import com.jll.repositories.CartRepository;
 import com.jll.repositories.CouponRepository;
 import com.jll.repositories.ItemRepository;

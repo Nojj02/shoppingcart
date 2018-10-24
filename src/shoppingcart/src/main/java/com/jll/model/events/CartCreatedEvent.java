@@ -1,6 +1,6 @@
-package com.jll.models.cartModel.events;
+package com.jll.model.events;
 
-import com.jll.models.cartModel.ItemForPurchase;
+import com.jll.model.ItemForPurchase;
 
 import java.util.Collection;
 

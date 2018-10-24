@@ -1,6 +1,6 @@
 package com.jll.dtos;
 
-import com.jll.models.cartModel.Cart;
+import com.jll.model.Cart;
 
 import java.util.Collection;
 import java.util.UUID;

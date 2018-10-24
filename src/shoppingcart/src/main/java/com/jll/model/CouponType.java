@@ -1,4 +1,4 @@
-package com.jll.models;
+package com.jll.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,6 +1,4 @@
-package com.jll.models.cartModel;
-
-import com.jll.models.ItemIdentity;
+package com.jll.model;
 
 public class ItemForPurchase {
     private int quantity;

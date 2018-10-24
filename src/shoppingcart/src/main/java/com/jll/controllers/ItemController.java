@@ -6,10 +6,10 @@ import java.util.UUID;
 import com.jll.dtos.ItemDto;
 import com.jll.dtos.PostItemDto;
 
-import com.jll.models.Item;
-import com.jll.models.ItemType;
-import com.jll.models.Weight;
-import com.jll.models.ItemIdentity;
+import com.jll.model.Item;
+import com.jll.model.ItemType;
+import com.jll.model.Weight;
+import com.jll.model.ItemIdentity;
 import com.jll.repositories.ItemRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;

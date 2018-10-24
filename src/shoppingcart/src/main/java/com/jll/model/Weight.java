@@ -1,4 +1,4 @@
-package com.jll.models;
+package com.jll.model;
 
 public class Weight {
     public static final Weight ZERO = Weight.grams(0);

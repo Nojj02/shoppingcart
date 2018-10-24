@@ -1,6 +1,6 @@
 package com.jll.dtos;
 
-import com.jll.models.Identity;
+import com.jll.model.Identity;
 
 import java.util.UUID;
 

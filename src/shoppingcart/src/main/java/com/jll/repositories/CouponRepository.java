@@ -1,7 +1,7 @@
 package com.jll.repositories;
 
-import com.jll.models.Coupon;
-import com.jll.models.CouponIdentity;
+import com.jll.model.Coupon;
+import com.jll.model.CouponIdentity;
 import com.jll.utilities.ConnectionManager;
 
 import java.sql.PreparedStatement;

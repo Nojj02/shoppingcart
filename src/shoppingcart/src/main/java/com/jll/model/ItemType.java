@@ -1,4 +1,4 @@
-package com.jll.models;
+package com.jll.model;
 
 public class ItemType {
     public final static ItemType Unknown = new ItemType("Unknown");

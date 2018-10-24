@@ -1,4 +1,4 @@
-package com.jll.models;
+package com.jll.model;
 
 public class Item extends AggregateRoot<ItemIdentity>
 {

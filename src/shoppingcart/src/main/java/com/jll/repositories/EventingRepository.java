@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jll.models.cartModel.Cart;
-import com.jll.models.cartModel.CartIdentity;
-import com.jll.models.cartModel.events.CartEvent;
+import com.jll.model.Cart;
+import com.jll.model.CartIdentity;
+import com.jll.model.events.CartEvent;
 import com.jll.utilities.ConnectionManager;
 import org.postgresql.util.PGobject;
 
