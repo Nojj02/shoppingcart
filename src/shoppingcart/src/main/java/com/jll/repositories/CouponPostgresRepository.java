@@ -8,8 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class CouponRepository extends Repository<Coupon, CouponIdentity> {
-    public CouponRepository(ConnectionManager connectionManager) {
+public class CouponPostgresRepository extends PostgresRepository<Coupon, CouponIdentity> {
+    public CouponPostgresRepository(ConnectionManager connectionManager) {
         super(connectionManager, Coupon.class, "coupon");
     }
 

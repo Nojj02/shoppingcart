@@ -59,7 +59,7 @@ public abstract class EventingRepository<T extends Cart> {
                 PGobject jsonObject = new PGobject();
                 jsonObject.setType("jsonb");
                 jsonObject.setValue(objectMapper.writeValueAsString(anEvent));
-                preparedStatement.setObject(1, entity.getId2());
+                preparedStatement.setObject(1, entity.getId().getValue());
                 preparedStatement.setObject(2, anEvent.version);
                 preparedStatement.setObject(3, anEvent.getClass().getName());
                 preparedStatement.setObject(4, jsonObject);
@@ -100,7 +100,7 @@ public abstract class EventingRepository<T extends Cart> {
                 PGobject jsonObject = new PGobject();
                 jsonObject.setType("jsonb");
                 jsonObject.setValue(objectMapper.writeValueAsString(anEvent));
-                preparedStatement.setObject(1, entity.getId2());
+                preparedStatement.setObject(1, entity.getId().getValue());
                 preparedStatement.setObject(2, anEvent.version);
                 preparedStatement.setObject(3, anEvent.getClass().getName());
                 preparedStatement.setObject(4, jsonObject);

@@ -9,10 +9,6 @@ public class AggregateRoot<T extends Identity> {
         this.id = id;
     }
 
-    public UUID getId2() {
-        return null;
-    }
-
     public T getId() {
         return this.id;
     }

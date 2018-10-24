@@ -22,13 +22,13 @@ public class ItemRepositoryTests {
                 new Item(new ItemIdentity(UUID.randomUUID()), "Tomato", 3.00)
         );
 
-        var itemRepository = new ItemRepository(getConnectionManager());
+        var itemRepository = new ItemPostgresRepository(getConnectionManager());
         for(var item : items) {
             itemRepository.save(item);
         }
 
         for(var item : items) {
-            var retrievedItem = itemRepository.get(item.getId2());
+            var retrievedItem = itemRepository.get(item.getId().getValue());
             Assertions.assertNotNull(retrievedItem);
         }
     }

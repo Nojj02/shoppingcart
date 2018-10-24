@@ -11,7 +11,7 @@ public class CartDto {
     public Collection<CartItemDto> CartItems;
 
     public CartDto(Cart cart) {
-        Id = cart.getId2();
+        Id = cart.getId().getValue();
         CartItems = cart.getCartItems().stream()
                 .map(cartItem -> new CartItemDto(cartItem))
                 .collect(Collectors.toList());

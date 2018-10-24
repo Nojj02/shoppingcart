@@ -6,7 +6,7 @@ import com.jll.model.CouponType;
 import com.jll.dtos.PostCouponDto;
 import com.jll.model.Coupon;
 import com.jll.model.Discount;
-import com.jll.repositories.CouponRepository;
+import com.jll.repositories.CouponPostgresRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class CouponController {
 
     @GetMapping()
     public ResponseEntity get() {
-        var couponRepository = new CouponRepository(LocalConnectionManagerFactory.Get());
+        var couponRepository = new CouponPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             var couponDtos = couponRepository.get(20).stream()
                     .map(coupon -> new CouponDto(coupon));
@@ -35,7 +35,7 @@ public class CouponController {
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable UUID id) {
-        var couponRepository = new CouponRepository(LocalConnectionManagerFactory.Get());
+        var couponRepository = new CouponPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             return couponRepository.get(id)
                     .map(coupon -> (ResponseEntity)ResponseEntity.ok(new CouponDto(coupon)))
@@ -67,7 +67,7 @@ public class CouponController {
             return ResponseEntity.badRequest().body("Unknown Coupon Type");
         }
 
-        var couponRepository = new CouponRepository(LocalConnectionManagerFactory.Get());
+        var couponRepository = new CouponPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             couponRepository.save(coupon);
 

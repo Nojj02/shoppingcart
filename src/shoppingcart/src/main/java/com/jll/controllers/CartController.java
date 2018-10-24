@@ -6,8 +6,8 @@ import com.jll.model.Cart;
 import com.jll.model.CartIdentity;
 import com.jll.model.ItemForPurchase;
 import com.jll.repositories.CartRepository;
-import com.jll.repositories.CouponRepository;
-import com.jll.repositories.ItemRepository;
+import com.jll.repositories.CouponPostgresRepository;
+import com.jll.repositories.ItemPostgresRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +48,7 @@ public class CartController {
                         .collect(Collectors.toList());
 
         try {
-            var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+            var itemRepository = new ItemPostgresRepository(LocalConnectionManagerFactory.Get());
             var queriedItems = itemRepository.get(itemIds);
 
             var matchingItemsMap =
@@ -102,7 +102,7 @@ public class CartController {
     @GetMapping("/{id}/addItem")
     public ResponseEntity addItem(@PathVariable UUID id, @RequestBody AddItemDto addItemDto) {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
-        var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+        var itemRepository = new ItemPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             var optionalCart = cartRepository.get(id);
             if(!optionalCart.isPresent()) {
@@ -133,7 +133,7 @@ public class CartController {
     @PostMapping("/{id}/applyCoupon")
     public ResponseEntity applyCoupon(@PathVariable UUID id, @RequestBody ApplyCouponDto applyCouponDto) {
         var cartRepository = new CartRepository(LocalConnectionManagerFactory.Get());
-        var couponRepository = new CouponRepository(LocalConnectionManagerFactory.Get());
+        var couponRepository = new CouponPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             var optionalCart = cartRepository.get(id);
             if(!optionalCart.isPresent()) {

@@ -11,7 +11,7 @@ public class ItemDto {
     public double WeightInGrams;
 
     public ItemDto(Item item) {
-        Id = item.getId2();
+        Id = item.getId().getValue();
         ItemCode = item.getItemCode();
         Price = item.getPrice();
         WeightInGrams = item.getWeight().inGrams();

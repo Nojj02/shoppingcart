@@ -10,7 +10,7 @@ import com.jll.model.Item;
 import com.jll.model.ItemType;
 import com.jll.model.Weight;
 import com.jll.model.ItemIdentity;
-import com.jll.repositories.ItemRepository;
+import com.jll.repositories.ItemPostgresRepository;
 import com.jll.utilities.LocalConnectionManagerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class ItemController {
 
     @GetMapping()
     public ResponseEntity get() {
-        var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+        var itemRepository = new ItemPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             var itemDtos = itemRepository.get(20).stream()
                     .map(item -> new ItemDto(item));
@@ -36,7 +36,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable UUID id) {
-        var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+        var itemRepository = new ItemPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             return itemRepository.get(id)
                     .map(item -> (ResponseEntity)ResponseEntity.ok(new ItemDto(item)))
@@ -58,7 +58,7 @@ public class ItemController {
                 Weight.grams(postItemDto.WeightInGrams)
         );
 
-        var itemRepository = new ItemRepository(LocalConnectionManagerFactory.Get());
+        var itemRepository = new ItemPostgresRepository(LocalConnectionManagerFactory.Get());
         try {
             itemRepository.save(item);
 
