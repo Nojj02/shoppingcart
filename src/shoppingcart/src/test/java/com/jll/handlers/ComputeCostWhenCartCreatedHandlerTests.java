@@ -37,10 +37,10 @@ public class ComputeCostWhenCartCreatedHandlerTests {
                         itemRepository,
                         cartCostRepository
                 );
-        handler.Handle(cartCreatedEvent);
+        handler.handle(cartCreatedEvent);
 
         var cartCosts = cartCostRepository.cartCosts;
-        Assertions.assertFalse(cartCosts.isEmpty());
+        Assertions.assertEquals(1, cartCosts.size());
     }
 }
 

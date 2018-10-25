@@ -52,13 +52,13 @@ public class CouponController {
         Coupon coupon;
         if (postCouponDto.CouponType == CouponType.StoreWide) {
             coupon = Coupon.storeWide(
-                    new CouponIdentity(UUID.randomUUID()),
+                    CouponIdentity.generateNew(),
                     postCouponDto.CouponCode,
                     new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.FixedAmount)
             );
         } else if(postCouponDto.CouponType == CouponType.ItemType) {
             coupon = Coupon.forItemType(
-                    new CouponIdentity(UUID.randomUUID()),
+                    CouponIdentity.generateNew(),
                     postCouponDto.CouponCode,
                     new Discount(postCouponDto.Discount.Percentage, postCouponDto.Discount.FixedAmount),
                     postCouponDto.ItemTypeCode
