@@ -15,7 +15,8 @@ namespace ShoppingCart.Api.Tests
         [Fact]
         public async Task Returns404_GetNonExistentItem()
         {
-            var itemTypeController = new ItemTypeController();
+            var repository = new ItemTypeRepository();
+            var itemTypeController = new ItemTypeController(repository);
             BootstrapController(itemTypeController);
 
             var result = await itemTypeController.GetByItemTypeCode("unknown");
@@ -24,15 +25,11 @@ namespace ShoppingCart.Api.Tests
             Assert.Equal("unknown", result.Value);
         }
 
-        private void BootstrapController(ItemTypeController itemTypeController)
-        {
-            itemTypeController.Url = new AlwaysEmptyUrlHelper();
-        }
-
         [Fact]
         public async Task RespondsWithCreated_PostNewItemType()
         {
-            var itemTypeController = new ItemTypeController();
+            var repository = new ItemTypeRepository();
+            var itemTypeController = new ItemTypeController(repository);
             BootstrapController(itemTypeController);
 
             var postNewItemTypeDto = new PostNewItemTypeDto
@@ -51,7 +48,8 @@ namespace ShoppingCart.Api.Tests
         [Fact]
         public async Task CanGetItemType_PostNewItemType()
         {
-            var itemTypeController = new ItemTypeController();
+            var repository = new ItemTypeRepository();
+            var itemTypeController = new ItemTypeController(repository);
             BootstrapController(itemTypeController);
 
             var postNewItemTypeDto = new PostNewItemTypeDto
@@ -61,7 +59,9 @@ namespace ShoppingCart.Api.Tests
 
             await itemTypeController.Post(postNewItemTypeDto);
 
-            var result = await itemTypeController.GetByItemTypeCode("vegetable");
+            var anotherItemTypeController = new ItemTypeController(repository);
+            BootstrapController(anotherItemTypeController);
+            var result = await anotherItemTypeController.GetByItemTypeCode("vegetable");
             Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
 
             var itemTypeDto = (ItemTypeDto)result.Value;
@@ -72,7 +72,8 @@ namespace ShoppingCart.Api.Tests
         [Fact]
         public async Task CanGetItemTypes_PostMultipleItemTypes()
         {
-            var itemTypeController = new ItemTypeController();
+            var repository = new ItemTypeRepository();
+            var itemTypeController = new ItemTypeController(repository);
             BootstrapController(itemTypeController);
 
             var postNewFruitItemTypeDto = new PostNewItemTypeDto
@@ -101,6 +102,11 @@ namespace ShoppingCart.Api.Tests
             var vegetableItemTypeDto = (ItemTypeDto) vegetableResult.Value;
 
             Assert.Equal("vegetable", vegetableItemTypeDto.Code);
+        }
+
+        private void BootstrapController(ItemTypeController itemTypeController)
+        {
+            itemTypeController.Url = new AlwaysEmptyUrlHelper();
         }
     }
 }

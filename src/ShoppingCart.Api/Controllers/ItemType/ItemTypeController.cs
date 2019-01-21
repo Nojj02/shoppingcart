@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,12 +10,17 @@ namespace ShoppingCart.Api.Controllers.ItemType
     [Route("itemType")]
     public class ItemTypeController : Controller
     {
-        private readonly List<string> _itemTypeCodes = new List<string>();
+        private readonly ItemTypeRepository _repository;
+
+        public ItemTypeController(ItemTypeRepository repository)
+        {
+            _repository = repository;
+        }
 
         [HttpPost]
         public async Task<ObjectResult> Post(PostNewItemTypeDto postNewItemTypeDto)
         {
-            _itemTypeCodes.Add(postNewItemTypeDto.Code);
+            _repository.Save(postNewItemTypeDto.Code);
             return Created(Url.Action("GetByItemTypeCode"), new ItemTypeDto
             {
                 Code = postNewItemTypeDto.Code
@@ -24,8 +30,8 @@ namespace ShoppingCart.Api.Controllers.ItemType
         [HttpGet]
         public async Task<ObjectResult> GetByItemTypeCode(string code)
         {
-            var itemTypeCode = _itemTypeCodes.SingleOrDefault(x => x == code);
-            if (itemTypeCode == null)
+            var entity = _repository.Get(code);
+            if (entity == null)
             {
                 return NotFound(code);
             }
@@ -33,10 +39,23 @@ namespace ShoppingCart.Api.Controllers.ItemType
             return Ok(
                 new ItemTypeDto
                 {
-                    Code = itemTypeCode
+                    Code = entity
                 });
+        }
+    }
 
-            
+    public class ItemTypeRepository
+    {
+        private readonly List<string> _itemTypeCodes = new List<string>();
+
+        public void Save(string code)
+        {
+            _itemTypeCodes.Add(code);
+        }
+
+        public string Get(string code)
+        {
+            return _itemTypeCodes.SingleOrDefault(x => x == code);
         }
     }
 }
