@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  app:
+    build:
+      context: ./
+      dockerfile: api-docker
+    ports:
+      - "9050:9050"
+    depends_on:
+      - postgres
+
   postgres:
     container_name: shoppingcart-postgres
     image: postgres
