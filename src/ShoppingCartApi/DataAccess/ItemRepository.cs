@@ -3,18 +3,18 @@ using System.Linq;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class ItemTypeRepository
+    public class ItemRepository
     {
-        private readonly List<string> _itemTypeCodes = new List<string>();
+        private readonly List<string> _itemCodes = new List<string>();
 
         public void Save(string code)
         {
-            _itemTypeCodes.Add(code);
+            _itemCodes.Add(code);
         }
 
         public string Get(string code)
         {
-            return _itemTypeCodes.SingleOrDefault(x => x == code);
+            return _itemCodes.SingleOrDefault(x => x == code);
         }
     }
 }

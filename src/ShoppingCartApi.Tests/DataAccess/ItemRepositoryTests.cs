@@ -2,7 +2,7 @@ using Xunit;
 
 namespace ShoppingCartApi.Tests.DataAccess
 {
-    public class ItemTypeRepositoryTests
+    public class ItemRepositoryTests
     {
         [Fact]
         public void Test()
