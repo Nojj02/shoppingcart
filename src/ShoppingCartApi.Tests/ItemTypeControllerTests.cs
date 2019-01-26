@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
-using ShoppingCart.Api.Controllers;
-using ShoppingCart.Api.Controllers.ItemType;
-using ShoppingCart.Api.DataAccess;
-using ShoppingCart.Api.Tests.Helpers;
+using ShoppingCartApi.Controllers;
+using ShoppingCartApi.Controllers.ItemType;
+using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Tests.Helpers;
 using Xunit;
 
-namespace ShoppingCart.Api.Tests
+namespace ShoppingCartApi.Tests
 {
     public class ItemTypeControllerTests
     {

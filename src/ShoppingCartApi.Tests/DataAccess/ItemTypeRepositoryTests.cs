@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace ShoppingCart.Api.Tests.DataAccess
+namespace ShoppingCartApi.Tests.DataAccess
 {
     public class ItemTypeRepositoryTests
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ShoppingCart.Api.Controllers.ItemType
+namespace ShoppingCartApi.Controllers.ItemType
 {
     public class ItemTypeDto
     {

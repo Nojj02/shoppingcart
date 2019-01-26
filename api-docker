@@ -3,7 +3,7 @@ FROM microsoft/dotnet:2.1.503-sdk AS build
 WORKDIR /app
 COPY ./src .
 
-WORKDIR /app/ShoppingCart.Api
+WORKDIR /app/ShoppingCartApi
 RUN dotnet publish -c Release -o /publish
 
 FROM microsoft/dotnet:2.1.7-aspnetcore-runtime AS runtime
@@ -12,4 +12,4 @@ COPY --from=build /publish /app
 EXPOSE 9050
 
 WORKDIR /app
-ENTRYPOINT ["dotnet", "ShoppingCart.Api.dll" ]
+ENTRYPOINT ["dotnet", "ShoppingCartApi.dll" ]

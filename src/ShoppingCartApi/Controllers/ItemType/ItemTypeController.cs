@@ -2,9 +2,9 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingCart.Api.DataAccess;
+using ShoppingCartApi.DataAccess;
 
-namespace ShoppingCart.Api.Controllers.ItemType
+namespace ShoppingCartApi.Controllers.ItemType
 {
     [Route("itemType")]
     public class ItemTypeController : Controller

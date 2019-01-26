@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ShoppingCart.Api.DataAccess
+namespace ShoppingCartApi.DataAccess
 {
     public class ItemTypeRepository
     {

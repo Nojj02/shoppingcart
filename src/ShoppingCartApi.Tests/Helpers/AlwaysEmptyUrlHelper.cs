@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace ShoppingCart.Api.Tests.Helpers
+namespace ShoppingCartApi.Tests.Helpers
 {
     public class AlwaysEmptyUrlHelper : IUrlHelper
     {
