@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using ShoppingCart.Api.Controllers;
 using ShoppingCart.Api.Controllers.ItemType;
+using ShoppingCart.Api.DataAccess;
 using ShoppingCart.Api.Tests.Helpers;
 using Xunit;
 
