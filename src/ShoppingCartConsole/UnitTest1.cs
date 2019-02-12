@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace ShoppingCartConsole
@@ -7,26 +8,46 @@ namespace ShoppingCartConsole
     public class ShopTests
     {
         [Fact]
-        public void ShopHasAtLeast10Items()
+        public void CanEnterSeveralShoppingItems()
         {
+            var shop = StartNewShop();
+
+            var item = shop.GetItem(itemCode: "banana");
+            var item2 = shop.GetItem(itemCode: "potato");
+
+            var shoppingItems = new List<ShoppingItem>
+            {
+                new ShoppingItem(item),
+                new ShoppingItem(item2)
+            };
+
+            var totalCost = shop.ComputeCost(shoppingItems);
+
+            Assert.Equal(100, totalCost);
+        }
+
+        private Shop StartNewShop()
+        {
+            var item = new Item(code: "banana" ,price: 30);
+            var item2 = new Item(code: "potato", price: 70);
             var items = new List<Item>
             {
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item(),
-                new Item()
+                item,
+                item2
             };
-            
-            var shop = new Shop(items);
-            
-            Assert.Equal(10, shop.Items.Count);
+
+            return new Shop(items);
         }
+    }
+
+    public class ShoppingItem
+    {
+        public ShoppingItem(Item item)
+        {
+            Cost = item.Price;
+        }
+
+        public decimal Cost { get; }
     }
 
     public class Shop
@@ -37,9 +58,28 @@ namespace ShoppingCartConsole
         }
 
         public IReadOnlyList<Item> Items { get; }
+
+        public decimal ComputeCost(List<ShoppingItem> shoppingItems)
+        {
+            return shoppingItems.Sum(x => x.Cost);
+        }
+
+        public Item GetItem(string itemCode)
+        {
+            return Items.SingleOrDefault(x => x.Code == itemCode);
+        }
     }
 
     public class Item
     {
+        public Item(string code, decimal price)
+        {
+            Code = code;
+            Price = price;
+        }
+
+        public string Code { get; }
+        
+        public decimal Price { get; }
     }
 }
