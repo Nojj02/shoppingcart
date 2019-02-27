@@ -17,13 +17,13 @@ namespace ShoppingCartConsole
 
             var shoppingItems = new List<ShoppingItem>
             {
-                new ShoppingItem(item),
-                new ShoppingItem(item2)
+                new ShoppingItem(item, quantity: 3),
+                new ShoppingItem(item2, quantity: 1)
             };
 
             var totalCost = shop.ComputeCost(shoppingItems);
 
-            Assert.Equal(100, totalCost);
+            Assert.Equal(160, totalCost);
         }
 
         private Shop StartNewShop()
@@ -42,12 +42,15 @@ namespace ShoppingCartConsole
 
     public class ShoppingItem
     {
-        public ShoppingItem(Item item)
+        public ShoppingItem(Item item, double quantity)
         {
+            Quantity = quantity;
             Cost = item.Price;
         }
 
         public decimal Cost { get; }
+        
+        public double Quantity { get; }
     }
 
     public class Shop
@@ -61,7 +64,7 @@ namespace ShoppingCartConsole
 
         public decimal ComputeCost(List<ShoppingItem> shoppingItems)
         {
-            return shoppingItems.Sum(x => x.Cost);
+            return shoppingItems.Sum(x => x.Cost * Convert.ToDecimal(x.Quantity));
         }
 
         public Item GetItem(string itemCode)
