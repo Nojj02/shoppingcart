@@ -27,12 +27,35 @@ namespace ShoppingCartConsole
         }
 
         [Fact]
-        public void ItemsCanOnSpecial()
+        public void ItemsCanOnSpecialPercent()
         {
             var shop = StartNewShop();
 
             var item = shop.GetItem(itemCode: "banana");
             item.SetDiscount(percentDiscount: 50);
+            
+            var item2 = shop.GetItem(itemCode: "potato");
+            var item3 = shop.GetItem(itemCode: "tomato");
+
+            var shoppingItems = new List<ShoppingItem>
+            {
+                new ShoppingItem(item, quantity: 3),
+                new ShoppingItem(item2, quantity: 1),
+                new ShoppingItem(item3, quantity: 2)
+            };
+
+            var totalCost = shop.ComputeCost(shoppingItems);
+
+            Assert.Equal(125, totalCost);
+        }
+
+        [Fact]
+        public void ItemsCanOnSpecial()
+        {
+            var shop = StartNewShop();
+
+            var item = shop.GetItem(itemCode: "banana");
+            item.SetAmountDiscount(amount: 15);
             
             var item2 = shop.GetItem(itemCode: "potato");
             var item3 = shop.GetItem(itemCode: "tomato");
@@ -97,10 +120,7 @@ namespace ShoppingCartConsole
                 var matchingItem = Items.SingleOrDefault(item => item.Code == x.ItemCode);
                 if (matchingItem == null) return 0;
                 
-                var discountedCost = matchingItem.Price * Convert.ToDecimal(matchingItem.PercentDiscount / 100);
-                var cost = matchingItem.Price - discountedCost;
-                
-                return cost * Convert.ToDecimal(x.Quantity);
+                return matchingItem.DiscountedPrice * Convert.ToDecimal(x.Quantity);
             });
         }
 
@@ -116,17 +136,26 @@ namespace ShoppingCartConsole
         {
             Code = code;
             Price = price;
+            DiscountedPrice = price;
         }
 
         public string Code { get; }
         
         public decimal Price { get; }
 
-        public void SetDiscount(int percentDiscount)
+        public void SetDiscount(double percentDiscount)
         {
-            PercentDiscount = percentDiscount;
+            var discountedPrice = Price * Convert.ToDecimal(percentDiscount / 100);
+            DiscountedPrice = Price - discountedPrice;
         }
 
-        public double PercentDiscount { get; private set; }
+        public double PercentDiscount { get; set; }
+
+        public void SetAmountDiscount(decimal amount)
+        {
+            DiscountedPrice = Price - amount;
+        }
+        
+        public decimal DiscountedPrice { get; set; }
     }
 }
