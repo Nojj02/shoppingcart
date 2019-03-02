@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace ShoppingCartConsole
@@ -86,76 +84,5 @@ namespace ShoppingCartConsole
 
             return new Shop(items);
         }
-    }
-
-    public class ShoppingItem
-    {
-        public ShoppingItem(Item item, double quantity)
-        {
-            ItemCode = item.Code;
-            Quantity = quantity;
-            Cost = item.Price;
-        }
-
-        public string ItemCode { get; set; }
-
-        public decimal Cost { get; }
-        
-        public double Quantity { get; }
-    }
-
-    public class Shop
-    {
-        public Shop(IReadOnlyList<Item> items)
-        {
-            Items = new List<Item>(items);
-        }
-
-        public IReadOnlyList<Item> Items { get; }
-
-        public decimal ComputeCost(List<ShoppingItem> shoppingItems)
-        {
-            return shoppingItems.Sum(x =>
-            {
-                var matchingItem = Items.SingleOrDefault(item => item.Code == x.ItemCode);
-                if (matchingItem == null) return 0;
-                
-                return matchingItem.DiscountedPrice * Convert.ToDecimal(x.Quantity);
-            });
-        }
-
-        public Item GetItem(string itemCode)
-        {
-            return Items.SingleOrDefault(x => x.Code == itemCode);
-        }
-    }
-
-    public class Item
-    {
-        public Item(string code, decimal price)
-        {
-            Code = code;
-            Price = price;
-            DiscountedPrice = price;
-        }
-
-        public string Code { get; }
-        
-        public decimal Price { get; }
-
-        public void SetDiscount(double percentDiscount)
-        {
-            var discountedPrice = Price * Convert.ToDecimal(percentDiscount / 100);
-            DiscountedPrice = Price - discountedPrice;
-        }
-
-        public double PercentDiscount { get; set; }
-
-        public void SetAmountDiscount(decimal amount)
-        {
-            DiscountedPrice = Price - amount;
-        }
-        
-        public decimal DiscountedPrice { get; set; }
     }
 }
