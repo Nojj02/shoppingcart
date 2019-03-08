@@ -27,7 +27,7 @@ namespace ShoppingCartApi.Tests
             Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
             Assert.NotNull(result.Value);
 
-            var dto = (ComputeCostDto)result.Value;
+            var dto = (CalculatorComputeCostDto)result.Value;
             
             Assert.Equal(0, dto.TotalCost);
         }
@@ -40,7 +40,7 @@ namespace ShoppingCartApi.Tests
             var itemController = new ItemController(itemRepository);
             BootstrapController(itemController);
             
-            var postNewPotatoItemDto = new PostNewItemDto
+            var postNewPotatoItemDto = new PostRequestDto
             {
                 Code = "potato",
                 Price = 30
@@ -57,7 +57,7 @@ namespace ShoppingCartApi.Tests
             Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
             Assert.NotNull(result.Value);
 
-            var dto = (ComputeCostDto)result.Value;
+            var dto = (CalculatorComputeCostDto)result.Value;
             
             Assert.Equal(30, dto.TotalCost);
         }

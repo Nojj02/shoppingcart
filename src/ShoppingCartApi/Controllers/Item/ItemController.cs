@@ -15,11 +15,11 @@ namespace ShoppingCartApi.Controllers.Item
         }
 
         [HttpPost]
-        public async Task<ObjectResult> Post(PostNewItemDto postNewItemDto)
+        public async Task<ObjectResult> Post(PostRequestDto postRequestDto)
         {
             var entity = new Item(
-                code: postNewItemDto.Code,
-                price: postNewItemDto.Price);
+                code: postRequestDto.Code,
+                price: postRequestDto.Price);
             _repository.Save(entity);
             
             return Created(Url.Action("GetByItemCode"), new ItemDto

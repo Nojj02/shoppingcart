@@ -33,7 +33,7 @@ namespace ShoppingCartApi.Tests
             var itemController = new ItemController(repository);
             BootstrapController(itemController);
 
-            var postNewItemDto = new PostNewItemDto
+            var postNewItemDto = new PostRequestDto
             {
                 Code = "lettuce"
             };
@@ -53,7 +53,7 @@ namespace ShoppingCartApi.Tests
             var itemController = new ItemController(repository);
             BootstrapController(itemController);
 
-            var postNewItemDto = new PostNewItemDto
+            var postNewItemDto = new PostRequestDto
             {
                 Code = "lettuce"
             };
@@ -77,7 +77,7 @@ namespace ShoppingCartApi.Tests
             var itemController = new ItemController(repository);
             BootstrapController(itemController);
 
-            var postNewPotatoItemDto = new PostNewItemDto
+            var postNewPotatoItemDto = new PostRequestDto
             {
                 Code = "potato",
                 Price = 30
@@ -85,7 +85,7 @@ namespace ShoppingCartApi.Tests
 
             await itemController.Post(postNewPotatoItemDto);
 
-            var postNewLettuceItemDto = new PostNewItemDto
+            var postNewLettuceItemDto = new PostRequestDto
             {
                 Code = "lettuce",
                 Price = 50

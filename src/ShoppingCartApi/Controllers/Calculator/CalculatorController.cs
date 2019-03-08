@@ -6,22 +6,20 @@ namespace ShoppingCartApi.Controllers.Calculator
 {
     public class CalculatorController : Controller
     {
+        private readonly ItemRepository _itemRepository;
+
         public CalculatorController(ItemRepository itemRepository)
         {
+            _itemRepository = itemRepository;
         }
 
         // GET
         public async Task<ObjectResult> ComputeCost()
         {
-            return Ok(new ComputeCostDto
+            return Ok(new CalculatorComputeCostDto
             {
                 TotalCost = 0
             });
         }
-    }
-
-    public class ComputeCostDto
-    {
-        public decimal TotalCost { get; set; }
     }
 }
