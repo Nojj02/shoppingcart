@@ -17,10 +17,15 @@ namespace ShoppingCartApi.Controllers.Item
         [HttpPost]
         public async Task<ObjectResult> Post(PostNewItemDto postNewItemDto)
         {
-            _repository.Save(postNewItemDto.Code);
+            var entity = new Item(
+                code: postNewItemDto.Code,
+                price: postNewItemDto.Price);
+            _repository.Save(entity);
+            
             return Created(Url.Action("GetByItemCode"), new ItemDto
             {
-                Code = postNewItemDto.Code
+                Code = entity.Code,
+                Price = entity.Price
             });
         }
 
@@ -36,7 +41,8 @@ namespace ShoppingCartApi.Controllers.Item
             return Ok(
                 new ItemDto
                 {
-                    Code = entity
+                    Code = entity.Code,
+                    Price = entity.Price
                 });
         }
     }

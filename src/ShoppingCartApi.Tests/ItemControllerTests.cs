@@ -79,14 +79,16 @@ namespace ShoppingCartApi.Tests
 
             var postNewPotatoItemDto = new PostNewItemDto
             {
-                Code = "potato"
+                Code = "potato",
+                Price = 30
             };
 
             await itemController.Post(postNewPotatoItemDto);
 
             var postNewLettuceItemDto = new PostNewItemDto
             {
-                Code = "lettuce"
+                Code = "lettuce",
+                Price = 50
             };
 
             await itemController.Post(postNewLettuceItemDto);
@@ -96,6 +98,7 @@ namespace ShoppingCartApi.Tests
 
             var potatoItemDto = (ItemDto)potatoResult.Value;
             Assert.Equal("potato", potatoItemDto.Code);
+            Assert.Equal(30, potatoItemDto.Price);
 
             var lettuceResult = await itemController.GetByItemCode("lettuce");
             Assert.Equal((int)HttpStatusCode.OK, lettuceResult.StatusCode);
@@ -103,6 +106,7 @@ namespace ShoppingCartApi.Tests
             var lettuceItemDto = (ItemDto) lettuceResult.Value;
 
             Assert.Equal("lettuce", lettuceItemDto.Code);
+            Assert.Equal(50, lettuceItemDto.Price);
         }
 
         private void BootstrapController(ItemController itemController)

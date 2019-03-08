@@ -1,6 +1,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using ShoppingCartApi.Controllers;
@@ -37,14 +38,16 @@ namespace ShoppingCartApi.Tests
             var itemRepository = new ItemRepository();
 
             var itemController = new ItemController(itemRepository);
+            BootstrapController(itemController);
             
             var postNewPotatoItemDto = new PostNewItemDto
             {
-                Code = "potato"
+                Code = "potato",
+                Price = 30
             };
             
             var postNewItemResult = await itemController.Post(postNewPotatoItemDto);
-            Assert.Equal((int)HttpStatusCode.OK, postNewItemResult.StatusCode);
+            Assert.Equal((int)HttpStatusCode.Created, postNewItemResult.StatusCode);
            
             var calculatorController = new CalculatorController(itemRepository);
             BootstrapController(calculatorController);
@@ -56,10 +59,10 @@ namespace ShoppingCartApi.Tests
 
             var dto = (ComputeCostDto)result.Value;
             
-            Assert.Equal(0, dto.TotalCost);
+            Assert.Equal(30, dto.TotalCost);
         }
 
-        private void BootstrapController(CalculatorController controller)
+        private void BootstrapController(Controller controller)
         {
             controller.Url = new AlwaysEmptyUrlHelper();
         }

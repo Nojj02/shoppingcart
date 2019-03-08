@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
+using ShoppingCartApi.Controllers.Item;
 
 namespace ShoppingCartApi.DataAccess
 {
     public class ItemRepository
     {
-        private readonly List<string> _itemCodes = new List<string>();
+        private readonly List<Item> _items = new List<Item>();
 
-        public void Save(string code)
+        public void Save(Item item)
         {
-            _itemCodes.Add(code);
+            _items.Add(item);
         }
 
-        public string Get(string code)
+        public Item Get(string code)
         {
-            return _itemCodes.SingleOrDefault(x => x == code);
+            return _items.SingleOrDefault(x => x.Code == code);
         }
     }
 }
