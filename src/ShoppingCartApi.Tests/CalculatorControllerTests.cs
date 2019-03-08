@@ -17,7 +17,36 @@ namespace ShoppingCartApi.Tests
         [Fact]
         public async Task CostIsZero_NoShoppingItems()
         {
-            var calculatorController = new CalculatorController();
+            var itemRepository = new ItemRepository();
+            var calculatorController = new CalculatorController(itemRepository);
+            BootstrapController(calculatorController);
+
+            var result = await calculatorController.ComputeCost();
+            
+            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+            Assert.NotNull(result.Value);
+
+            var dto = (ComputeCostDto)result.Value;
+            
+            Assert.Equal(0, dto.TotalCost);
+        }
+        
+        [Fact]
+        public async Task CostOfOneItem_OneShoppingItem()
+        {
+            var itemRepository = new ItemRepository();
+
+            var itemController = new ItemController(itemRepository);
+            
+            var postNewPotatoItemDto = new PostNewItemDto
+            {
+                Code = "potato"
+            };
+            
+            var postNewItemResult = await itemController.Post(postNewPotatoItemDto);
+            Assert.Equal((int)HttpStatusCode.OK, postNewItemResult.StatusCode);
+           
+            var calculatorController = new CalculatorController(itemRepository);
             BootstrapController(calculatorController);
 
             var result = await calculatorController.ComputeCost();
