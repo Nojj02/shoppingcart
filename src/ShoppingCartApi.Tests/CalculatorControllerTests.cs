@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,7 @@ namespace ShoppingCartApi.Tests
             var calculatorController = new CalculatorController(itemRepository);
             BootstrapController(calculatorController);
 
-            var result = await calculatorController.ComputeCost();
+            var result = await calculatorController.ComputeCost(new CalculatorComputeCostRequestDto());
             
             Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
             Assert.NotNull(result.Value);
@@ -52,7 +53,20 @@ namespace ShoppingCartApi.Tests
             var calculatorController = new CalculatorController(itemRepository);
             BootstrapController(calculatorController);
 
-            var result = await calculatorController.ComputeCost();
+            var calculatorComputeCostRequestDto =
+                new CalculatorComputeCostRequestDto
+                {
+                    ShoppingItems = new List<ShoppingItemDto>
+                    {
+                        new ShoppingItemDto
+                        {
+                            ItemCode = "potato",
+                            Quantity = 1
+                        }
+                    }
+                };
+
+            var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
             
             Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
             Assert.NotNull(result.Value);
