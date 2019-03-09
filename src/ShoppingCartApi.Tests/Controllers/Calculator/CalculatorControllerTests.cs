@@ -11,6 +11,7 @@ using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Tests.Helpers;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace ShoppingCartApi.Tests
 {
@@ -32,9 +33,19 @@ namespace ShoppingCartApi.Tests
             
             Assert.Equal(0, dto.TotalCost);
         }
-        
-        [Fact]
-        public async Task CostOfOneItem_OneShoppingItem()
+
+        public static IEnumerable<object[]> TestData =>
+            new List<object[]>
+            {
+                new object[] { ScenarioReturnsCostOfSingleItem.ShoppingItemDtos, ScenarioReturnsCostOfSingleItem.ExpectedCost },
+                new object[] { ScenarioReturnsCostOfTwoItemsWithSingleQuantity.ShoppingItemDtos, ScenarioReturnsCostOfTwoItemsWithSingleQuantity.ExpectedCost }
+            };
+
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public async Task ReturnsTotalCost_ShoppingItems(
+            IEnumerable<ShoppingItemDto> shoppingItemDtos,
+            decimal expectedCost)
         {
             var itemRepository = new ItemRepository();
 
@@ -56,14 +67,7 @@ namespace ShoppingCartApi.Tests
             var calculatorComputeCostRequestDto =
                 new CalculatorComputeCostRequestDto
                 {
-                    ShoppingItems = new List<ShoppingItemDto>
-                    {
-                        new ShoppingItemDto
-                        {
-                            ItemCode = "potato",
-                            Quantity = 1
-                        }
-                    }
+                    ShoppingItems = shoppingItemDtos
                 };
 
             var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
@@ -73,64 +77,42 @@ namespace ShoppingCartApi.Tests
 
             var dto = (CalculatorComputeCostDto)result.Value;
             
-            Assert.Equal(30, dto.TotalCost);
+            Assert.Equal(expectedCost, dto.TotalCost);
         }
-        
-        [Fact]
-        public async Task CostOfTwoItems_TwoShoppingItems()
+
+        public class ScenarioReturnsCostOfSingleItem
         {
-            var itemRepository = new ItemRepository();
-
-            var itemController = new ItemController(itemRepository);
-            BootstrapController(itemController);
-            
-            var postNewPotatoItemDto = new PostRequestDto
-            {
-                Code = "potato",
-                Price = 30
-            };
-            
-            var postNewPotatoItemResult = await itemController.Post(postNewPotatoItemDto);
-            Assert.Equal((int)HttpStatusCode.Created, postNewPotatoItemResult.StatusCode);
-           
-            var postNewLettuceItemDto = new PostRequestDto
-            {
-                Code = "lettuce",
-                Price = 50
-            };
-
-            var postNewLettuceItemResult = await itemController.Post(postNewLettuceItemDto);
-            Assert.Equal((int)HttpStatusCode.Created, postNewLettuceItemResult.StatusCode);
-            
-            var calculatorController = new CalculatorController(itemRepository);
-            BootstrapController(calculatorController);
-
-            var calculatorComputeCostRequestDto =
-                new CalculatorComputeCostRequestDto
-                {
-                    ShoppingItems = new List<ShoppingItemDto>
+            public static List<ShoppingItemDto> ShoppingItemDtos =>
+                new List<ShoppingItemDto>
                     {
                         new ShoppingItemDto
                         {
                             ItemCode = "potato",
                             Quantity = 1
-                        },
-                        new ShoppingItemDto
-                        {
-                            ItemCode = "lettuce",
-                            Quantity = 1
                         }
+                    };
+
+            public static decimal ExpectedCost => 30;
+        }
+
+        public class ScenarioReturnsCostOfTwoItemsWithSingleQuantity
+        {
+            public static List<ShoppingItemDto> ShoppingItemDtos =>
+                new List<ShoppingItemDto>
+                {
+                    new ShoppingItemDto
+                    {
+                        ItemCode = "potato",
+                        Quantity = 1
+                    },
+                    new ShoppingItemDto
+                    {
+                        ItemCode = "lettuce",
+                        Quantity = 1
                     }
                 };
 
-            var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
-            
-            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
-            Assert.NotNull(result.Value);
-
-            var dto = (CalculatorComputeCostDto)result.Value;
-            
-            Assert.Equal(80, dto.TotalCost);
+            public static decimal ExpectedCost => 80;
         }
 
         private void BootstrapController(Controller controller)

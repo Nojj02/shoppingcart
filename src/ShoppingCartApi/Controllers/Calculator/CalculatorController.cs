@@ -42,7 +42,7 @@ namespace ShoppingCartApi.Controllers.Calculator
             ShoppingItems = new List<ShoppingItemDto>();
         }
         
-        public List<ShoppingItemDto> ShoppingItems { get; set; }
+        public IEnumerable<ShoppingItemDto> ShoppingItems { get; set; }
     }
 
     public class ShoppingItemDto
