@@ -18,15 +18,19 @@ namespace ShoppingCartApi.Controllers.Calculator
         // GET
         public async Task<ObjectResult> ComputeCost(CalculatorComputeCostRequestDto requestDto)
         {
-            var shoppingItem = requestDto.ShoppingItems.FirstOrDefault();
-            
-            var item = shoppingItem == null 
-                       ? null 
-                       : _itemRepository.Get(shoppingItem.ItemCode);
+
+            var totalCost =
+                requestDto.ShoppingItems
+                    .Sum(shoppingItem =>
+                    {
+                        var item = _itemRepository.Get(shoppingItem.ItemCode);
+
+                        return item != null ? item.Price : 0;
+                    });
             
             return Ok(new CalculatorComputeCostDto
             {
-                TotalCost = item?.Price ?? 0m
+                TotalCost = totalCost
             });
         }
     }
