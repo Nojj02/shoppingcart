@@ -29,17 +29,6 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             Assert.Equal(0, dto.TotalCost);
         }
 
-        public class MyTheoryData : TheoryData<List<ShoppingItemDto>, decimal>
-        {
-            public void AddTheory(
-                string testDescription,
-                List<ShoppingItemDto> shoppingItems,
-                decimal expectedTotalCost)
-            {
-                AddRow(testDescription, shoppingItems, expectedTotalCost);
-            }
-        }
-
         public class ReturnsTotalCostScenarioData
         {
             public List<ShoppingItemDto> ShoppingItems { get; set; }
@@ -85,6 +74,51 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                         },
                         ExpectedTotalCost = 80
                     }
+                },
+                {
+                    "TwoItems_DifferentQuantities",
+                    new ReturnsTotalCostScenarioData
+                    {
+                        ShoppingItems = new List<ShoppingItemDto>
+                        {
+                            new ShoppingItemDto
+                            {
+                                ItemCode = "potato",
+                                Quantity = 3
+                            },
+                            new ShoppingItemDto
+                            {
+                                ItemCode = "lettuce",
+                                Quantity = 1
+                            }
+                        },
+                        ExpectedTotalCost = 140
+                    }
+                },
+                {
+                    "ThreeItems_DifferentQuantities",
+                    new ReturnsTotalCostScenarioData
+                    {
+                        ShoppingItems = new List<ShoppingItemDto>
+                        {
+                            new ShoppingItemDto
+                            {
+                                ItemCode = "potato",
+                                Quantity = 3
+                            },
+                            new ShoppingItemDto
+                            {
+                                ItemCode = "lettuce",
+                                Quantity = 1
+                            },
+                            new ShoppingItemDto
+                            {
+                                ItemCode = "cabbage",
+                                Quantity = 2
+                            }
+                        },
+                        ExpectedTotalCost = 180
+                    }
                 }
             };
 
@@ -116,6 +150,15 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
             var postNewLettuceItemResult = await itemController.Post(postNewLettuceItemDto);
             Assert.Equal((int)HttpStatusCode.Created, postNewLettuceItemResult.StatusCode);
+
+            var postNewCabbageItemDto = new PostRequestDto
+            {
+                Code = "Cabbage",
+                Price = 20
+            };
+
+            var postNewCabbageItemResult = await itemController.Post(postNewCabbageItemDto);
+            Assert.Equal((int)HttpStatusCode.Created, postNewCabbageItemResult.StatusCode);
 
             var calculatorController = new CalculatorController(itemRepository);
             BootstrapController(calculatorController);

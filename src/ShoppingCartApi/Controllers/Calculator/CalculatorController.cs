@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace ShoppingCartApi.Controllers.Calculator
                     {
                         var item = _itemRepository.Get(shoppingItem.ItemCode);
 
-                        return item != null ? item.Price : 0;
+                        return item != null ? item.Price * Convert.ToDecimal(shoppingItem.Quantity) : 0;
                     });
             
             return Ok(new CalculatorComputeCostDto
