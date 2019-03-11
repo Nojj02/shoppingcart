@@ -1,15 +1,11 @@
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Routing;
-using ShoppingCartApi.Controllers;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Tests.Helpers;
 using Xunit;
 
-namespace ShoppingCartApi.Tests
+namespace ShoppingCartApi.Tests.Controllers.Item
 {
     public class ItemControllerTests
     {
