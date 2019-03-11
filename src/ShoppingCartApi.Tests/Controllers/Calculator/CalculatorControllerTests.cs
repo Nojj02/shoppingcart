@@ -33,55 +33,66 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
         {
             public void AddTheory(
                 string testDescription,
-                List<ShoppingItemDto> shoppingItems, 
+                List<ShoppingItemDto> shoppingItems,
                 decimal expectedTotalCost)
             {
                 AddRow(testDescription, shoppingItems, expectedTotalCost);
             }
         }
 
-        public static MyTheoryData ReturnsTotalCostScenarios
+        public class ReturnsTotalCostScenarioData
         {
-            get
-            {
-                var data = new MyTheoryData();
-                data.AddTheory(
-                    testDescription: "SingleItem_SingleQuantity",
-                    shoppingItems: new List<ShoppingItemDto>
-                    {
-                        new ShoppingItemDto
-                        {
-                            ItemCode = "potato",
-                            Quantity = 1
-                        }
-                    },
-                    expectedTotalCost: 30);
-                data.AddTheory(
-                    testDescription: "TwoItems_SingleQuantities",
-                    shoppingItems: new List<ShoppingItemDto>
-                    {
-                        new ShoppingItemDto
-                        {
-                            ItemCode = "potato",
-                            Quantity = 1
-                        },
-                        new ShoppingItemDto
-                        {
-                            ItemCode = "lettuce",
-                            Quantity = 1
-                        }
-                    },
-                    expectedTotalCost: 80);
-                return data;
-            }
+            public List<ShoppingItemDto> ShoppingItems { get; set; }
+
+            public decimal ExpectedTotalCost { get; set; }
         }
+
+        public static TheoryData ReturnsTotalCostScenarios =>
+            new TheoryData<string, ReturnsTotalCostScenarioData>
+            {
+                {
+                    "SingleItem_SingleQuantity",
+                    new ReturnsTotalCostScenarioData
+                    {
+                        ShoppingItems = 
+                            new List<ShoppingItemDto>
+                            {
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "potato",
+                                    Quantity = 1
+                                }
+                            },
+                        ExpectedTotalCost = 30
+                    }
+                },
+                {
+                    "TwoItems_SingleQuantities",
+                    new ReturnsTotalCostScenarioData
+                    {
+                        ShoppingItems = new List<ShoppingItemDto>
+                        {
+                            new ShoppingItemDto
+                            {
+                                ItemCode = "potato",
+                                Quantity = 1
+                            },
+                            new ShoppingItemDto
+                            {
+                                ItemCode = "lettuce",
+                                Quantity = 1
+                            }
+                        },
+                        ExpectedTotalCost = 80
+                    }
+                }
+            };
 
         [Theory]
         [MemberData(nameof(ReturnsTotalCostScenarios))]
         public async Task ReturnsTotalCost(
             string testDescription,
-            IEnumerable<ShoppingItemDto> shoppingItemDtos,
-            decimal expectedCost)
+            ReturnsTotalCostScenarioData scenarioData)
         {
             var itemRepository = new ItemRepository();
 
@@ -112,7 +123,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             var calculatorComputeCostRequestDto =
                 new CalculatorComputeCostRequestDto
                 {
-                    ShoppingItems = shoppingItemDtos
+                    ShoppingItems = scenarioData.ShoppingItems
                 };
 
             var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
@@ -122,7 +133,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
             var dto = (CalculatorComputeCostDto)result.Value;
 
-            Assert.Equal(expectedCost, dto.TotalCost);
+            Assert.Equal(scenarioData.ExpectedTotalCost, dto.TotalCost);
         }
 
         private void BootstrapController(Controller controller)
