@@ -7,6 +7,7 @@ using ShoppingCartApi.DataAccess;
 
 namespace ShoppingCartApi.Controllers
 {
+    [Route("calculator")]
     public class CalculatorController : Controller
     {
         private readonly IItemRepository _itemRepository;
@@ -17,7 +18,8 @@ namespace ShoppingCartApi.Controllers
         }
 
         // GET
-        public async Task<ObjectResult> ComputeCost(CalculatorComputeCostRequestDto requestDto)
+        [HttpPost("computeCost")]
+        public async Task<ObjectResult> ComputeCost([FromBody]CalculatorComputeCostRequestDto requestDto)
         {
 
             var totalCost =
