@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
 
-namespace ShoppingCartApi.Controllers
+namespace ShoppingCartApi.Controllers.Item
 {
     [Route("items")]
     public class ItemController : Controller
@@ -20,7 +19,7 @@ namespace ShoppingCartApi.Controllers
         [Route("")]
         public async Task<ObjectResult> Post([FromBody]PostRequestDto postRequestDto)
         {
-            var entity = new Item.Item(
+            var entity = new Controllers.Item.Item(
                 id: Guid.NewGuid(),
                 code: postRequestDto.Code,
                 price: postRequestDto.Price);

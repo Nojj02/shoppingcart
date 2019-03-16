@@ -2,10 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ShoppingCartApi.Controllers.Calculator;
 using ShoppingCartApi.DataAccess;
 
-namespace ShoppingCartApi.Controllers
+namespace ShoppingCartApi.Controllers.Calculator
 {
     [Route("calculator")]
     public class CalculatorController : Controller
