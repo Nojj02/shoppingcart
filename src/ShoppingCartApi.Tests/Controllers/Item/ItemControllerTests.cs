@@ -68,6 +68,37 @@ namespace ShoppingCartApi.Tests.Controllers.Item
         }
 
         [Fact]
+        public async Task ReturnsTheSameItem_PostsTheSameItemTwiceButUsesDataOfTheFirst()
+        {
+            var repository = new InMemoryItemRepository();
+            var itemController = new ItemController(repository);
+            BootstrapController(itemController);
+
+            var postNewPotatoItemDto = new PostRequestDto
+            {
+                Code = "potato",
+                Price = 30
+            };
+
+            await itemController.Post(postNewPotatoItemDto);
+
+            var postNewLettuceItemDto = new PostRequestDto
+            {
+                Code = "potato",
+                Price = 50
+            };
+
+            await itemController.Post(postNewLettuceItemDto);
+
+            var potatoResult = await itemController.GetByItemCode("potato");
+            Assert.Equal((int)HttpStatusCode.OK, potatoResult.StatusCode);
+
+            var potatoItemDto = (ItemDto)potatoResult.Value;
+            Assert.Equal("potato", potatoItemDto.Code);
+            Assert.Equal(30, potatoItemDto.Price);
+        }
+
+        [Fact]
         public async Task CanGetItems_PostMultipleItems()
         {
             var repository = new InMemoryItemRepository();
