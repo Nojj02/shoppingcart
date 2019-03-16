@@ -40,7 +40,7 @@ namespace ShoppingCartApi.DataAccess
                             code = code
                         });
 
-                return JsonConvert.DeserializeObject<Item>(content);
+                return content == null ? null : JsonConvert.DeserializeObject<Item>(content);
             }
         }
     }

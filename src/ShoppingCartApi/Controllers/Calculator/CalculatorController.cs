@@ -16,8 +16,8 @@ namespace ShoppingCartApi.Controllers.Calculator
             _itemRepository = itemRepository;
         }
 
-        // GET
-        [HttpPost("computeCost")]
+        [HttpPost]
+        [Route("computeCost")]
         public async Task<ObjectResult> ComputeCost([FromBody]CalculatorComputeCostRequestDto requestDto)
         {
 

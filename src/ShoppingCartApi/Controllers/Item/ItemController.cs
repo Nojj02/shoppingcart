@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Utilities.CustomActionResults;
 
 namespace ShoppingCartApi.Controllers.Item
 {
@@ -25,15 +26,12 @@ namespace ShoppingCartApi.Controllers.Item
             if (existingItem != null)
             {
                 var selfUrl = Url.Action("GetByItemCode", new { code = existingItem.Code });
-                HttpContext.Response.Headers.Add(Convert.ToString(HttpResponseHeader.Location), new StringValues(selfUrl));
-                return new ObjectResult(new ItemDto
+               
+                return new SeeOtherObjectResult(selfUrl, new ItemDto
                 {
                     Code = existingItem.Code,
                     Price = existingItem.Price
-                })
-                {
-                    StatusCode = (int)HttpStatusCode.SeeOther
-                };
+                });
             }
             else
             {
