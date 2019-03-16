@@ -13,7 +13,7 @@ CREATE TABLE "shoppingcart"."item"
     --"event_type" CHARACTER VARYING(100) COLLATE pg_catalog."default"  NOT NULL,
     --"event" jsonb NOT NULL,
     "content" jsonb NOT NULL,
-    "type" CHARACTER VARYING(255) COLLATE pg_catalog."default" NOT NULL,
+    -- "type" CHARACTER VARYING(255) COLLATE pg_catalog."default" NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "item_pkey" PRIMARY KEY ("db_id")
     --,CONSTRAINT "version_uq" UNIQUE ("id", "version")
@@ -27,14 +27,14 @@ CREATE TABLE "shoppingcart"."cart"
 (
     "db_id" bigserial NOT NULL,
     "id" uuid NOT NULL,
-    "version" bigint NOT NULL,
-    "event_type" CHARACTER VARYING(100) COLLATE pg_catalog."default"  NOT NULL,
-    "event" jsonb NOT NULL,
-    -- "content" jsonb NOT NULL,
+    -- "version" bigint NOT NULL,
+    -- "event_type" CHARACTER VARYING(100) COLLATE pg_catalog."default"  NOT NULL,
+    -- "event" jsonb NOT NULL,
+    "content" jsonb NOT NULL,
     -- "type" CHARACTER VARYING(255) COLLATE pg_catalog."default" NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "cart_pkey" PRIMARY KEY ("db_id")
-    ,CONSTRAINT "version_uq" UNIQUE ("id", "version")
+    -- ,CONSTRAINT "version_uq" UNIQUE ("id", "version")
 );
 
 ALTER TABLE "shoppingcart"."cart"
@@ -49,7 +49,7 @@ CREATE TABLE "shoppingcart"."coupon"
     --"event_type" CHARACTER VARYING(100) COLLATE pg_catalog."default"  NOT NULL,
     --"event" jsonb NOT NULL,
     "content" jsonb NOT NULL,
-    "type" CHARACTER VARYING(255) COLLATE pg_catalog."default" NOT NULL,
+    -- "type" CHARACTER VARYING(255) COLLATE pg_catalog."default" NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "coupon_pkey" PRIMARY KEY ("db_id")
     --,CONSTRAINT "version_uq" UNIQUE ("id", "version")

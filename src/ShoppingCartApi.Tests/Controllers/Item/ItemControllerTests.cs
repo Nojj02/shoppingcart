@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
+using ShoppingCartApi.Controllers;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Tests.Helpers;
@@ -12,7 +13,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
         [Fact]
         public async Task Returns404_GetNonExistentItem()
         {
-            var repository = new ItemRepository();
+            var repository = new InMemoryItemRepository();
             var itemController = new ItemController(repository);
             BootstrapController(itemController);
 
@@ -25,7 +26,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
         [Fact]
         public async Task RespondsWithCreated_PostNewItem()
         {
-            var repository = new ItemRepository();
+            var repository = new InMemoryItemRepository();
             var itemController = new ItemController(repository);
             BootstrapController(itemController);
 
@@ -45,7 +46,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
         [Fact]
         public async Task CanGetItem_PostNewItem()
         {
-            var repository = new ItemRepository();
+            var repository = new InMemoryItemRepository();
             var itemController = new ItemController(repository);
             BootstrapController(itemController);
 
@@ -69,7 +70,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
         [Fact]
         public async Task CanGetItems_PostMultipleItems()
         {
-            var repository = new ItemRepository();
+            var repository = new InMemoryItemRepository();
             var itemController = new ItemController(repository);
             BootstrapController(itemController);
 

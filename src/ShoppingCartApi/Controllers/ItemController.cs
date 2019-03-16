@@ -1,38 +1,44 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
 
-namespace ShoppingCartApi.Controllers.Item
+namespace ShoppingCartApi.Controllers
 {
     [Route("items")]
     public class ItemController : Controller
     {
-        private readonly ItemRepository _repository;
+        private readonly IItemRepository _repository;
 
-        public ItemController(ItemRepository repository)
+        public ItemController(IItemRepository repository)
         {
             _repository = repository;
         }
 
         [HttpPost]
-        public async Task<ObjectResult> Post(PostRequestDto postRequestDto)
+        [Route("")]
+        public async Task<ObjectResult> Post([FromBody]PostRequestDto postRequestDto)
         {
-            var entity = new Item(
+            var entity = new Item.Item(
+                id: Guid.NewGuid(),
                 code: postRequestDto.Code,
                 price: postRequestDto.Price);
-            _repository.Save(entity);
-            
-            return Created(Url.Action("GetByItemCode"), new ItemDto
+            await _repository.Save(entity);
+
+            var selfUrl = Url.Action("GetByItemCode", new { code = entity.Code });
+            return Created(selfUrl, new ItemDto
             {
                 Code = entity.Code,
                 Price = entity.Price
             });
         }
 
-        [HttpGet("{code}")]
+        [HttpGet]
+        [Route("{code}")]
         public async Task<ObjectResult> GetByItemCode(string code)
         {
-            var entity = _repository.Get(code);
+            var entity = await _repository.Get(code);
             if (entity == null)
             {
                 return NotFound(code);

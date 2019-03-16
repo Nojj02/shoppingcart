@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xunit;
@@ -48,7 +49,7 @@ namespace ShoppingCartApi.IntegrationTests
                                 })
                 };
 
-            var httpContent = new StringContent(JsonConvert.SerializeObject(computeCostDto));
+            var httpContent = new StringContent(JsonConvert.SerializeObject(computeCostDto), Encoding.UTF8, "application/json");
             var postRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
@@ -80,10 +81,11 @@ namespace ShoppingCartApi.IntegrationTests
             {
                 var itemDto = new
                 {
-                    item.Code
+                    Code = item.Code,
+                    Price = item.Price
                 };
 
-                var httpContent = new StringContent(JsonConvert.SerializeObject(itemDto));
+                var httpContent = new StringContent(JsonConvert.SerializeObject(itemDto), Encoding.UTF8, "application/json");
 
                 var postRequestMessage =
                     new HttpRequestMessage(

@@ -1,17 +1,17 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingCartApi.Controllers.Calculator;
 using ShoppingCartApi.DataAccess;
 
-namespace ShoppingCartApi.Controllers.Calculator
+namespace ShoppingCartApi.Controllers
 {
     public class CalculatorController : Controller
     {
-        private readonly ItemRepository _itemRepository;
+        private readonly IItemRepository _itemRepository;
 
-        public CalculatorController(ItemRepository itemRepository)
+        public CalculatorController(IItemRepository itemRepository)
         {
             _itemRepository = itemRepository;
         }
@@ -24,7 +24,7 @@ namespace ShoppingCartApi.Controllers.Calculator
                 requestDto.ShoppingItems
                     .Sum(shoppingItem =>
                     {
-                        var item = _itemRepository.Get(shoppingItem.ItemCode);
+                        var item = _itemRepository.Get(shoppingItem.ItemCode).GetAwaiter().GetResult();
 
                         return item != null ? item.Price * Convert.ToDecimal(shoppingItem.Quantity) : 0;
                     });
@@ -34,22 +34,5 @@ namespace ShoppingCartApi.Controllers.Calculator
                 TotalCost = totalCost
             });
         }
-    }
-
-    public class CalculatorComputeCostRequestDto
-    {
-        public CalculatorComputeCostRequestDto()
-        {
-            ShoppingItems = new List<ShoppingItemDto>();
-        }
-        
-        public IEnumerable<ShoppingItemDto> ShoppingItems { get; set; }
-    }
-
-    public class ShoppingItemDto
-    {
-        public string ItemCode { get; set; }
-        
-        public double Quantity { get; set; }
     }
 }

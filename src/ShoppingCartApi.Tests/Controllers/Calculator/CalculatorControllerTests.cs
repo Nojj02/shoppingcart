@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingCartApi.Controllers;
 using ShoppingCartApi.Controllers.Calculator;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
@@ -15,7 +16,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
         [Fact]
         public async Task CostIsZero_NoShoppingItems()
         {
-            var itemRepository = new ItemRepository();
+            var itemRepository = new InMemoryItemRepository();
             var calculatorController = new CalculatorController(itemRepository);
             BootstrapController(calculatorController);
 
@@ -42,7 +43,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             string testDescription,
             ReturnsTotalCostScenarioData scenarioData)
         {
-            var itemRepository = new ItemRepository();
+            var itemRepository = new InMemoryItemRepository();
 
             var itemController = new ItemController(itemRepository);
             BootstrapController(itemController);

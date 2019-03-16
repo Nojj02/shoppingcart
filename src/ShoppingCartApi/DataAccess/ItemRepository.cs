@@ -1,21 +1,47 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using System.Threading.Tasks;
+using Dapper;
+using Newtonsoft.Json;
+using Npgsql;
 using ShoppingCartApi.Controllers.Item;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class ItemRepository
+    public class ItemRepository : IItemRepository
     {
-        private readonly List<Item> _items = new List<Item>();
+        private const string ConnectionString = "Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=thepassword;";
 
-        public void Save(Item item)
+        public async Task Save(Item item)
         {
-            _items.Add(item);
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                await connection.ExecuteAsync(
+                    "INSERT INTO shoppingcart.item (id, content, timestamp) VALUES (@id, @content::jsonb, @timestamp)",
+                    new
+                    {
+                        id = item.Id,
+                        content = JsonConvert.SerializeObject(item),
+                        timestamp = DateTimeOffset.UtcNow
+                    });
+            }
         }
 
-        public Item Get(string code)
+        public async Task<Item> Get(string code)
         {
-            return _items.SingleOrDefault(x => x.Code == code);
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                var content = 
+                    await connection.QuerySingleOrDefaultAsync<string>(
+                        "SELECT content " +
+                        "FROM shoppingcart.item " +
+                        "WHERE content->>'Code' = @code",
+                        new
+                        {
+                            code = code
+                        });
+
+                return JsonConvert.DeserializeObject<Item>(content);
+            }
         }
     }
 }
