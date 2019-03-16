@@ -12,6 +12,11 @@ namespace ShoppingCartApi.IntegrationTests
 {
     public class ComputeCostTests
     {
+        public ComputeCostTests()
+        {
+            DatabaseHelper.DeleteAllData();
+        }
+
         [Fact]
         public async Task CreateNewItem()
         {
