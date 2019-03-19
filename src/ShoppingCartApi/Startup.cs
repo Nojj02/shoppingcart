@@ -28,7 +28,7 @@ namespace ShoppingCartApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IItemRepository, ItemRepository>(x => new ItemRepository(Configuration.GetConnectionString(ConfigurationKeys.ConnectionString.Postgres)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

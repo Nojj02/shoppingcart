@@ -20,12 +20,18 @@ namespace ShoppingCartApi.Controllers.Calculator
         [Route("computeCost")]
         public async Task<ObjectResult> ComputeCost([FromBody]CalculatorComputeCostRequestDto requestDto)
         {
+            var shoppingItemCodes =
+                requestDto.ShoppingItems
+                    .Select(shoppingItemDto => shoppingItemDto.ItemCode)
+                    .ToList();
+
+            var allMatchingItems = await _itemRepository.GetAsync(shoppingItemCodes);
 
             var totalCost =
                 requestDto.ShoppingItems
                     .Sum(shoppingItem =>
                     {
-                        var item = _itemRepository.Get(shoppingItem.ItemCode).GetAwaiter().GetResult();
+                        var item = allMatchingItems.SingleOrDefault(matchingItem => matchingItem.Code == shoppingItem.ItemCode);
 
                         return item != null ? item.Price * Convert.ToDecimal(shoppingItem.Quantity) : 0;
                     });

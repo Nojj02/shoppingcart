@@ -9,6 +9,8 @@ services:
       - "9050:9050"
     depends_on:
       - postgres
+    environment:
+      - ConnectionStrings__Postgres=Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=thepassword
 
   postgres:
     container_name: shoppingcart-postgres

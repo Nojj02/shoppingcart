@@ -10,15 +10,21 @@ namespace ShoppingCartApi.DataAccess
     {
         private readonly List<Item> _items = new List<Item>();
 
-        public Task Save(Item item)
+        public Task SaveAsync(Item item)
         {
             _items.Add(item);
             return Task.CompletedTask;
         }
 
-        public Task<Item> Get(string code)
+        public Task<Item> GetAsync(string code)
         {
             var result = _items.SingleOrDefault(x => x.Code == code);
+            return Task.FromResult(result);
+        }
+
+        public Task<IReadOnlyList<Item>> GetAsync(IEnumerable<string> code)
+        {
+            var result = _items.Where(x => code.Contains(x.Code)).ToList() as IReadOnlyList<Item>;
             return Task.FromResult(result);
         }
     }

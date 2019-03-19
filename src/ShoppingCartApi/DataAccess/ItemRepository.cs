@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Newtonsoft.Json;
@@ -9,11 +11,16 @@ namespace ShoppingCartApi.DataAccess
 {
     public class ItemRepository : IItemRepository
     {
-        private const string ConnectionString = "Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=thepassword;";
-
-        public async Task Save(Item item)
+        private string _connectionString;
+        
+        public ItemRepository(string connectionString)
         {
-            using (var connection = new NpgsqlConnection(ConnectionString))
+            _connectionString = connectionString;
+        }
+
+        public async Task SaveAsync(Item item)
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
                 await connection.ExecuteAsync(
                     "INSERT INTO shoppingcart.item (id, content, timestamp) VALUES (@id, @content::jsonb, @timestamp)",
@@ -26,9 +33,9 @@ namespace ShoppingCartApi.DataAccess
             }
         }
 
-        public async Task<Item> Get(string code)
+        public async Task<Item> GetAsync(string code)
         {
-            using (var connection = new NpgsqlConnection(ConnectionString))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
                 var content = 
                     await connection.QuerySingleOrDefaultAsync<string>(
@@ -41,6 +48,24 @@ namespace ShoppingCartApi.DataAccess
                         });
 
                 return content == null ? null : JsonConvert.DeserializeObject<Item>(content);
+            }
+        }
+
+        public async Task<IReadOnlyList<Item>> GetAsync(IEnumerable<string> codes)
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                var content =
+                    await connection.QueryAsync<string>(
+                        "SELECT content " +
+                        "FROM shoppingcart.item " +
+                        "WHERE content->>'Code' = ANY(@codes)",
+                        new
+                        {
+                            codes = codes.ToArray()
+                        });
+
+                return content.Select(JsonConvert.DeserializeObject<Item>).ToList();
             }
         }
     }

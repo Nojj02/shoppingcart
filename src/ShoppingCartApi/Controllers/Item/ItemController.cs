@@ -22,7 +22,7 @@ namespace ShoppingCartApi.Controllers.Item
         [Route("")]
         public async Task<ObjectResult> Post([FromBody]PostRequestDto postRequestDto)
         {
-            var existingItem = await _repository.Get(postRequestDto.Code);
+            var existingItem = await _repository.GetAsync(postRequestDto.Code);
             if (existingItem != null)
             {
                 var selfUrl = Url.Action("GetByItemCode", new { code = existingItem.Code });
@@ -39,7 +39,7 @@ namespace ShoppingCartApi.Controllers.Item
                     id: Guid.NewGuid(),
                     code: postRequestDto.Code,
                     price: postRequestDto.Price);
-                await _repository.Save(entity);
+                await _repository.SaveAsync(entity);
 
                 var selfUrl = Url.Action("GetByItemCode", new { code = entity.Code });
                 return Created(selfUrl, new ItemDto
@@ -54,7 +54,7 @@ namespace ShoppingCartApi.Controllers.Item
         [Route("{code}")]
         public async Task<ObjectResult> GetByItemCode(string code)
         {
-            var entity = await _repository.Get(code);
+            var entity = await _repository.GetAsync(code);
             if (entity == null)
             {
                 return NotFound(code);
