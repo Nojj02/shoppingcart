@@ -13,172 +13,175 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 {
     public class CalculatorControllerTests
     {
-        [Fact]
-        public async Task CostIsZero_NoShoppingItems()
+        public class ComputeCost : CalculatorControllerTests
         {
-            var itemRepository = new InMemoryItemRepository();
-            var calculatorController = new CalculatorController(itemRepository);
-            BootstrapController(calculatorController);
-
-            var result = await calculatorController.ComputeCost(new CalculatorComputeCostRequestDto());
-
-            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
-            Assert.NotNull(result.Value);
-
-            var dto = (CalculatorComputeCostDto)result.Value;
-
-            Assert.Equal(0, dto.TotalCost);
-        }
-
-        public class ReturnsTotalCostScenarioData
-        {
-            public List<ShoppingItemDto> ShoppingItems { get; set; }
-
-            public decimal ExpectedTotalCost { get; set; }
-        }
-
-        [Theory]
-        [MemberData(nameof(ReturnsTotalCostScenarios))]
-        public async Task ReturnsTotalCost(
-            string testDescription,
-            ReturnsTotalCostScenarioData scenarioData)
-        {
-            var itemRepository = new InMemoryItemRepository();
-
-            var itemController = new ItemController(itemRepository);
-            BootstrapController(itemController);
-
-            var postNewPotatoItemDto = new PostRequestDto
+            [Fact]
+            public async Task CostIsZero_NoShoppingItems()
             {
-                Code = "potato",
-                Price = 30
-            };
+                var itemRepository = new InMemoryItemRepository();
+                var calculatorController = new CalculatorController(itemRepository);
+                BootstrapController(calculatorController);
 
-            var postNewPotatoItemResult = await itemController.Post(postNewPotatoItemDto);
-            Assert.Equal((int)HttpStatusCode.Created, postNewPotatoItemResult.StatusCode);
+                var result = await calculatorController.ComputeCost(new CalculatorComputeCostRequestDto());
 
-            var postNewLettuceItemDto = new PostRequestDto
+                Assert.Equal((int) HttpStatusCode.OK, result.StatusCode);
+                Assert.NotNull(result.Value);
+
+                var dto = (CalculatorComputeCostDto) result.Value;
+
+                Assert.Equal(0, dto.TotalCost);
+            }
+
+            public class ReturnsTotalCostScenarioData
             {
-                Code = "lettuce",
-                Price = 50
-            };
+                public List<ShoppingItemDto> ShoppingItems { get; set; }
 
-            var postNewLettuceItemResult = await itemController.Post(postNewLettuceItemDto);
-            Assert.Equal((int)HttpStatusCode.Created, postNewLettuceItemResult.StatusCode);
+                public decimal ExpectedTotalCost { get; set; }
+            }
 
-            var postNewCabbageItemDto = new PostRequestDto
+            [Theory]
+            [MemberData(nameof(ReturnsTotalCostScenarios))]
+            public async Task ReturnsTotalCost(
+                string testDescription,
+                ReturnsTotalCostScenarioData scenarioData)
             {
-                Code = "cabbage",
-                Price = 20
-            };
+                var itemRepository = new InMemoryItemRepository();
 
-            var postNewCabbageItemResult = await itemController.Post(postNewCabbageItemDto);
-            Assert.Equal((int)HttpStatusCode.Created, postNewCabbageItemResult.StatusCode);
+                var itemController = new ItemController(itemRepository);
+                BootstrapController(itemController);
 
-            var calculatorController = new CalculatorController(itemRepository);
-            BootstrapController(calculatorController);
-
-            var calculatorComputeCostRequestDto =
-                new CalculatorComputeCostRequestDto
+                var postNewPotatoItemDto = new PostRequestDto
                 {
-                    ShoppingItems = scenarioData.ShoppingItems
+                    Code = "potato",
+                    Price = 30
                 };
 
-            var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
+                var postNewPotatoItemResult = await itemController.Post(postNewPotatoItemDto);
+                Assert.Equal((int) HttpStatusCode.Created, postNewPotatoItemResult.StatusCode);
 
-            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
-            Assert.NotNull(result.Value);
-
-            var dto = (CalculatorComputeCostDto)result.Value;
-
-            Assert.Equal(scenarioData.ExpectedTotalCost, dto.TotalCost);
-        }
-
-        public static TheoryData ReturnsTotalCostScenarios =>
-            new TheoryData<string, ReturnsTotalCostScenarioData>
-            {
+                var postNewLettuceItemDto = new PostRequestDto
                 {
-                    "SingleItem_SingleQuantity",
-                    new ReturnsTotalCostScenarioData
+                    Code = "lettuce",
+                    Price = 50
+                };
+
+                var postNewLettuceItemResult = await itemController.Post(postNewLettuceItemDto);
+                Assert.Equal((int) HttpStatusCode.Created, postNewLettuceItemResult.StatusCode);
+
+                var postNewCabbageItemDto = new PostRequestDto
+                {
+                    Code = "cabbage",
+                    Price = 20
+                };
+
+                var postNewCabbageItemResult = await itemController.Post(postNewCabbageItemDto);
+                Assert.Equal((int) HttpStatusCode.Created, postNewCabbageItemResult.StatusCode);
+
+                var calculatorController = new CalculatorController(itemRepository);
+                BootstrapController(calculatorController);
+
+                var calculatorComputeCostRequestDto =
+                    new CalculatorComputeCostRequestDto
                     {
-                        ShoppingItems =
-                            new List<ShoppingItemDto>
+                        ShoppingItems = scenarioData.ShoppingItems
+                    };
+
+                var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
+
+                Assert.Equal((int) HttpStatusCode.OK, result.StatusCode);
+                Assert.NotNull(result.Value);
+
+                var dto = (CalculatorComputeCostDto) result.Value;
+
+                Assert.Equal(scenarioData.ExpectedTotalCost, dto.TotalCost);
+            }
+
+            public static TheoryData ReturnsTotalCostScenarios =>
+                new TheoryData<string, ReturnsTotalCostScenarioData>
+                {
+                    {
+                        "SingleItem_SingleQuantity",
+                        new ReturnsTotalCostScenarioData
+                        {
+                            ShoppingItems =
+                                new List<ShoppingItemDto>
+                                {
+                                    new ShoppingItemDto
+                                    {
+                                        ItemCode = "potato",
+                                        Quantity = 1
+                                    }
+                                },
+                            ExpectedTotalCost = 30
+                        }
+                    },
+                    {
+                        "TwoItems_SingleQuantities",
+                        new ReturnsTotalCostScenarioData
+                        {
+                            ShoppingItems = new List<ShoppingItemDto>
                             {
                                 new ShoppingItemDto
                                 {
                                     ItemCode = "potato",
                                     Quantity = 1
+                                },
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "lettuce",
+                                    Quantity = 1
                                 }
                             },
-                        ExpectedTotalCost = 30
-                    }
-                },
-                {
-                    "TwoItems_SingleQuantities",
-                    new ReturnsTotalCostScenarioData
+                            ExpectedTotalCost = 80
+                        }
+                    },
                     {
-                        ShoppingItems = new List<ShoppingItemDto>
+                        "TwoItems_DifferentQuantities",
+                        new ReturnsTotalCostScenarioData
                         {
-                            new ShoppingItemDto
+                            ShoppingItems = new List<ShoppingItemDto>
                             {
-                                ItemCode = "potato",
-                                Quantity = 1
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "potato",
+                                    Quantity = 3
+                                },
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "lettuce",
+                                    Quantity = 1
+                                }
                             },
-                            new ShoppingItemDto
-                            {
-                                ItemCode = "lettuce",
-                                Quantity = 1
-                            }
-                        },
-                        ExpectedTotalCost = 80
-                    }
-                },
-                {
-                    "TwoItems_DifferentQuantities",
-                    new ReturnsTotalCostScenarioData
+                            ExpectedTotalCost = 140
+                        }
+                    },
                     {
-                        ShoppingItems = new List<ShoppingItemDto>
+                        "ThreeItems_DifferentQuantities",
+                        new ReturnsTotalCostScenarioData
                         {
-                            new ShoppingItemDto
+                            ShoppingItems = new List<ShoppingItemDto>
                             {
-                                ItemCode = "potato",
-                                Quantity = 3
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "potato",
+                                    Quantity = 3
+                                },
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "lettuce",
+                                    Quantity = 1
+                                },
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "cabbage",
+                                    Quantity = 2
+                                }
                             },
-                            new ShoppingItemDto
-                            {
-                                ItemCode = "lettuce",
-                                Quantity = 1
-                            }
-                        },
-                        ExpectedTotalCost = 140
+                            ExpectedTotalCost = 180
+                        }
                     }
-                },
-                {
-                    "ThreeItems_DifferentQuantities",
-                    new ReturnsTotalCostScenarioData
-                    {
-                        ShoppingItems = new List<ShoppingItemDto>
-                        {
-                            new ShoppingItemDto
-                            {
-                                ItemCode = "potato",
-                                Quantity = 3
-                            },
-                            new ShoppingItemDto
-                            {
-                                ItemCode = "lettuce",
-                                Quantity = 1
-                            },
-                            new ShoppingItemDto
-                            {
-                                ItemCode = "cabbage",
-                                Quantity = 2
-                            }
-                        },
-                        ExpectedTotalCost = 180
-                    }
-                }
-            };
+                };
+        }
 
         private void BootstrapController(Controller controller)
         {

@@ -10,131 +10,137 @@ namespace ShoppingCartApi.Tests.Controllers.Item
 {
     public class ItemControllerTests
     {
-        [Fact]
-        public async Task Returns404_GetNonExistentItem()
+        public class GetByItemCode : ItemControllerTests
         {
-            var repository = new InMemoryItemRepository();
-            var itemController = new ItemController(repository);
-            BootstrapController(itemController);
+            [Fact]
+            public async Task Returns404_GetNonExistentItem()
+            {
+                var repository = new InMemoryItemRepository();
+                var itemController = new ItemController(repository);
+                BootstrapController(itemController);
 
-            var result = await itemController.GetByItemCode("unknown");
+                var result = await itemController.GetByItemCode("unknown");
 
-            Assert.Equal((int)HttpStatusCode.NotFound, result.StatusCode);
-            Assert.Equal("unknown", result.Value);
+                Assert.Equal((int)HttpStatusCode.NotFound, result.StatusCode);
+                Assert.Equal("unknown", result.Value);
+            }
         }
 
-        [Fact]
-        public async Task RespondsWithCreated_PostNewItem()
+        public class Post : ItemControllerTests
         {
-            var repository = new InMemoryItemRepository();
-            var itemController = new ItemController(repository);
-            BootstrapController(itemController);
-
-            var postNewItemDto = new PostRequestDto
+            [Fact]
+            public async Task RespondsWithCreated_PostNewItem()
             {
-                Code = "lettuce"
-            };
+                var repository = new InMemoryItemRepository();
+                var itemController = new ItemController(repository);
+                BootstrapController(itemController);
 
-            var result = await itemController.Post(postNewItemDto);
-            Assert.Equal((int)HttpStatusCode.Created, result.StatusCode);
+                var postNewItemDto = new PostRequestDto
+                {
+                    Code = "lettuce"
+                };
 
-            var itemDto = (ItemDto)result.Value;
+                var result = await itemController.Post(postNewItemDto);
+                Assert.Equal((int) HttpStatusCode.Created, result.StatusCode);
 
-            Assert.Equal("lettuce", itemDto.Code);
-        }
+                var itemDto = (ItemDto) result.Value;
 
-        [Fact]
-        public async Task CanGetItem_PostNewItem()
-        {
-            var repository = new InMemoryItemRepository();
-            var itemController = new ItemController(repository);
-            BootstrapController(itemController);
+                Assert.Equal("lettuce", itemDto.Code);
+            }
 
-            var postNewItemDto = new PostRequestDto
+            [Fact]
+            public async Task CanGetItem_PostNewItem()
             {
-                Code = "lettuce"
-            };
+                var repository = new InMemoryItemRepository();
+                var itemController = new ItemController(repository);
+                BootstrapController(itemController);
 
-            await itemController.Post(postNewItemDto);
+                var postNewItemDto = new PostRequestDto
+                {
+                    Code = "lettuce"
+                };
 
-            var anotherItemController = new ItemController(repository);
-            BootstrapController(anotherItemController);
-            var result = await anotherItemController.GetByItemCode("lettuce");
-            Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+                await itemController.Post(postNewItemDto);
 
-            var itemDto = (ItemDto)result.Value;
+                var anotherItemController = new ItemController(repository);
+                BootstrapController(anotherItemController);
+                var result = await anotherItemController.GetByItemCode("lettuce");
+                Assert.Equal((int) HttpStatusCode.OK, result.StatusCode);
 
-            Assert.Equal("lettuce", itemDto.Code);
-        }
+                var itemDto = (ItemDto) result.Value;
 
-        [Fact]
-        public async Task ReturnsTheSameItem_PostsTheSameItemTwiceButUsesDataOfTheFirst()
-        {
-            var repository = new InMemoryItemRepository();
-            var itemController = new ItemController(repository);
-            BootstrapController(itemController);
+                Assert.Equal("lettuce", itemDto.Code);
+            }
 
-            var postNewPotatoItemDto = new PostRequestDto
+            [Fact]
+            public async Task GetReturnsTheSameItem_PostsTheSameItemTwiceButUsesDataOfTheFirst()
             {
-                Code = "potato",
-                Price = 30
-            };
+                var repository = new InMemoryItemRepository();
+                var itemController = new ItemController(repository);
+                BootstrapController(itemController);
 
-            await itemController.Post(postNewPotatoItemDto);
+                var postNewPotatoItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 30
+                };
 
-            var postNewLettuceItemDto = new PostRequestDto
+                await itemController.Post(postNewPotatoItemDto);
+
+                var postNewLettuceItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 50
+                };
+
+                await itemController.Post(postNewLettuceItemDto);
+
+                var potatoResult = await itemController.GetByItemCode("potato");
+                Assert.Equal((int) HttpStatusCode.OK, potatoResult.StatusCode);
+
+                var potatoItemDto = (ItemDto) potatoResult.Value;
+                Assert.Equal("potato", potatoItemDto.Code);
+                Assert.Equal(30, potatoItemDto.Price);
+            }
+
+            [Fact]
+            public async Task CanGetItems_PostMultipleItems()
             {
-                Code = "potato",
-                Price = 50
-            };
+                var repository = new InMemoryItemRepository();
+                var itemController = new ItemController(repository);
+                BootstrapController(itemController);
 
-            await itemController.Post(postNewLettuceItemDto);
+                var postNewPotatoItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 30
+                };
 
-            var potatoResult = await itemController.GetByItemCode("potato");
-            Assert.Equal((int)HttpStatusCode.OK, potatoResult.StatusCode);
+                await itemController.Post(postNewPotatoItemDto);
 
-            var potatoItemDto = (ItemDto)potatoResult.Value;
-            Assert.Equal("potato", potatoItemDto.Code);
-            Assert.Equal(30, potatoItemDto.Price);
-        }
+                var postNewLettuceItemDto = new PostRequestDto
+                {
+                    Code = "lettuce",
+                    Price = 50
+                };
 
-        [Fact]
-        public async Task CanGetItems_PostMultipleItems()
-        {
-            var repository = new InMemoryItemRepository();
-            var itemController = new ItemController(repository);
-            BootstrapController(itemController);
+                await itemController.Post(postNewLettuceItemDto);
 
-            var postNewPotatoItemDto = new PostRequestDto
-            {
-                Code = "potato",
-                Price = 30
-            };
+                var potatoResult = await itemController.GetByItemCode("potato");
+                Assert.Equal((int) HttpStatusCode.OK, potatoResult.StatusCode);
 
-            await itemController.Post(postNewPotatoItemDto);
+                var potatoItemDto = (ItemDto) potatoResult.Value;
+                Assert.Equal("potato", potatoItemDto.Code);
+                Assert.Equal(30, potatoItemDto.Price);
 
-            var postNewLettuceItemDto = new PostRequestDto
-            {
-                Code = "lettuce",
-                Price = 50
-            };
+                var lettuceResult = await itemController.GetByItemCode("lettuce");
+                Assert.Equal((int) HttpStatusCode.OK, lettuceResult.StatusCode);
 
-            await itemController.Post(postNewLettuceItemDto);
+                var lettuceItemDto = (ItemDto) lettuceResult.Value;
 
-            var potatoResult = await itemController.GetByItemCode("potato");
-            Assert.Equal((int)HttpStatusCode.OK, potatoResult.StatusCode);
-
-            var potatoItemDto = (ItemDto)potatoResult.Value;
-            Assert.Equal("potato", potatoItemDto.Code);
-            Assert.Equal(30, potatoItemDto.Price);
-
-            var lettuceResult = await itemController.GetByItemCode("lettuce");
-            Assert.Equal((int)HttpStatusCode.OK, lettuceResult.StatusCode);
-
-            var lettuceItemDto = (ItemDto) lettuceResult.Value;
-
-            Assert.Equal("lettuce", lettuceItemDto.Code);
-            Assert.Equal(50, lettuceItemDto.Price);
+                Assert.Equal("lettuce", lettuceItemDto.Code);
+                Assert.Equal(50, lettuceItemDto.Price);
+            }
         }
 
         private void BootstrapController(ItemController itemController)
