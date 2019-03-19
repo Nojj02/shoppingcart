@@ -18,7 +18,7 @@ namespace ShoppingCartApi.IntegrationTests
         }
 
         [Fact]
-        public async Task CreateNewItem()
+        public async Task ComputesTotalCostForItems()
         {
             await Steps.GivenAShopWithItems(
                 items: new List<dynamic>
@@ -35,6 +35,28 @@ namespace ShoppingCartApi.IntegrationTests
                     new {ItemCode = "apple", Quantity = 1}
                 },
                 expectedTotalCost: 160);
+        }
+
+        [Fact]
+        public async Task ItemsCanBeDiscounted()
+        {
+            await Steps.GivenAShopWithItems(
+                items: new List<dynamic>
+                {
+                    new {Code = "potato", Price = 30},
+                    new {Code = "apple", Price = 70},
+                    new {Code = "tomato", Price = 50}
+                });
+
+            await Steps.GivenItemIsDiscounted(itemCode: "potato", percentOff: 10);
+
+            await Steps.UserCanComputeTotalCostOfShoppingItems(
+                shoppingItems: new List<dynamic>
+                {
+                    new {ItemCode = "potato", Quantity = 3},
+                    new {ItemCode = "apple", Quantity = 1}
+                },
+                expectedTotalCost: 151);
         }
     }
 }

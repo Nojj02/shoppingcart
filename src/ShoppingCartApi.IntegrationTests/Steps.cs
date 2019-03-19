@@ -12,6 +12,35 @@ namespace ShoppingCartApi.IntegrationTests
 {
     public static class Steps
     {
+        public static async Task GivenAShopWithItems(List<dynamic> items)
+        {
+            foreach (var item in items)
+            {
+                var itemDto = new
+                {
+                    Code = item.Code,
+                    Price = item.Price
+                };
+
+                var httpContent = new StringContent(JsonConvert.SerializeObject(itemDto), Encoding.UTF8, "application/json");
+
+                var postRequestMessage =
+                    new HttpRequestMessage(
+                        method: HttpMethod.Post,
+                        requestUri: new Uri("http://localhost:9050/items"))
+                    {
+                        Content = httpContent
+                    };
+                
+                using (var httpClient = new HttpClient())
+                {
+                    var postResponse = await httpClient.SendAsync(postRequestMessage);
+
+                    Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+                }
+            }
+        }
+
         public static async Task UserCanComputeTotalCostOfShoppingItems(
             List<dynamic> shoppingItems,
             decimal expectedTotalCost)
@@ -55,32 +84,28 @@ namespace ShoppingCartApi.IntegrationTests
             }
         }
 
-        public static async Task GivenAShopWithItems(List<dynamic> items)
+        public static async Task GivenItemIsDiscounted(string itemCode, int percentOff)
         {
-            foreach (var item in items)
-            {
-                var itemDto = new
+            var setAsDiscountedDto =
+                new
                 {
-                    Code = item.Code,
-                    Price = item.Price
+                    PercentOff = percentOff
                 };
 
-                var httpContent = new StringContent(JsonConvert.SerializeObject(itemDto), Encoding.UTF8, "application/json");
-
-                var postRequestMessage =
-                    new HttpRequestMessage(
-                        method: HttpMethod.Post,
-                        requestUri: new Uri("http://localhost:9050/items"))
-                    {
-                        Content = httpContent
-                    };
-                
-                using (var httpClient = new HttpClient())
+            var httpContent = new StringContent(JsonConvert.SerializeObject(setAsDiscountedDto), Encoding.UTF8, "application/json");
+            var postRequestMessage =
+                new HttpRequestMessage(
+                    method: HttpMethod.Post,
+                    requestUri: new Uri($"http://localhost:9050/item/{itemCode}/setAsDiscounted"))
                 {
-                    var postResponse = await httpClient.SendAsync(postRequestMessage);
+                    Content = httpContent
+                };
 
-                    Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
-                }
+            using (var httpClient = new HttpClient())
+            {
+                var postResponse = await httpClient.SendAsync(postRequestMessage);
+
+                Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
             }
         }
     }
