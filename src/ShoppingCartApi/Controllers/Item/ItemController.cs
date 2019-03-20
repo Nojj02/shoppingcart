@@ -65,7 +65,7 @@ namespace ShoppingCartApi.Controllers.Item
                 return NotFound(code);
             }
 
-            entity.SetDiscount(setDiscountRequestDto.PercentOff);
+            entity.SetDiscount(new Percentage(setDiscountRequestDto.PercentOff));
             await _repository.UpdateAsync(entity);
 
             return Ok(MapToDto(entity));
@@ -77,7 +77,7 @@ namespace ShoppingCartApi.Controllers.Item
             {
                 Code = entity.Code,
                 Price = entity.Price,
-                PercentOff = entity.PercentOff
+                PercentOff = entity.PercentOff.Value
             };
         }
     }

@@ -13,6 +13,7 @@ namespace ShoppingCartApi.Controllers.Item
             Id = id;
             Code = code;
             Price = price;
+            PercentOff = Percentage.Zero;
         }
 
         [JsonConstructor]
@@ -20,7 +21,7 @@ namespace ShoppingCartApi.Controllers.Item
             Guid id,
             string code,
             decimal price,
-            double percentOff)
+            Percentage percentOff)
         {
             Id = id;
             Code = code;
@@ -34,9 +35,9 @@ namespace ShoppingCartApi.Controllers.Item
 
         public decimal Price { get; }
         
-        public double PercentOff { get; private set; }
+        public Percentage PercentOff { get; private set; }
 
-        public void SetDiscount(double percentOff)
+        public void SetDiscount(Percentage percentOff)
         {
             PercentOff = percentOff;
         }
