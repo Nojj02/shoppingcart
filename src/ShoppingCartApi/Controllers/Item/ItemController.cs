@@ -44,8 +44,8 @@ namespace ShoppingCartApi.Controllers.Item
         }
 
         [HttpGet]
-        [Route("{code}")]
-        public async Task<ObjectResult> GetByItemCode(string code)
+        [Route("")]
+        public async Task<ObjectResult> GetByItemCode([FromQuery]string code)
         {
             var entity = await _repository.GetAsync(code);
             if (entity == null)
@@ -57,13 +57,13 @@ namespace ShoppingCartApi.Controllers.Item
         }
 
         [HttpPost]
-        [Route("{code}/setDiscount")]
-        public async Task<ObjectResult> SetDiscount(string code, [FromBody]SetDiscountRequestDto setDiscountRequestDto)
+        [Route("{id}/setDiscount")]
+        public async Task<ObjectResult> SetDiscount(Guid id, [FromBody]SetDiscountRequestDto setDiscountRequestDto)
         {
-            var entity = await _repository.GetAsync(code);
+            var entity = await _repository.GetAsync(id);
             if (entity == null)
             {
-                return NotFound(code);
+                return NotFound(id);
             }
 
             entity.SetDiscount(new Percentage(setDiscountRequestDto.PercentOff));
@@ -76,6 +76,7 @@ namespace ShoppingCartApi.Controllers.Item
         {
             return new ItemDto
             {
+                Id = entity.Id,
                 Code = entity.Code,
                 Price = entity.Price,
                 PercentOff = entity.PercentOff.Value

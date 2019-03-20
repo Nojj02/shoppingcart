@@ -158,14 +158,15 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                     Price = 30
                 };
 
-                await itemController.Post(postNewPotatoItemDto);
+                var postNewPotatoResult = await itemController.Post(postNewPotatoItemDto);
+                var potatoDto = (ItemDto)postNewPotatoResult.Value;
 
                 var postSetDiscountDto = new SetDiscountRequestDto
                 {
                     PercentOff = 10
                 };
 
-                var result = await itemController.SetDiscount("potato", postSetDiscountDto);
+                var result = await itemController.SetDiscount(potatoDto.Id, postSetDiscountDto);
 
                 Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
 
@@ -186,14 +187,15 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                     Price = 30
                 };
 
-                await itemController.Post(postNewPotatoItemDto);
+                var postNewPotatoResult = await itemController.Post(postNewPotatoItemDto);
+                var potatoDto = (ItemDto)postNewPotatoResult.Value;
 
                 var postSetDiscountDto = new SetDiscountRequestDto
                 {
                     PercentOff = 10
                 };
 
-                await itemController.SetDiscount("potato", postSetDiscountDto);
+                await itemController.SetDiscount(potatoDto.Id, postSetDiscountDto);
 
                 var potatoResult = await itemController.GetByItemCode("potato");
                 Assert.Equal((int)HttpStatusCode.OK, potatoResult.StatusCode);

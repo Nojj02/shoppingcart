@@ -28,7 +28,7 @@ namespace ShoppingCartApi.IntegrationTests
                     new {Code = "tomato", Price = 50}
                 });
 
-            await Steps.UserCanComputeTotalCostOfShoppingItems(
+            await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
                 shoppingItems: new List<dynamic>
                 {
                     new {ItemCode = "potato", Quantity = 3},
@@ -50,7 +50,7 @@ namespace ShoppingCartApi.IntegrationTests
 
             await Steps.GivenItemIsDiscounted(itemCode: "potato", percentOff: 10);
 
-            await Steps.UserCanComputeTotalCostOfShoppingItems(
+            await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
                 shoppingItems: new List<dynamic>
                 {
                     new {ItemCode = "potato", Quantity = 3},

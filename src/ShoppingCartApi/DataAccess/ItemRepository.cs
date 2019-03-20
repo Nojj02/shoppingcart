@@ -52,7 +52,25 @@ namespace ShoppingCartApi.DataAccess
             }
         }
 
-        public async Task<IReadOnlyList<Item>> GetAsync(IEnumerable<string> codes)
+        public async Task<Item> GetAsync(Guid id)
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                var content =
+                    await connection.QuerySingleOrDefaultAsync<string>(
+                        "SELECT content " +
+                        "FROM shoppingcart.item " +
+                        "WHERE id = @id",
+                        new
+                        {
+                            id = id
+                        });
+
+                return content == null ? null : JsonConvert.DeserializeObject<Item>(content);
+            }
+        }
+
+        public async Task<IReadOnlyList<Item>> GetAsync(IEnumerable<Guid> ids)
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
@@ -60,10 +78,10 @@ namespace ShoppingCartApi.DataAccess
                     await connection.QueryAsync<string>(
                         "SELECT content " +
                         "FROM shoppingcart.item " +
-                        "WHERE content->>'Code' = ANY(@codes)",
+                        "WHERE id = ANY(@ids)",
                         new
                         {
-                            codes = codes.ToArray()
+                            ids = ids
                         });
 
                 return content.Select(JsonConvert.DeserializeObject<Item>).ToList();

@@ -1,8 +1,10 @@
+using System;
+
 namespace ShoppingCartApi.Controllers.Calculator
 {
     public class ShoppingItemDto
     {
-        public string ItemCode { get; set; }
+        public Guid Id { get; set; }
         
         public double Quantity { get; set; }
     }

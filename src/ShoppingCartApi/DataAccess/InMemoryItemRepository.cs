@@ -23,9 +23,15 @@ namespace ShoppingCartApi.DataAccess
             return Task.FromResult(result);
         }
 
-        public Task<IReadOnlyList<Item>> GetAsync(IEnumerable<string> code)
+        public Task<Item> GetAsync(Guid id)
         {
-            var result = _items.Where(x => code.Contains(x.Code)).ToList() as IReadOnlyList<Item>;
+            var result = _items.SingleOrDefault(x => x.Id == id);
+            return Task.FromResult(result);
+        }
+
+        public Task<IReadOnlyList<Item>> GetAsync(IEnumerable<Guid> ids)
+        {
+            var result = _items.Where(x => ids.Contains(x.Id)).ToList() as IReadOnlyList<Item>;
             return Task.FromResult(result);
         }
 

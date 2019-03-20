@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ShoppingCartApi.Controllers.Item;
@@ -11,7 +12,9 @@ namespace ShoppingCartApi.DataAccess
 
         Task<Item> GetAsync(string code);
 
-        Task<IReadOnlyList<Item>> GetAsync(IEnumerable<string> code);
+        Task<Item> GetAsync(Guid id);
+
+        Task<IReadOnlyList<Item>> GetAsync(IEnumerable<Guid> ids);
 
         Task UpdateAsync(Item entity);
     }
