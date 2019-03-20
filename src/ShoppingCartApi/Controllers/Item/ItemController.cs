@@ -67,5 +67,27 @@ namespace ShoppingCartApi.Controllers.Item
                     Price = entity.Price
                 });
         }
+
+        [HttpPost]
+        [Route("{code}/setDiscount")]
+        public async Task<ObjectResult> SetDiscount(string code, [FromBody]PostSetDiscountDto postSetDiscountDto)
+        {
+            var entity = await _repository.GetAsync(code);
+            if (entity == null)
+            {
+                return NotFound(code);
+            }
+
+            entity.SetDiscount(postSetDiscountDto.PercentageOff);
+
+
+            return Ok(
+                new ItemDto
+                {
+                    Code = entity.Code,
+                    Price = entity.Price,
+                    PercentOff = entity.PercentageOff
+                });
+        }
     }
 }

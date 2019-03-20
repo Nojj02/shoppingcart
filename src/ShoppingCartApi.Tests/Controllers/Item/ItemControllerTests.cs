@@ -143,6 +143,37 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             }
         }
 
+        public class SetDiscount : ItemControllerTests
+        {
+            [Fact]
+            public async Task ReturnsOk_SetsDiscountOnItem()
+            {
+                var repository = new InMemoryItemRepository();
+                var itemController = new ItemController(repository);
+                BootstrapController(itemController);
+
+                var postNewPotatoItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 30
+                };
+
+                await itemController.Post(postNewPotatoItemDto);
+
+                var postSetDiscountDto = new PostSetDiscountDto
+                {
+                    PercentageOff = 10
+                };
+
+                var result = await itemController.SetDiscount("potato", postSetDiscountDto);
+
+                Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+
+                var potatoItemDto = (ItemDto) result.Value;
+                Assert.Equal(10, potatoItemDto.PercentOff);
+            }
+        }
+
         private void BootstrapController(ItemController itemController)
         {
             itemController.Url = new AlwaysEmptyUrlHelper();

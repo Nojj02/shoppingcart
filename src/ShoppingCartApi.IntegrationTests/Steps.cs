@@ -86,17 +86,17 @@ namespace ShoppingCartApi.IntegrationTests
 
         public static async Task GivenItemIsDiscounted(string itemCode, int percentOff)
         {
-            var setAsDiscountedDto =
+            var setDiscountDto =
                 new
                 {
                     PercentOff = percentOff
                 };
 
-            var httpContent = new StringContent(JsonConvert.SerializeObject(setAsDiscountedDto), Encoding.UTF8, "application/json");
+            var httpContent = new StringContent(JsonConvert.SerializeObject(setDiscountDto), Encoding.UTF8, "application/json");
             var postRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
-                    requestUri: new Uri($"http://localhost:9050/item/{itemCode}/setAsDiscounted"))
+                    requestUri: new Uri($"http://localhost:9050/item/{itemCode}/setDiscount"))
                 {
                     Content = httpContent
                 };

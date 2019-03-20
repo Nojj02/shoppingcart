@@ -19,5 +19,13 @@ namespace ShoppingCartApi.Controllers.Item
         public string Code { get; }
 
         public decimal Price { get; }
+
+
+        public double PercentageOff { get; private set; }
+
+        public void SetDiscount(double percentageOff)
+        {
+            PercentageOff = percentageOff;
+        }
     }
 }
