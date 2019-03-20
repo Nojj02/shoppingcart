@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ShoppingCartApi.Controllers.Item;
+using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {

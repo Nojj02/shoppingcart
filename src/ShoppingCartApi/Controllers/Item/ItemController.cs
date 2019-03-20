@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Model;
 using ShoppingCartApi.Utilities.CustomActionResults;
 
 namespace ShoppingCartApi.Controllers.Item
@@ -31,7 +32,7 @@ namespace ShoppingCartApi.Controllers.Item
             }
             else
             {
-                var entity = new Controllers.Item.Item(
+                var entity = new Model.Item(
                     id: Guid.NewGuid(),
                     code: postRequestDto.Code,
                     price: postRequestDto.Price);
@@ -71,7 +72,7 @@ namespace ShoppingCartApi.Controllers.Item
             return Ok(MapToDto(entity));
         }
 
-        private static ItemDto MapToDto(Item entity)
+        private static ItemDto MapToDto(Model.Item entity)
         {
             return new ItemDto
             {

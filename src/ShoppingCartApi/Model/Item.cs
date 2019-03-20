@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace ShoppingCartApi.Controllers.Item
+namespace ShoppingCartApi.Model
 {
     public class Item
     {

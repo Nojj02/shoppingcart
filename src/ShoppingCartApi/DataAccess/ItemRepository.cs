@@ -6,6 +6,7 @@ using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Controllers.Item;
+using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {

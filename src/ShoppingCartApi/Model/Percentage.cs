@@ -1,6 +1,6 @@
 using System;
 
-namespace ShoppingCartApi.Controllers.Item
+namespace ShoppingCartApi.Model
 {
     public class Percentage
     {

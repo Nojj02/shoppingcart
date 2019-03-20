@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ShoppingCartApi.Controllers.Item;
+using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
