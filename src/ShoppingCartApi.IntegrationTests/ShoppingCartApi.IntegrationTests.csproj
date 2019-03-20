@@ -14,4 +14,10 @@
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="System">
+        <HintPath>System</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

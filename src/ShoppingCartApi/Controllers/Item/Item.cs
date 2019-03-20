@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace ShoppingCartApi.Controllers.Item
 {
@@ -14,18 +15,30 @@ namespace ShoppingCartApi.Controllers.Item
             Price = price;
         }
 
+        [JsonConstructor]
+        private Item(
+            Guid id,
+            string code,
+            decimal price,
+            double percentOff)
+        {
+            Id = id;
+            Code = code;
+            Price = price;
+            PercentOff = percentOff;
+        }
+
         public Guid Id { get; }
         
         public string Code { get; }
 
         public decimal Price { get; }
+        
+        public double PercentOff { get; private set; }
 
-
-        public double PercentageOff { get; private set; }
-
-        public void SetDiscount(double percentageOff)
+        public void SetDiscount(double percentOff)
         {
-            PercentageOff = percentageOff;
+            PercentOff = percentOff;
         }
     }
 }

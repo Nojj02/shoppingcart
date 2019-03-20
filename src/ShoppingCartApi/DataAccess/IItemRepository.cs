@@ -11,5 +11,7 @@ namespace ShoppingCartApi.DataAccess
         Task<Item> GetAsync(string code);
 
         Task<IReadOnlyList<Item>> GetAsync(IEnumerable<string> code);
+
+        Task UpdateAsync(Item entity);
     }
 }

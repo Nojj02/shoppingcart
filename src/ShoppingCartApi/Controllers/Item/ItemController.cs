@@ -27,11 +27,7 @@ namespace ShoppingCartApi.Controllers.Item
             {
                 var selfUrl = Url.Action("GetByItemCode", new { code = existingItem.Code });
                
-                return new SeeOtherObjectResult(selfUrl, new ItemDto
-                {
-                    Code = existingItem.Code,
-                    Price = existingItem.Price
-                });
+                return new SeeOtherObjectResult(selfUrl, MapToDto(existingItem));
             }
             else
             {
@@ -42,11 +38,7 @@ namespace ShoppingCartApi.Controllers.Item
                 await _repository.SaveAsync(entity);
 
                 var selfUrl = Url.Action("GetByItemCode", new { code = entity.Code });
-                return Created(selfUrl, new ItemDto
-                {
-                    Code = entity.Code,
-                    Price = entity.Price
-                });
+                return Created(selfUrl, MapToDto(entity));
             }
         }
 
@@ -60,17 +52,12 @@ namespace ShoppingCartApi.Controllers.Item
                 return NotFound(code);
             }
 
-            return Ok(
-                new ItemDto
-                {
-                    Code = entity.Code,
-                    Price = entity.Price
-                });
+            return Ok(MapToDto(entity));
         }
 
         [HttpPost]
         [Route("{code}/setDiscount")]
-        public async Task<ObjectResult> SetDiscount(string code, [FromBody]PostSetDiscountDto postSetDiscountDto)
+        public async Task<ObjectResult> SetDiscount(string code, [FromBody]SetDiscountRequestDto setDiscountRequestDto)
         {
             var entity = await _repository.GetAsync(code);
             if (entity == null)
@@ -78,16 +65,20 @@ namespace ShoppingCartApi.Controllers.Item
                 return NotFound(code);
             }
 
-            entity.SetDiscount(postSetDiscountDto.PercentageOff);
+            entity.SetDiscount(setDiscountRequestDto.PercentOff);
+            await _repository.UpdateAsync(entity);
 
+            return Ok(MapToDto(entity));
+        }
 
-            return Ok(
-                new ItemDto
-                {
-                    Code = entity.Code,
-                    Price = entity.Price,
-                    PercentOff = entity.PercentageOff
-                });
+        private static ItemDto MapToDto(Item entity)
+        {
+            return new ItemDto
+            {
+                Code = entity.Code,
+                Price = entity.Price,
+                PercentOff = entity.PercentOff
+            };
         }
     }
 }

@@ -33,7 +33,11 @@ namespace ShoppingCartApi.Controllers.Calculator
                     {
                         var item = allMatchingItems.SingleOrDefault(matchingItem => matchingItem.Code == shoppingItem.ItemCode);
 
-                        return item != null ? item.Price * Convert.ToDecimal(shoppingItem.Quantity) : 0;
+                        if (item == null) return 0;
+
+                        var percentageDiscount = item.PercentOff / 100;
+
+                        return item.Price * Convert.ToDecimal(shoppingItem.Quantity) * Convert.ToDecimal(1 - percentageDiscount);
                     });
             
             return Ok(new CalculatorComputeCostDto

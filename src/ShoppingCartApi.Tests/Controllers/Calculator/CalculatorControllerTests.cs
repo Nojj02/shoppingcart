@@ -56,8 +56,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                     Price = 30
                 };
 
-                var postNewPotatoItemResult = await itemController.Post(postNewPotatoItemDto);
-                Assert.Equal((int) HttpStatusCode.Created, postNewPotatoItemResult.StatusCode);
+                await itemController.Post(postNewPotatoItemDto);
 
                 var postNewLettuceItemDto = new PostRequestDto
                 {
@@ -65,8 +64,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                     Price = 50
                 };
 
-                var postNewLettuceItemResult = await itemController.Post(postNewLettuceItemDto);
-                Assert.Equal((int) HttpStatusCode.Created, postNewLettuceItemResult.StatusCode);
+                await itemController.Post(postNewLettuceItemDto);
 
                 var postNewCabbageItemDto = new PostRequestDto
                 {
@@ -74,8 +72,22 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                     Price = 20
                 };
 
-                var postNewCabbageItemResult = await itemController.Post(postNewCabbageItemDto);
-                Assert.Equal((int) HttpStatusCode.Created, postNewCabbageItemResult.StatusCode);
+                await itemController.Post(postNewCabbageItemDto);
+
+                var postNewDiscountedPotatoItemDto = new PostRequestDto
+                {
+                    Code = "discounted-potato",
+                    Price = 30
+                };
+
+                await itemController.Post(postNewDiscountedPotatoItemDto);
+
+                var setDiscountOnPotatoDto = new SetDiscountRequestDto
+                {
+                    PercentOff = 10
+                };
+
+                await itemController.SetDiscount("discounted-potato", setDiscountOnPotatoDto);
 
                 var calculatorController = new CalculatorController(itemRepository);
                 BootstrapController(calculatorController);
@@ -178,6 +190,26 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                                 }
                             },
                             ExpectedTotalCost = 180
+                        }
+                    },
+                    {
+                        "TwoItems_WithDiscountedItems",
+                        new ReturnsTotalCostScenarioData
+                        {
+                            ShoppingItems = new List<ShoppingItemDto>
+                            {
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "discounted-potato",
+                                    Quantity = 3
+                                },
+                                new ShoppingItemDto
+                                {
+                                    ItemCode = "lettuce",
+                                    Quantity = 1
+                                }
+                            },
+                            ExpectedTotalCost = 131
                         }
                     }
                 };

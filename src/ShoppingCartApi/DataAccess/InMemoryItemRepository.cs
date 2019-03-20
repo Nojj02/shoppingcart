@@ -27,5 +27,13 @@ namespace ShoppingCartApi.DataAccess
             var result = _items.Where(x => code.Contains(x.Code)).ToList() as IReadOnlyList<Item>;
             return Task.FromResult(result);
         }
+
+        public Task UpdateAsync(Item entity)
+        {
+            var matchingItem = _items.SingleOrDefault(x => x.Code == entity.Code);
+            _items.Remove(matchingItem);
+            _items.Add(entity);
+            return Task.CompletedTask;
+        }
     }
 }

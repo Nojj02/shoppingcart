@@ -96,7 +96,7 @@ namespace ShoppingCartApi.IntegrationTests
             var postRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
-                    requestUri: new Uri($"http://localhost:9050/item/{itemCode}/setDiscount"))
+                    requestUri: new Uri($"http://localhost:9050/items/{itemCode}/setDiscount"))
                 {
                     Content = httpContent
                 };

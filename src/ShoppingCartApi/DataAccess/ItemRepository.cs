@@ -68,5 +68,23 @@ namespace ShoppingCartApi.DataAccess
                 return content.Select(JsonConvert.DeserializeObject<Item>).ToList();
             }
         }
+
+        public async Task UpdateAsync(Item entity)
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                await connection.ExecuteAsync(
+                    "UPDATE shoppingcart.item SET " +
+                    "content = @content::jsonb " +
+                    ", timestamp = @timestamp " +
+                    "WHERE id = @id",
+                    new
+                    {
+                        id = entity.Id,
+                        content = JsonConvert.SerializeObject(entity),
+                        timestamp = DateTimeOffset.UtcNow
+                    });
+            }
+        }
     }
 }
