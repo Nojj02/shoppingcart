@@ -6,7 +6,7 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.Controllers.Coupon
 {
-    [Route("items")]
+    [Route("coupons")]
     public class CouponController : Controller
     {
         private readonly ICouponRepository _couponRepository;
