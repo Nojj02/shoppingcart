@@ -64,5 +64,29 @@ namespace ShoppingCartApi.IntegrationTests
                 },
                 expectedTotalCost: 141);
         }
+
+        [Fact]
+        public async Task ItemsCanBeDiscountedWithACoupon()
+        {
+            await Steps.GivenAShopWithItems(
+                items: new List<dynamic>
+                {
+                    new {Code = "potato", Price = 30},
+                    new {Code = "apple", Price = 70},
+                    new {Code = "lettuce", Price = 20}
+                });
+
+            await Steps.GivenACoupon(couponCode: "GRAND_SALE", percentOff: 10);
+
+            await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
+                shoppingItems: new List<dynamic>
+                {
+                    new {ItemCode = "potato", Quantity = 3},
+                    new {ItemCode = "apple", Quantity = 1},
+                    new {ItemCode = "lettuce", Quantity = 2}
+                },
+                couponCode: "GRAND_SALE",
+                expectedTotalCost: 180);
+        }
     }
 }

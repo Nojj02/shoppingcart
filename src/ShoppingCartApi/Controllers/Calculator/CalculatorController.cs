@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.Controllers.Calculator
 {
@@ -10,10 +12,12 @@ namespace ShoppingCartApi.Controllers.Calculator
     public class CalculatorController : Controller
     {
         private readonly IItemRepository _itemRepository;
+        private readonly ICouponRepository _couponRepository;
 
-        public CalculatorController(IItemRepository itemRepository)
+        public CalculatorController(IItemRepository itemRepository, ICouponRepository couponRepository)
         {
             _itemRepository = itemRepository;
+            _couponRepository = couponRepository;
         }
 
         [HttpPost]
@@ -42,10 +46,16 @@ namespace ShoppingCartApi.Controllers.Calculator
 
                         return grossAmount - Math.Max(discountedAmountByPercentage, discountedAmountByFixedAmount);
                     });
+
+            var coupon = await _couponRepository.GetByCouponCodeAsync(requestDto.CouponCode);
+
+            var percentDiscount = coupon != null ? coupon.PercentOff : Percentage.Zero;
+
+            var discountedTotalCostFromCoupon = percentDiscount.Of(totalCost);
             
             return Ok(new CalculatorComputeCostDto
             {
-                TotalCost = totalCost
+                TotalCost = totalCost - discountedTotalCostFromCoupon
             });
         }
     }

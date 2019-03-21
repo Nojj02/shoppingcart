@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace ShoppingCartApi.Tests.Helpers
 {
-    public class AlwaysEmptyUrlHelper : IUrlHelper
+    public class ActionNameOnlyUrlHelper : IUrlHelper
     {
         public ActionContext ActionContext { get; }
 
         public string Action(UrlActionContext actionContext)
         {
-            return String.Empty;
+            return actionContext.Action;
         }
 
         public string Content(string contentPath)

@@ -16,8 +16,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task Returns404_GetNonExistentItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var result = await itemController.GetByItemCode("unknown");
 
@@ -32,8 +33,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task RespondsWithCreated_PostNewItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewItemDto = new PostRequestDto
                 {
@@ -52,8 +54,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItem_PostNewItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewItemDto = new PostRequestDto
                 {
@@ -62,8 +65,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
 
                 await itemController.Post(postNewItemDto);
 
-                var anotherItemController = new ItemController(repository);
-                BootstrapController(anotherItemController);
+                var anotherItemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
                 var result = await anotherItemController.GetByItemCode("lettuce");
                 Assert.Equal((int) HttpStatusCode.OK, result.StatusCode);
 
@@ -76,8 +80,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task GetReturnsTheSameItem_PostsTheSameItemTwiceButUsesDataOfTheFirst()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -107,8 +112,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItems_PostMultipleItems()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -149,8 +155,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task ReturnsOk_SetsDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -178,8 +185,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItemWithDiscount_SetsDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -209,8 +217,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItemWithDiscount_SetsAmountDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -240,8 +249,9 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItemWithDiscount_SetsAmountDiscountAndPercentageDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = new ItemController(repository);
-                BootstrapController(itemController);
+                var itemController = 
+                    new ItemController(repository)
+                        .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -268,11 +278,6 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                 Assert.Equal(5, potatoItemDto.AmountOff);
                 Assert.Equal(10, potatoItemDto.PercentOff);
             }
-        }
-
-        private void BootstrapController(ItemController itemController)
-        {
-            itemController.Url = new AlwaysEmptyUrlHelper();
         }
     }
 }

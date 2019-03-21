@@ -10,5 +10,7 @@ namespace ShoppingCartApi.Controllers.Calculator
         }
         
         public IEnumerable<ShoppingItemDto> ShoppingItems { get; set; }
+
+        public string CouponCode { get; set; }
     }
 }

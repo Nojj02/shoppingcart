@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.Controllers;
 using ShoppingCartApi.Controllers.Calculator;
+using ShoppingCartApi.Controllers.Coupon;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Tests.Helpers;
 using Xunit;
+using PostRequestDto = ShoppingCartApi.Controllers.Item.PostRequestDto;
 
 namespace ShoppingCartApi.Tests.Controllers.Calculator
 {
@@ -20,8 +22,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task CostIsZero_NoShoppingItems()
             {
                 var itemRepository = new InMemoryItemRepository();
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var result = await calculatorController.ComputeCost(new CalculatorComputeCostRequestDto());
 
@@ -38,8 +40,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository);
-                BootstrapController(itemController);
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -50,8 +52,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postPotatoResult = await itemController.Post(postNewPotatoItemDto);
                 var potatoDto = (ItemDto)postPotatoResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
                     new CalculatorComputeCostRequestDto
@@ -82,8 +84,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository);
-                BootstrapController(itemController);
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -103,8 +105,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postLettuceResult = await itemController.Post(postNewLettuceItemDto);
                 var lettuceDto = (ItemDto)postLettuceResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
                     new CalculatorComputeCostRequestDto
@@ -140,8 +142,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository);
-                BootstrapController(itemController);
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -161,8 +163,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postLettuceResult = await itemController.Post(postNewLettuceItemDto);
                 var lettuceDto = (ItemDto)postLettuceResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
                     new CalculatorComputeCostRequestDto
@@ -199,8 +201,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository);
-                BootstrapController(itemController);
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -229,8 +231,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postCabbageResult = await itemController.Post(postNewCabbageItemDto);
                 var cabbageDto = (ItemDto)postCabbageResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
                     new CalculatorComputeCostRequestDto
@@ -271,8 +273,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository);
-                BootstrapController(itemController);
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -299,8 +301,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
 
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
                     new CalculatorComputeCostRequestDto
@@ -336,8 +338,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository);
-                BootstrapController(itemController);
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -365,8 +367,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
 
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
                     new CalculatorComputeCostRequestDto
@@ -398,12 +400,85 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             }
 
             [Fact]
+            public async Task ApplyDiscount_DiscountedWithCoupon_ByPercentage()
+            {
+                var itemRepository = new InMemoryItemRepository();
+
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
+
+                var postNewPotatoItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 30
+                };
+
+                var postPotatoResult = await itemController.Post(postNewPotatoItemDto);
+                var potatoDto = (ItemDto)postPotatoResult.Value;
+
+                var postNewLettuceItemDto = new PostRequestDto
+                {
+                    Code = "lettuce",
+                    Price = 50
+                };
+
+                var postLettuceResult = await itemController.Post(postNewLettuceItemDto);
+                var lettuceDto = (ItemDto)postLettuceResult.Value;
+
+                var couponRepository = new InMemoryCouponRepository();
+
+                var couponController = new CouponController(couponRepository)
+                    .BootstrapForTests();
+
+                var postRequestDto = new ShoppingCartApi.Controllers.Coupon.PostRequestDto
+                {
+                    Code = "GRAND_SALE",
+                    PercentOff = 20
+                };
+
+                await couponController.Post(postRequestDto);
+
+                var calculatorController = 
+                    new CalculatorController(itemRepository, couponRepository)
+                        .BootstrapForTests();
+
+                var calculatorComputeCostRequestDto =
+                    new CalculatorComputeCostRequestDto
+                    {
+                        CouponCode = "GRAND_SALE",
+                        ShoppingItems =
+                            new List<ShoppingItemDto>
+                            {
+                                new ShoppingItemDto
+                                {
+                                    Id = potatoDto.Id,
+                                    Quantity = 3
+                                },
+                                new ShoppingItemDto
+                                {
+                                    Id = lettuceDto.Id,
+                                    Quantity = 1
+                                }
+                            }
+                    };
+
+                var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
+
+                Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+                Assert.NotNull(result.Value);
+
+                var dto = (CalculatorComputeCostDto)result.Value;
+
+                Assert.Equal(112, dto.TotalCost);
+            }
+
+            [Fact]
             public async Task ApplyHighestDiscount_TwoItems_DiscountedOneItemByFixedAmountAndPercentage()
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository);
-                BootstrapController(itemController);
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
                 {
@@ -430,8 +505,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
 
-                var calculatorController = new CalculatorController(itemRepository);
-                BootstrapController(calculatorController);
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                    .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
                     new CalculatorComputeCostRequestDto
@@ -461,11 +536,6 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 Assert.Equal(125, dto.TotalCost);
             }
-        }
-
-        private void BootstrapController(Controller controller)
-        {
-            controller.Url = new AlwaysEmptyUrlHelper();
         }
     }
 }

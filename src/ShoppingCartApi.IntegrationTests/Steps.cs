@@ -70,21 +70,20 @@ namespace ShoppingCartApi.IntegrationTests
             }
         }
 
-        public static async Task GivenItemIsDiscountedByAFixedAmount(string itemCode, decimal amountOff)
+        public static async Task GivenACoupon(string couponCode, double percentOff)
         {
-            var item = await ItemApi.GetByItemCodeAsync(itemCode);
+            var couponDto = new
+            {
+                Code = couponCode,
+                PercentOff = percentOff
+            };
 
-            var setDiscountDto =
-                new
-                {
-                    AmountOff = amountOff
-                };
+            var httpContent = new StringContent(JsonConvert.SerializeObject(couponDto), Encoding.UTF8, "application/json");
 
-            var httpContent = new StringContent(JsonConvert.SerializeObject(setDiscountDto), Encoding.UTF8, "application/json");
             var postRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
-                    requestUri: new Uri($"http://localhost:9050/items/{item.Id}/setDiscount"))
+                    requestUri: new Uri("http://localhost:9050/coupons"))
                 {
                     Content = httpContent
                 };
@@ -93,17 +92,19 @@ namespace ShoppingCartApi.IntegrationTests
             {
                 var postResponse = await httpClient.SendAsync(postRequestMessage);
 
-                Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
+                Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
             }
         }
 
         public static async Task ThenUserCanComputeTotalCostOfShoppingItems(
             List<dynamic> shoppingItems,
-            decimal expectedTotalCost)
+            decimal expectedTotalCost,
+            string couponCode = "")
         {
             var computeCostDto =
                 new
                 {
+                    CouponCode = couponCode,
                     ShoppingItems =
                         shoppingItems
                             .Select(async x =>
