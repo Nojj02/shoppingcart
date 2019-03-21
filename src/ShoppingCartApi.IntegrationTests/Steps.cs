@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShoppingCartApi.IntegrationTests.Api;
 using Xunit;
 
 namespace ShoppingCartApi.IntegrationTests
@@ -43,28 +44,7 @@ namespace ShoppingCartApi.IntegrationTests
 
         public static async Task GivenItemIsDiscountedByAPercentage(string itemCode, int percentOff)
         {
-            var getItemRequestMessage =
-                new HttpRequestMessage(
-                    method: HttpMethod.Get,
-                    requestUri: new Uri($"http://localhost:9050/items?code={itemCode}"));
-
-            Guid itemId;
-
-            using (var httpClient = new HttpClient())
-            {
-                var getItemResponse = await httpClient.SendAsync(getItemRequestMessage);
-
-                Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
-                
-                var body =
-                    JsonConvert.DeserializeAnonymousType(await getItemResponse.Content.ReadAsStringAsync(),
-                        new
-                        {
-                            Id = Guid.Empty
-                        });
-
-                itemId = body.Id;
-            }
+            var item = await ItemApi.GetByItemCodeAsync(itemCode);
 
             var setDiscountDto =
                 new
@@ -76,7 +56,7 @@ namespace ShoppingCartApi.IntegrationTests
             var postRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
-                    requestUri: new Uri($"http://localhost:9050/items/{itemId}/setDiscount"))
+                    requestUri: new Uri($"http://localhost:9050/items/{item.Id}/setDiscount"))
                 {
                     Content = httpContent
                 };
@@ -91,28 +71,7 @@ namespace ShoppingCartApi.IntegrationTests
 
         public static async Task GivenItemIsDiscountedByAFixedAmount(string itemCode, decimal amountOff)
         {
-            var getItemRequestMessage =
-                new HttpRequestMessage(
-                    method: HttpMethod.Get,
-                    requestUri: new Uri($"http://localhost:9050/items?code={itemCode}"));
-
-            Guid itemId;
-
-            using (var httpClient = new HttpClient())
-            {
-                var getItemResponse = await httpClient.SendAsync(getItemRequestMessage);
-
-                Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
-
-                var body =
-                    JsonConvert.DeserializeAnonymousType(await getItemResponse.Content.ReadAsStringAsync(),
-                        new
-                        {
-                            Id = Guid.Empty
-                        });
-
-                itemId = body.Id;
-            }
+            var item = await ItemApi.GetByItemCodeAsync(itemCode);
 
             var setDiscountDto =
                 new
@@ -124,7 +83,7 @@ namespace ShoppingCartApi.IntegrationTests
             var postRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
-                    requestUri: new Uri($"http://localhost:9050/items/{itemId}/setDiscount"))
+                    requestUri: new Uri($"http://localhost:9050/items/{item.Id}/setDiscount"))
                 {
                     Content = httpContent
                 };
@@ -148,32 +107,11 @@ namespace ShoppingCartApi.IntegrationTests
                         shoppingItems
                             .Select(async x =>
                             {
-                                var getItemRequestMessage =
-                                    new HttpRequestMessage(
-                                        method: HttpMethod.Get,
-                                        requestUri: new Uri($"http://localhost:9050/items?code={x.ItemCode}"));
-
-                                Guid itemId;
-
-                                using (var httpClient = new HttpClient())
-                                {
-                                    var getItemResponse = await httpClient.SendAsync(getItemRequestMessage);
-
-                                    Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
-
-                                    var body =
-                                        JsonConvert.DeserializeAnonymousType(await getItemResponse.Content.ReadAsStringAsync(),
-                                            new
-                                            {
-                                                Id = Guid.Empty
-                                            });
-
-                                    itemId = body.Id;
-                                }
+                                var item = await ItemApi.GetByItemCodeAsync(x.ItemCode);
 
                                 return new
                                 {
-                                    Id = itemId,
+                                    Id = item.Id,
                                     Quantity = x.Quantity
                                 };
                             }).Select(x => x.Result)
