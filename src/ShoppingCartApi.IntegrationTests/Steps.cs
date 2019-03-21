@@ -42,14 +42,15 @@ namespace ShoppingCartApi.IntegrationTests
             }
         }
 
-        public static async Task GivenItemIsDiscountedByAPercentage(string itemCode, int percentOff)
+        public static async Task GivenItemIsDiscounted(string itemCode, double percentOff, decimal amountOff)
         {
             var item = await ItemApi.GetByItemCodeAsync(itemCode);
 
             var setDiscountDto =
                 new
                 {
-                    PercentOff = percentOff
+                    PercentOff = percentOff,
+                    AmountOff = amountOff
                 };
 
             var httpContent = new StringContent(JsonConvert.SerializeObject(setDiscountDto), Encoding.UTF8, "application/json");

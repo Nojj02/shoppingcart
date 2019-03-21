@@ -40,7 +40,7 @@ namespace ShoppingCartApi.Controllers.Calculator
                         var discountedAmountByFixedAmount = item.AmountOff * Convert.ToDecimal(shoppingItem.Quantity);
                         var discountedAmountByPercentage = item.PercentOff.Of(grossAmount);
 
-                        return grossAmount - discountedAmountByPercentage - discountedAmountByFixedAmount;
+                        return grossAmount - Math.Max(discountedAmountByPercentage, discountedAmountByFixedAmount);
                     });
             
             return Ok(new CalculatorComputeCostDto

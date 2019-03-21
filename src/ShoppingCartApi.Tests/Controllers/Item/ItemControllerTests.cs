@@ -235,6 +235,39 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                 Assert.Equal("potato", potatoItemDto.Code);
                 Assert.Equal(5, potatoItemDto.AmountOff);
             }
+
+            [Fact]
+            public async Task CanGetItemWithDiscount_SetsAmountDiscountAndPercentageDiscountOnItem()
+            {
+                var repository = new InMemoryItemRepository();
+                var itemController = new ItemController(repository);
+                BootstrapController(itemController);
+
+                var postNewPotatoItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 30
+                };
+
+                var postNewPotatoResult = await itemController.Post(postNewPotatoItemDto);
+                var potatoDto = (ItemDto)postNewPotatoResult.Value;
+
+                var postSetDiscountDto = new SetDiscountRequestDto
+                {
+                    AmountOff = 5,
+                    PercentOff = 10
+                };
+
+                await itemController.SetDiscount(potatoDto.Id, postSetDiscountDto);
+
+                var potatoResult = await itemController.GetByItemCode("potato");
+                Assert.Equal((int)HttpStatusCode.OK, potatoResult.StatusCode);
+
+                var potatoItemDto = (ItemDto)potatoResult.Value;
+                Assert.Equal("potato", potatoItemDto.Code);
+                Assert.Equal(5, potatoItemDto.AmountOff);
+                Assert.Equal(10, potatoItemDto.PercentOff);
+            }
         }
 
         private void BootstrapController(ItemController itemController)

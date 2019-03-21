@@ -38,47 +38,31 @@ namespace ShoppingCartApi.IntegrationTests
         }
 
         [Fact]
-        public async Task ItemsCanBeDiscountedByPercentage()
+        public async Task ItemsCanBeDiscounted()
         {
             await Steps.GivenAShopWithItems(
                 items: new List<dynamic>
                 {
                     new {Code = "potato", Price = 30},
                     new {Code = "apple", Price = 70},
-                    new {Code = "tomato", Price = 50}
+                    new {Code = "tomato", Price = 50},
+                    new {Code = "lettuce", Price = 20}
                 });
 
-            await Steps.GivenItemIsDiscountedByAPercentage(itemCode: "potato", percentOff: 10);
+            await Steps.GivenItemIsDiscounted(itemCode: "potato", percentOff: 10, amountOff: 0);
+
+            await Steps.GivenItemIsDiscounted(itemCode: "apple", percentOff: 0, amountOff: 30);
+
+            await Steps.GivenItemIsDiscounted(itemCode: "lettuce", percentOff: 50, amountOff: 5);
 
             await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
                 shoppingItems: new List<dynamic>
                 {
                     new {ItemCode = "potato", Quantity = 3},
-                    new {ItemCode = "apple", Quantity = 1}
+                    new {ItemCode = "apple", Quantity = 1},
+                    new {ItemCode = "lettuce", Quantity = 2}
                 },
-                expectedTotalCost: 151);
-        }
-
-        [Fact]
-        public async Task ItemsCanBeDiscountedByAFixedAmount()
-        {
-            await Steps.GivenAShopWithItems(
-                items: new List<dynamic>
-                {
-                    new {Code = "potato", Price = 30},
-                    new {Code = "apple", Price = 70},
-                    new {Code = "tomato", Price = 50}
-                });
-
-            await Steps.GivenItemIsDiscountedByAFixedAmount(itemCode: "apple", amountOff: 30);
-
-            await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
-                shoppingItems: new List<dynamic>
-                {
-                    new {ItemCode = "potato", Quantity = 3},
-                    new {ItemCode = "apple", Quantity = 1}
-                },
-                expectedTotalCost: 130);
+                expectedTotalCost: 141);
         }
     }
 }
