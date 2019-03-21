@@ -8,5 +8,6 @@ namespace ShoppingCartApi.Controllers.Item
         public string Code { get; set; }
         public decimal Price { get; set; }
         public double PercentOff { get; set; }
+        public decimal AmountOff { get; set; }
     }
 }

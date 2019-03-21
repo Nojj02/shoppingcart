@@ -37,9 +37,10 @@ namespace ShoppingCartApi.Controllers.Calculator
 
                         var grossAmount = item.Price * Convert.ToDecimal(shoppingItem.Quantity);
 
-                        var discountedAmount = item.PercentOff.Of(grossAmount);
+                        var discountedAmountByFixedAmount = item.AmountOff * Convert.ToDecimal(shoppingItem.Quantity);
+                        var discountedAmountByPercentage = item.PercentOff.Of(grossAmount);
 
-                        return grossAmount - discountedAmount;
+                        return grossAmount - discountedAmountByPercentage - discountedAmountByFixedAmount;
                     });
             
             return Ok(new CalculatorComputeCostDto

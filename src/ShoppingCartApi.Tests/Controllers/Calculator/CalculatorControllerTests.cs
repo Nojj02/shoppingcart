@@ -265,11 +265,9 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 Assert.Equal(180, dto.TotalCost);
             }
-
-
-
+            
             [Fact]
-            public async Task ReturnsTotalCost_TwoItems_DiscountedOneItem()
+            public async Task ReturnsTotalCost_TwoItems_DiscountedOneItemByPercentage()
             {
                 var itemRepository = new InMemoryItemRepository();
 
@@ -331,6 +329,71 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var dto = (CalculatorComputeCostDto)result.Value;
 
                 Assert.Equal(131, dto.TotalCost);
+            }
+
+            [Fact]
+            public async Task ReturnsTotalCost_TwoItems_DiscountedOneItemByFixedAmount()
+            {
+                var itemRepository = new InMemoryItemRepository();
+
+                var itemController = new ItemController(itemRepository);
+                BootstrapController(itemController);
+
+                var postNewPotatoItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 30
+                };
+
+                var postPotatoResult = await itemController.Post(postNewPotatoItemDto);
+                var potatoDto = (ItemDto)postPotatoResult.Value;
+
+                var postNewLettuceItemDto = new PostRequestDto
+                {
+                    Code = "lettuce",
+                    Price = 50
+                };
+
+                var postLettuceResult = await itemController.Post(postNewLettuceItemDto);
+                var lettuceDto = (ItemDto)postLettuceResult.Value;
+
+                var setDiscountOnPotatoDto = new SetDiscountRequestDto
+                {
+                    AmountOff = 5
+                };
+
+                await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
+
+                var calculatorController = new CalculatorController(itemRepository);
+                BootstrapController(calculatorController);
+
+                var calculatorComputeCostRequestDto =
+                    new CalculatorComputeCostRequestDto
+                    {
+                        ShoppingItems =
+                            new List<ShoppingItemDto>
+                            {
+                                new ShoppingItemDto
+                                {
+                                    Id = potatoDto.Id,
+                                    Quantity = 3
+                                },
+                                new ShoppingItemDto
+                                {
+                                    Id = lettuceDto.Id,
+                                    Quantity = 1
+                                }
+                            }
+                    };
+
+                var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
+
+                Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+                Assert.NotNull(result.Value);
+
+                var dto = (CalculatorComputeCostDto)result.Value;
+
+                Assert.Equal(125, dto.TotalCost);
             }
         }
 

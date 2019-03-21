@@ -38,7 +38,7 @@ namespace ShoppingCartApi.IntegrationTests
         }
 
         [Fact]
-        public async Task ItemsCanBeDiscounted()
+        public async Task ItemsCanBeDiscountedByPercentage()
         {
             await Steps.GivenAShopWithItems(
                 items: new List<dynamic>
@@ -48,7 +48,7 @@ namespace ShoppingCartApi.IntegrationTests
                     new {Code = "tomato", Price = 50}
                 });
 
-            await Steps.GivenItemIsDiscounted(itemCode: "potato", percentOff: 10);
+            await Steps.GivenItemIsDiscountedByAPercentage(itemCode: "potato", percentOff: 10);
 
             await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
                 shoppingItems: new List<dynamic>
@@ -57,6 +57,28 @@ namespace ShoppingCartApi.IntegrationTests
                     new {ItemCode = "apple", Quantity = 1}
                 },
                 expectedTotalCost: 151);
+        }
+
+        [Fact]
+        public async Task ItemsCanBeDiscountedByAFixedAmount()
+        {
+            await Steps.GivenAShopWithItems(
+                items: new List<dynamic>
+                {
+                    new {Code = "potato", Price = 30},
+                    new {Code = "apple", Price = 70},
+                    new {Code = "tomato", Price = 50}
+                });
+
+            await Steps.GivenItemIsDiscountedByAFixedAmount(itemCode: "apple", amountOff: 30);
+
+            await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
+                shoppingItems: new List<dynamic>
+                {
+                    new {ItemCode = "potato", Quantity = 3},
+                    new {ItemCode = "apple", Quantity = 1}
+                },
+                expectedTotalCost: 130);
         }
     }
 }

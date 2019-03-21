@@ -41,7 +41,7 @@ namespace ShoppingCartApi.IntegrationTests
             }
         }
 
-        public static async Task GivenItemIsDiscounted(string itemCode, int percentOff)
+        public static async Task GivenItemIsDiscountedByAPercentage(string itemCode, int percentOff)
         {
             var getItemRequestMessage =
                 new HttpRequestMessage(
@@ -89,6 +89,54 @@ namespace ShoppingCartApi.IntegrationTests
             }
         }
 
+        public static async Task GivenItemIsDiscountedByAFixedAmount(string itemCode, decimal amountOff)
+        {
+            var getItemRequestMessage =
+                new HttpRequestMessage(
+                    method: HttpMethod.Get,
+                    requestUri: new Uri($"http://localhost:9050/items?code={itemCode}"));
+
+            Guid itemId;
+
+            using (var httpClient = new HttpClient())
+            {
+                var getItemResponse = await httpClient.SendAsync(getItemRequestMessage);
+
+                Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
+
+                var body =
+                    JsonConvert.DeserializeAnonymousType(await getItemResponse.Content.ReadAsStringAsync(),
+                        new
+                        {
+                            Id = Guid.Empty
+                        });
+
+                itemId = body.Id;
+            }
+
+            var setDiscountDto =
+                new
+                {
+                    AmountOff = amountOff
+                };
+
+            var httpContent = new StringContent(JsonConvert.SerializeObject(setDiscountDto), Encoding.UTF8, "application/json");
+            var postRequestMessage =
+                new HttpRequestMessage(
+                    method: HttpMethod.Post,
+                    requestUri: new Uri($"http://localhost:9050/items/{itemId}/setDiscount"))
+                {
+                    Content = httpContent
+                };
+
+            using (var httpClient = new HttpClient())
+            {
+                var postResponse = await httpClient.SendAsync(postRequestMessage);
+
+                Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
+            }
+        }
+
         public static async Task ThenUserCanComputeTotalCostOfShoppingItems(
             List<dynamic> shoppingItems,
             decimal expectedTotalCost)
@@ -98,12 +146,37 @@ namespace ShoppingCartApi.IntegrationTests
                 {
                     ShoppingItems =
                         shoppingItems
-                            .Select(x =>
-                                new
+                            .Select(async x =>
+                            {
+                                var getItemRequestMessage =
+                                    new HttpRequestMessage(
+                                        method: HttpMethod.Get,
+                                        requestUri: new Uri($"http://localhost:9050/items?code={x.ItemCode}"));
+
+                                Guid itemId;
+
+                                using (var httpClient = new HttpClient())
                                 {
-                                    ItemCode = x.ItemCode,
+                                    var getItemResponse = await httpClient.SendAsync(getItemRequestMessage);
+
+                                    Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
+
+                                    var body =
+                                        JsonConvert.DeserializeAnonymousType(await getItemResponse.Content.ReadAsStringAsync(),
+                                            new
+                                            {
+                                                Id = Guid.Empty
+                                            });
+
+                                    itemId = body.Id;
+                                }
+
+                                return new
+                                {
+                                    Id = itemId,
                                     Quantity = x.Quantity
-                                })
+                                };
+                            }).Select(x => x.Result)
                 };
 
             var httpContent = new StringContent(JsonConvert.SerializeObject(computeCostDto), Encoding.UTF8, "application/json");
