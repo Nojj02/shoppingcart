@@ -13,6 +13,36 @@ namespace ShoppingCartApi.IntegrationTests
 {
     public static class Steps
     {
+        private static readonly ApiUrl ApiUrl = new ApiUrl("localhost", 9050);
+
+        public static async Task GivenTheItemTypes(List<dynamic> itemTypes)
+        {
+            foreach (var itemType in itemTypes)
+            {
+                var itemTypeDto = new
+                {
+                    Code = itemType.Code
+                };
+
+                var httpContent = new StringContent(JsonConvert.SerializeObject(itemTypeDto), Encoding.UTF8, "application/json");
+
+                var postRequestMessage =
+                    new HttpRequestMessage(
+                        method: HttpMethod.Post,
+                        requestUri: new Uri(ApiUrl.GetFor("/itemTypes")))
+                    {
+                        Content = httpContent
+                    };
+
+                using (var httpClient = new HttpClient())
+                {
+                    var postResponse = await httpClient.SendAsync(postRequestMessage);
+
+                    Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+                }
+            }
+        }
+
         public static async Task GivenAShopWithItems(List<dynamic> items)
         {
             foreach (var item in items)
@@ -44,7 +74,7 @@ namespace ShoppingCartApi.IntegrationTests
 
         public static async Task GivenItemIsDiscounted(string itemCode, double percentOff, decimal amountOff)
         {
-            var item = await ItemApi.GetByItemCodeAsync(itemCode);
+            var item = await new ItemApi(ApiUrl).GetByCodeAsync(itemCode);
 
             var setDiscountDto =
                 new
@@ -70,12 +100,17 @@ namespace ShoppingCartApi.IntegrationTests
             }
         }
 
-        public static async Task GivenACoupon(string couponCode, double percentOff)
+        public static async Task GivenACoupon(string couponCode, double percentOff, string itemTypeCode = null)
         {
+            var itemTypeApi = new ItemTypeApi(ApiUrl);
+
+            var itemType = await itemTypeApi.GetByCodeAsync(itemTypeCode);
+
             var couponDto = new
             {
                 Code = couponCode,
-                PercentOff = percentOff
+                PercentOff = percentOff,
+                ForItemTypeId = itemType?.Id
             };
 
             var httpContent = new StringContent(JsonConvert.SerializeObject(couponDto), Encoding.UTF8, "application/json");
@@ -101,6 +136,7 @@ namespace ShoppingCartApi.IntegrationTests
             decimal expectedTotalCost,
             string couponCode = "")
         {
+            var itemApi = new ItemApi(ApiUrl);
             var computeCostDto =
                 new
                 {
@@ -109,7 +145,7 @@ namespace ShoppingCartApi.IntegrationTests
                         shoppingItems
                             .Select(async x =>
                             {
-                                var item = await ItemApi.GetByItemCodeAsync(x.ItemCode);
+                                var item = await itemApi.GetByCodeAsync(x.ItemCode);
 
                                 return new
                                 {

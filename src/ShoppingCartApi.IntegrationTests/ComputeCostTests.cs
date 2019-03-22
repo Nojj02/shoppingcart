@@ -88,5 +88,36 @@ namespace ShoppingCartApi.IntegrationTests
                 couponCode: "GRAND_SALE",
                 expectedTotalCost: 180);
         }
+
+        [Fact]
+        public async Task ItemsCanBeDiscountedWithACouponForASingleTypeOfItem()
+        {
+            await Steps.GivenTheItemTypes(
+                itemTypes: new List<dynamic>
+                {
+                    new {Code = "fruit"},
+                    new {Code = "vegetable"}
+                });
+            
+            await Steps.GivenAShopWithItems(
+                items: new List<dynamic>
+                {
+                    new {Code = "potato", Price = 30},
+                    new {Code = "apple", Price = 70},
+                    new {Code = "lettuce", Price = 20}
+                });
+
+            await Steps.GivenACoupon(couponCode: "HALF_OFF_FRUITS", percentOff: 10, itemTypeCode: "fruit");
+
+            await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
+                shoppingItems: new List<dynamic>
+                {
+                    new {ItemCode = "potato", Quantity = 3},
+                    new {ItemCode = "apple", Quantity = 1},
+                    new {ItemCode = "lettuce", Quantity = 2}
+                },
+                couponCode: "GRAND_SALE",
+                expectedTotalCost: 180);
+        }
     }
 }
