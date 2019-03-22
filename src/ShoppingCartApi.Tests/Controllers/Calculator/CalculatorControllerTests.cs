@@ -400,7 +400,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             }
 
             [Fact]
-            public async Task ApplyDiscount_DiscountedWithCoupon_ByPercentage()
+            public async Task ApplyDiscount_FromCoupon()
             {
                 var itemRepository = new InMemoryItemRepository();
 
@@ -470,6 +470,81 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var dto = (CalculatorComputeCostDto)result.Value;
 
                 Assert.Equal(112, dto.TotalCost);
+            }
+
+            [Theory]
+            [InlineData("CouponIsHighest", 10, 5, 20, 80)]
+            [InlineData("ItemPercentIsHighest", 30, 5, 20, 70)]
+            [InlineData("AmountOffIsHighest", 10, 22.50, 20, 55)]
+            public async Task ApplyHighestDiscount_HasAmountOffHasPercentOffHasCoupon(
+                string testName,
+                double itemPercentOff,
+                decimal itemAmountOff,
+                double couponPercentOff,
+                decimal expectedTotalCost)
+            {
+                var itemRepository = new InMemoryItemRepository();
+
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
+
+                var postNewPotatoItemDto = new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 50
+                };
+
+                var postPotatoResult = await itemController.Post(postNewPotatoItemDto);
+                var potatoDto = (ItemDto)postPotatoResult.Value;
+
+                var setDiscountOnPotatoDto = new SetDiscountRequestDto
+                {
+                    PercentOff = itemPercentOff,
+                    AmountOff = itemAmountOff
+                };
+
+                await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
+
+                var couponRepository = new InMemoryCouponRepository();
+
+                var couponController = new CouponController(couponRepository)
+                    .BootstrapForTests();
+
+                var postRequestDto = new ShoppingCartApi.Controllers.Coupon.PostRequestDto
+                {
+                    Code = "GRAND_SALE",
+                    PercentOff = couponPercentOff
+                };
+
+                await couponController.Post(postRequestDto);
+
+                var calculatorController =
+                    new CalculatorController(itemRepository, couponRepository)
+                        .BootstrapForTests();
+
+                var calculatorComputeCostRequestDto =
+                    new CalculatorComputeCostRequestDto
+                    {
+                        CouponCode = "GRAND_SALE",
+                        ShoppingItems =
+                            new List<ShoppingItemDto>
+                            {
+                                new ShoppingItemDto
+                                {
+                                    Id = potatoDto.Id,
+                                    Quantity = 2
+                                }
+                            }
+                    };
+
+                var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
+
+                Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+                Assert.NotNull(result.Value);
+
+                var dto = (CalculatorComputeCostDto)result.Value;
+
+                Assert.Equal(expectedTotalCost, dto.TotalCost);
             }
 
             [Fact]

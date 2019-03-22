@@ -30,6 +30,10 @@ namespace ShoppingCartApi.Controllers.Calculator
                     .ToList();
 
             var allMatchingItems = await _itemRepository.GetAsync(shoppingItemIds);
+            
+            var coupon = await _couponRepository.GetByCouponCodeAsync(requestDto.CouponCode);
+
+            var percentDiscountFromCoupon = coupon != null ? coupon.PercentOff : Percentage.Zero;
 
             var totalCost =
                 requestDto.ShoppingItems
@@ -43,19 +47,21 @@ namespace ShoppingCartApi.Controllers.Calculator
 
                         var discountedAmountByFixedAmount = item.AmountOff * Convert.ToDecimal(shoppingItem.Quantity);
                         var discountedAmountByPercentage = item.PercentOff.Of(grossAmount);
+                        var discountedAmountFromCoupon = percentDiscountFromCoupon.Of(grossAmount);
 
-                        return grossAmount - Math.Max(discountedAmountByPercentage, discountedAmountByFixedAmount);
+                        var highestDiscount = new[]
+                        {
+                            discountedAmountByPercentage,
+                            discountedAmountByFixedAmount,
+                            discountedAmountFromCoupon
+                        }.Max();
+
+                        return grossAmount - highestDiscount;
                     });
-
-            var coupon = await _couponRepository.GetByCouponCodeAsync(requestDto.CouponCode);
-
-            var percentDiscount = coupon != null ? coupon.PercentOff : Percentage.Zero;
-
-            var discountedTotalCostFromCoupon = percentDiscount.Of(totalCost);
             
             return Ok(new CalculatorComputeCostDto
             {
-                TotalCost = totalCost - discountedTotalCostFromCoupon
+                TotalCost = totalCost
             });
         }
     }
