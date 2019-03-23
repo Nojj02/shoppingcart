@@ -38,7 +38,7 @@ namespace ShoppingCartApi.Controllers.ItemType
         [Route("")]
         public async Task<ObjectResult> GetByItemCode([FromQuery]string code)
         {
-            var entity = await _itemTypeRepository.GetByCodeAsync(code);
+            var entity = await _itemTypeRepository.GetAsync(code);
             if (entity == null)
             {
                 return NotFound(code);

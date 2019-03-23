@@ -10,29 +10,17 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class ItemRepository : IItemRepository
+    public class ItemRepository : Repository<Item>, IItemRepository
     {
-        private string _connectionString;
+        private readonly string _connectionString;
         
         public ItemRepository(string connectionString)
+            : base(connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public async Task SaveAsync(Item item)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                await connection.ExecuteAsync(
-                    "INSERT INTO shoppingcart.item (id, content, timestamp) VALUES (@id, @content::jsonb, @timestamp)",
-                    new
-                    {
-                        id = item.Id,
-                        content = JsonConvert.SerializeObject(item),
-                        timestamp = DateTimeOffset.UtcNow
-                    });
-            }
-        }
+        protected override string TableName => "item";
 
         public async Task<Item> GetAsync(string code)
         {
@@ -49,60 +37,6 @@ namespace ShoppingCartApi.DataAccess
                         });
 
                 return content == null ? null : JsonConvert.DeserializeObject<Item>(content);
-            }
-        }
-
-        public async Task<Item> GetAsync(Guid id)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                var content =
-                    await connection.QuerySingleOrDefaultAsync<string>(
-                        "SELECT content " +
-                        "FROM shoppingcart.item " +
-                        "WHERE id = @id",
-                        new
-                        {
-                            id = id
-                        });
-
-                return content == null ? null : JsonConvert.DeserializeObject<Item>(content);
-            }
-        }
-
-        public async Task<IReadOnlyList<Item>> GetAsync(IEnumerable<Guid> ids)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                var content =
-                    await connection.QueryAsync<string>(
-                        "SELECT content " +
-                        "FROM shoppingcart.item " +
-                        "WHERE id = ANY(@ids)",
-                        new
-                        {
-                            ids = ids
-                        });
-
-                return content.Select(JsonConvert.DeserializeObject<Item>).ToList();
-            }
-        }
-
-        public async Task UpdateAsync(Item entity)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                await connection.ExecuteAsync(
-                    "UPDATE shoppingcart.item SET " +
-                    "content = @content::jsonb " +
-                    ", timestamp = @timestamp " +
-                    "WHERE id = @id",
-                    new
-                    {
-                        id = entity.Id,
-                        content = JsonConvert.SerializeObject(entity),
-                        timestamp = DateTimeOffset.UtcNow
-                    });
             }
         }
     }

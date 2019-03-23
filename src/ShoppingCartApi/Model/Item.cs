@@ -3,15 +3,15 @@ using Newtonsoft.Json;
 
 namespace ShoppingCartApi.Model
 {
-    public class Item
+    public class Item : AggregateRoot
     {
         public Item(
             Guid id,
             string code,
             decimal price,
             Guid itemTypeId)
+            : base(id)
         {
-            Id = id;
             Code = code;
             Price = price;
             ItemTypeId = itemTypeId;
@@ -26,8 +26,8 @@ namespace ShoppingCartApi.Model
             decimal price,
             Percent percentOff,
             decimal amountOff)
+            : base(id)
         {
-            Id = id;
             Code = code;
             ItemTypeId = itemTypeId;
             Price = price;
@@ -35,8 +35,6 @@ namespace ShoppingCartApi.Model
             AmountOff = amountOff;
         }
 
-        public Guid Id { get; }
-        
         public string Code { get; }
 
         public Guid ItemTypeId { get; }

@@ -7,60 +7,27 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class ItemTypeRepository : IItemTypeRepository
+    public class ItemTypeRepository : Repository<ItemType>, IItemTypeRepository
     {
-        private readonly string _connectionString;
-
         public ItemTypeRepository(string connectionString)
+            : base(connectionString)
         {
-            _connectionString = connectionString;
         }
 
-        public async Task SaveAsync(ItemType itemType)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                await connection.ExecuteAsync(
-                    "INSERT INTO shoppingcart.item_type (id, content, timestamp) VALUES (@id, @content::jsonb, @timestamp)",
-                    new
-                    {
-                        id = itemType.Id,
-                        content = JsonConvert.SerializeObject(itemType),
-                        timestamp = DateTimeOffset.UtcNow
-                    });
-            }
-        }
+        protected override string TableName => "item_type";
 
-        public async Task<ItemType> GetByCodeAsync(string code)
+        public async Task<ItemType> GetAsync(string code)
         {
-            using (var connection = new NpgsqlConnection(_connectionString))
+            using (var connection = new NpgsqlConnection(ConnectionString))
             {
                 var content =
                     await connection.QuerySingleOrDefaultAsync<string>(
                         "SELECT content " +
-                        "FROM shoppingcart.item_type " +
+                        $"FROM {SchemaAndTableName} " +
                         "WHERE content->>'Code' = @code",
                         new
                         {
                             code = code
-                        });
-
-                return content == null ? null : JsonConvert.DeserializeObject<ItemType>(content);
-            }
-        }
-
-        public async Task<ItemType> GetAsync(Guid id)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                var content =
-                    await connection.QuerySingleOrDefaultAsync<string>(
-                        "SELECT content " +
-                        "FROM shoppingcart.item_type " +
-                        "WHERE id = @id",
-                        new
-                        {
-                            id = id
                         });
 
                 return content == null ? null : JsonConvert.DeserializeObject<ItemType>(content);

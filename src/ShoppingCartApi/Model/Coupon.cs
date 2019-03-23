@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace ShoppingCartApi.Model
 {
-    public class Coupon
+    public class Coupon : AggregateRoot
     {
         /// <summary>
         /// 
@@ -20,14 +20,12 @@ namespace ShoppingCartApi.Model
             string code, 
             Percent percentOff,
             Guid? forItemTypeId = null)
+            : base(id)
         {
-            Id = id;
             Code = code;
             PercentOff = percentOff;
             ForItemTypeId = forItemTypeId;
         }
-
-        public Guid Id { get; }
 
         public string Code { get; }
 

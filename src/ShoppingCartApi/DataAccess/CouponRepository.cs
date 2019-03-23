@@ -7,60 +7,27 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class CouponRepository : ICouponRepository
+    public class CouponRepository : Repository<Coupon>, ICouponRepository
     {
-        private readonly string _connectionString;
-
         public CouponRepository(string connectionString)
+            : base(connectionString)
         {
-            _connectionString = connectionString;
         }
 
-        public async Task SaveAsync(Coupon coupon)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                await connection.ExecuteAsync(
-                    "INSERT INTO shoppingcart.coupon (id, content, timestamp) VALUES (@id, @content::jsonb, @timestamp)",
-                    new
-                    {
-                        id = coupon.Id,
-                        content = JsonConvert.SerializeObject(coupon),
-                        timestamp = DateTimeOffset.UtcNow
-                    });
-            }
-        }
+        protected override string TableName => "coupon";
 
-        public async Task<Coupon> GetByCouponCodeAsync(string code)
+        public async Task<Coupon> GetByAsync(string code)
         {
-            using (var connection = new NpgsqlConnection(_connectionString))
+            using (var connection = new NpgsqlConnection(ConnectionString))
             {
                 var content =
                     await connection.QuerySingleOrDefaultAsync<string>(
                         "SELECT content " +
-                        "FROM shoppingcart.coupon " +
+                        $"FROM {SchemaAndTableName} " +
                         "WHERE content->>'Code' = @code",
                         new
                         {
                             code = code
-                        });
-
-                return content == null ? null : JsonConvert.DeserializeObject<Coupon>(content);
-            }
-        }
-
-        public async Task<Coupon> GetAsync(Guid id)
-        {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                var content =
-                    await connection.QuerySingleOrDefaultAsync<string>(
-                        "SELECT content " +
-                        "FROM shoppingcart.coupon " +
-                        "WHERE id = @id",
-                        new
-                        {
-                            id = id
                         });
 
                 return content == null ? null : JsonConvert.DeserializeObject<Coupon>(content);

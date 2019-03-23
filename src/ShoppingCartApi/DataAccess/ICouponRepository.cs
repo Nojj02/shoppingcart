@@ -4,12 +4,8 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public interface ICouponRepository
+    public interface ICouponRepository : IRepository<Coupon>
     {
-        Task SaveAsync(Coupon coupon);
-
-        Task<Coupon> GetAsync(Guid id);
-
-        Task<Coupon> GetByCouponCodeAsync(string code);
+        Task<Coupon> GetByAsync(string code);
     }
 }

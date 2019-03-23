@@ -6,17 +6,15 @@ using Newtonsoft.Json;
 
 namespace ShoppingCartApi.Model
 {
-    public class ItemType
+    public class ItemType : AggregateRoot
     {
         public ItemType(
             Guid id,
             string code)
+            : base(id)
         {
-            Id = id;
             Code = code;
         }
-
-        public Guid Id { get; }
 
         public string Code { get; }
     }
