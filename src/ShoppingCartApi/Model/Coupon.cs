@@ -18,7 +18,7 @@ namespace ShoppingCartApi.Model
         public Coupon(
             Guid id,
             string code, 
-            Percentage percentOff,
+            Percent percentOff,
             Guid? forItemTypeId = null)
         {
             Id = id;
@@ -31,8 +31,8 @@ namespace ShoppingCartApi.Model
 
         public string Code { get; }
 
-        public Percentage PercentOff { get; }
+        public Percent PercentOff { get; }
 
-        public Guid? ForItemTypeId { get; private set; }
+        public Guid? ForItemTypeId { get; }
     }
 }

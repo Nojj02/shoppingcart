@@ -24,7 +24,7 @@ namespace ShoppingCartApi.Controllers.Coupon
                 new Model.Coupon(
                     id: Guid.NewGuid(),
                     code: postRequestDto.Code,
-                    percentOff: new Percentage(postRequestDto.PercentOff),
+                    percentOff: new Percent(postRequestDto.PercentOff),
                     forItemTypeId: postRequestDto.ForItemTypeId);
 
             await _couponRepository.SaveAsync(coupon);

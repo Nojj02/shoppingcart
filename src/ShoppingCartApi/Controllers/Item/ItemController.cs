@@ -67,7 +67,7 @@ namespace ShoppingCartApi.Controllers.Item
                 return NotFound(id);
             }
 
-            entity.SetPercentageDiscount(new Percentage(setDiscountRequestDto.PercentOff));
+            entity.SetPercentageDiscount(new Percent(setDiscountRequestDto.PercentOff));
             entity.SetAmountDiscount(setDiscountRequestDto.AmountOff);
             await _repository.UpdateAsync(entity);
 

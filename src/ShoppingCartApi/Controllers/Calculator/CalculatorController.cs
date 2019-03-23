@@ -46,7 +46,7 @@ namespace ShoppingCartApi.Controllers.Calculator
                         var percentDiscountFromCoupon = 
                             coupon != null && (coupon.ForItemTypeId == null || coupon.ForItemTypeId == item.ItemTypeId)
                                 ? coupon.PercentOff 
-                                : Percentage.Zero;
+                                : Percent.Zero;
 
                         var discountedAmountByFixedAmount = item.AmountOff * Convert.ToDecimal(shoppingItem.Quantity);
                         var discountedAmountByPercentage = item.PercentOff.Of(grossAmount);

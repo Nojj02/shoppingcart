@@ -2,12 +2,12 @@ using System;
 
 namespace ShoppingCartApi.Model
 {
-    public class Percentage
+    public class Percent
     {
-        public static Percentage Zero = new Percentage(0);
-        public static Percentage OneHundred = new Percentage(100);
+        public static Percent Zero = new Percent(0);
+        public static Percent OneHundred = new Percent(100);
 
-        public Percentage(double value)
+        public Percent(double value)
         {
             Value = value;
         }
@@ -21,7 +21,7 @@ namespace ShoppingCartApi.Model
 
         public override bool Equals(object obj)
         {
-            var other = (Percentage) obj;
+            var other = (Percent) obj;
             return Math.Abs(Value - other.Value) < Double.Epsilon;
         }
 

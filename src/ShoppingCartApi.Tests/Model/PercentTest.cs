@@ -13,8 +13,8 @@ namespace ShoppingCartApi.Tests.Model
             [Fact]
             public void ValueEquality()
             {
-                var percent = new Percentage(30);
-                Assert.Equal(new Percentage(30), percent);
+                var percent = new Percent(30);
+                Assert.Equal(new Percent(30), percent);
             }
         }
     }
