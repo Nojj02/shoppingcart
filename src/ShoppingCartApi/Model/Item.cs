@@ -1,10 +1,14 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace ShoppingCartApi.Model
 {
     public class Item : AggregateRoot
     {
+        private readonly List<IItemEvent> _events = new List<IItemEvent>();
+        
         public Item(
             Guid id,
             string code,
@@ -16,6 +20,15 @@ namespace ShoppingCartApi.Model
             Price = price;
             ItemTypeId = itemTypeId;
             PercentOff = Percent.Zero;
+            
+            _events.Add(
+                new ItemCreatedEvent
+                {
+                    Id = id,
+                    Code = code,
+                    Price = price,
+                    ItemTypeId = itemTypeId
+                });
         }
 
         [JsonConstructor]
@@ -34,6 +47,8 @@ namespace ShoppingCartApi.Model
             PercentOff = percentOff;
             AmountOff = amountOff;
         }
+
+        public IReadOnlyList<IItemEvent> Events => _events;
 
         public string Code { get; }
 
