@@ -27,8 +27,7 @@ namespace ShoppingCartApi.Tests.Controllers.Coupon
                 var postRequestDto = new PostRequestDto
                 {
                     Code = "GRAND_SALE",
-                    PercentOff = 50,
-                    AmountOff = 5
+                    PercentOff = 50
                 };
 
                 var postResponse = (CreatedResult)await couponController.Post(postRequestDto);
@@ -41,7 +40,6 @@ namespace ShoppingCartApi.Tests.Controllers.Coupon
 
                 Assert.Equal("GRAND_SALE", couponDto.Code);
                 Assert.Equal(50, couponDto.PercentOff);
-                Assert.Equal(5, couponDto.AmountOff);
             }
 
             [Fact]
@@ -56,8 +54,7 @@ namespace ShoppingCartApi.Tests.Controllers.Coupon
                 var postRequestDto = new PostRequestDto
                 {
                     Code = "GRAND_SALE",
-                    PercentOff = 50,
-                    AmountOff = 5
+                    PercentOff = 50
                 };
 
                 var postResponse = await couponController.Post(postRequestDto);
@@ -72,7 +69,6 @@ namespace ShoppingCartApi.Tests.Controllers.Coupon
 
                 Assert.Equal("GRAND_SALE", couponDto.Code);
                 Assert.Equal(50, couponDto.PercentOff);
-                Assert.Equal(5, couponDto.AmountOff);
             }
         }
     }

@@ -30,6 +30,7 @@ namespace ShoppingCartApi
 
             var connectionString = Configuration.GetConnectionString(ConfigurationKeys.ConnectionString.Postgres);
 
+            services.AddScoped<IItemTypeRepository, ItemTypeRepository>(x => new ItemTypeRepository(connectionString));
             services.AddScoped<IItemRepository, ItemRepository>(x => new ItemRepository(connectionString));
             services.AddScoped<ICouponRepository, CouponRepository>(x => new CouponRepository(connectionString));
         }

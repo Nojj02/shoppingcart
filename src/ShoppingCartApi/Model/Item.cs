@@ -8,11 +8,13 @@ namespace ShoppingCartApi.Model
         public Item(
             Guid id,
             string code,
-            decimal price)
+            decimal price,
+            Guid itemTypeId)
         {
             Id = id;
             Code = code;
             Price = price;
+            ItemTypeId = itemTypeId;
             PercentOff = Percentage.Zero;
         }
 
@@ -20,12 +22,14 @@ namespace ShoppingCartApi.Model
         private Item(
             Guid id,
             string code,
+            Guid itemTypeId,
             decimal price,
             Percentage percentOff,
             decimal amountOff)
         {
             Id = id;
             Code = code;
+            ItemTypeId = itemTypeId;
             Price = price;
             PercentOff = percentOff;
             AmountOff = amountOff;
@@ -35,11 +39,14 @@ namespace ShoppingCartApi.Model
         
         public string Code { get; }
 
+        public Guid ItemTypeId { get; set; }
+
         public decimal Price { get; }
-        
+
         public Percentage PercentOff { get; private set; }
 
         public decimal AmountOff { get; private set; }
+
 
         public void SetPercentageDiscount(Percentage percentOff)
         {

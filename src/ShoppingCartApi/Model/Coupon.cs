@@ -8,24 +8,31 @@ namespace ShoppingCartApi.Model
 {
     public class Coupon
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="code"></param>
+        /// <param name="percentOff"></param>
+        /// <param name="forItemTypeId">If null, means the coupon applies store-wide</param>
         public Coupon(
             Guid id,
             string code, 
-            decimal amountOff,
-            Percentage percentOff)
+            Percentage percentOff,
+            Guid? forItemTypeId = null)
         {
             Id = id;
             Code = code;
-            AmountOff = amountOff;
             PercentOff = percentOff;
+            ForItemTypeId = forItemTypeId;
         }
 
         public Guid Id { get; }
 
         public string Code { get; }
 
-        public decimal AmountOff { get; }
-
         public Percentage PercentOff { get; }
+
+        public Guid? ForItemTypeId { get; private set; }
     }
 }

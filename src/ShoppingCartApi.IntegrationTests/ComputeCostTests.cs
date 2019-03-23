@@ -20,12 +20,18 @@ namespace ShoppingCartApi.IntegrationTests
         [Fact]
         public async Task ComputesTotalCostForItems()
         {
+            await Steps.GivenTheItemTypes(
+                itemTypes: new List<dynamic>
+                {
+                    new {Code = "fruit"},
+                    new {Code = "vegetable"}
+                });
+
             await Steps.GivenAShopWithItems(
                 items: new List<dynamic>
                 {
-                    new {Code = "potato", Price = 30},
-                    new {Code = "apple", Price = 70},
-                    new {Code = "tomato", Price = 50}
+                    new {Code = "potato", Price = 30, ItemTypeCode = "vegetable"},
+                    new {Code = "apple", Price = 70, ItemTypeCode = "fruit"}
                 });
 
             await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
@@ -40,13 +46,20 @@ namespace ShoppingCartApi.IntegrationTests
         [Fact]
         public async Task ItemsCanBeDiscounted()
         {
+            await Steps.GivenTheItemTypes(
+                itemTypes: new List<dynamic>
+                {
+                    new {Code = "fruit"},
+                    new {Code = "vegetable"}
+                });
+
             await Steps.GivenAShopWithItems(
                 items: new List<dynamic>
                 {
-                    new {Code = "potato", Price = 30},
-                    new {Code = "apple", Price = 70},
-                    new {Code = "tomato", Price = 50},
-                    new {Code = "lettuce", Price = 20}
+                    new {Code = "potato", Price = 30, ItemTypeCode = "vegetable"},
+                    new {Code = "apple", Price = 70, ItemTypeCode = "fruit"},
+                    new {Code = "tomato", Price = 50, ItemTypeCode = "fruit"},
+                    new {Code = "lettuce", Price = 20, ItemTypeCode = "vegetable"}
                 });
 
             await Steps.GivenItemIsDiscounted(itemCode: "potato", percentOff: 10, amountOff: 0);
@@ -68,12 +81,19 @@ namespace ShoppingCartApi.IntegrationTests
         [Fact]
         public async Task ItemsCanBeDiscountedWithACoupon()
         {
+            await Steps.GivenTheItemTypes(
+                itemTypes: new List<dynamic>
+                {
+                    new {Code = "fruit"},
+                    new {Code = "vegetable"}
+                });
+
             await Steps.GivenAShopWithItems(
                 items: new List<dynamic>
                 {
-                    new {Code = "potato", Price = 30},
-                    new {Code = "apple", Price = 70},
-                    new {Code = "lettuce", Price = 20}
+                    new {Code = "potato", Price = 30, ItemTypeCode = "vegetable"},
+                    new {Code = "apple", Price = 70, ItemTypeCode = "fruit"},
+                    new {Code = "lettuce", Price = 20, ItemTypeCode = "vegetable"}
                 });
 
             await Steps.GivenACoupon(couponCode: "GRAND_SALE", percentOff: 10);
@@ -102,12 +122,12 @@ namespace ShoppingCartApi.IntegrationTests
             await Steps.GivenAShopWithItems(
                 items: new List<dynamic>
                 {
-                    new {Code = "potato", Price = 30},
-                    new {Code = "apple", Price = 70},
-                    new {Code = "lettuce", Price = 20}
+                    new {Code = "potato", Price = 30, ItemTypeCode = "vegetable"},
+                    new {Code = "apple", Price = 70, ItemTypeCode = "fruit"},
+                    new {Code = "lettuce", Price = 20, ItemTypeCode = "vegetable"}
                 });
 
-            await Steps.GivenACoupon(couponCode: "HALF_OFF_FRUITS", percentOff: 10, itemTypeCode: "fruit");
+            await Steps.GivenACoupon(couponCode: "HALF_OFF_FRUITS", percentOff: 50, itemTypeCode: "fruit");
 
             await Steps.ThenUserCanComputeTotalCostOfShoppingItems(
                 shoppingItems: new List<dynamic>
@@ -116,8 +136,8 @@ namespace ShoppingCartApi.IntegrationTests
                     new {ItemCode = "apple", Quantity = 1},
                     new {ItemCode = "lettuce", Quantity = 2}
                 },
-                couponCode: "GRAND_SALE",
-                expectedTotalCost: 180);
+                couponCode: "HALF_OFF_FRUITS",
+                expectedTotalCost: 165);
         }
     }
 }

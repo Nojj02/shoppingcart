@@ -12,6 +12,7 @@ namespace ShoppingCartApi.IntegrationTests
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
                 var deletionSql = @"
+DELETE FROM shoppingcart.item_type;
 DELETE FROM shoppingcart.item;
 DELETE FROM shoppingcart.cart;
 DELETE FROM shoppingcart.coupon;";

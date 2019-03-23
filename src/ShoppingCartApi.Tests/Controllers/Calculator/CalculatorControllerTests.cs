@@ -7,6 +7,7 @@ using ShoppingCartApi.Controllers;
 using ShoppingCartApi.Controllers.Calculator;
 using ShoppingCartApi.Controllers.Coupon;
 using ShoppingCartApi.Controllers.Item;
+using ShoppingCartApi.Controllers.ItemType;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Tests.Helpers;
 using Xunit;
@@ -470,6 +471,93 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var dto = (CalculatorComputeCostDto)result.Value;
 
                 Assert.Equal(112, dto.TotalCost);
+            }
+
+            [Fact]
+            public async Task ApplyDiscount_FromCouponOnlyForSelectItemType()
+            {
+                var itemTypeRepository = new InMemoryItemTypeRepository();
+                var itemRepository = new InMemoryItemRepository();
+                var couponRepository = new InMemoryCouponRepository();
+
+                var itemTypeController = new ItemTypeController(itemTypeRepository)
+                    .BootstrapForTests();
+
+                var postFruitResult = await itemTypeController.Post(
+                    new ShoppingCartApi.Controllers.ItemType.PostRequestDto
+                    {
+                        Code = "fruit"
+                    });
+                var fruitItemTypeDto = (ItemTypeDto) postFruitResult.Value;
+
+                var postVegetableResult = await itemTypeController.Post(
+                    new ShoppingCartApi.Controllers.ItemType.PostRequestDto
+                    {
+                        Code = "vegetable"
+                    });
+                var vegetableItemTypeDto = (ItemTypeDto) postVegetableResult.Value;
+
+                var itemController = new ItemController(itemRepository)
+                    .BootstrapForTests();
+
+                var postPotatoResult = await itemController.Post(new PostRequestDto
+                {
+                    Code = "potato",
+                    Price = 30,
+                    ItemTypeId = vegetableItemTypeDto.Id
+                });
+                var potatoDto = (ItemDto)postPotatoResult.Value;
+
+                var postAppleResult = await itemController.Post(new PostRequestDto
+                {
+                    Code = "apple",
+                    Price = 50,
+                    ItemTypeId = fruitItemTypeDto.Id
+                });
+                var appleDto = (ItemDto)postAppleResult.Value;
+                
+                var couponController = new CouponController(couponRepository)
+                    .BootstrapForTests();
+                var postRequestDto = new ShoppingCartApi.Controllers.Coupon.PostRequestDto
+                {
+                    Code = "HALF_OFF_FRUIT",
+                    PercentOff = 50,
+                    ForItemTypeId = fruitItemTypeDto.Id
+                };
+                await couponController.Post(postRequestDto);
+
+                var calculatorController =
+                    new CalculatorController(itemRepository, couponRepository)
+                        .BootstrapForTests();
+
+                var calculatorComputeCostRequestDto =
+                    new CalculatorComputeCostRequestDto
+                    {
+                        CouponCode = "HALF_OFF_FRUIT",
+                        ShoppingItems =
+                            new List<ShoppingItemDto>
+                            {
+                                new ShoppingItemDto
+                                {
+                                    Id = potatoDto.Id,
+                                    Quantity = 3
+                                },
+                                new ShoppingItemDto
+                                {
+                                    Id = appleDto.Id,
+                                    Quantity = 1
+                                }
+                            }
+                    };
+
+                var result = await calculatorController.ComputeCost(calculatorComputeCostRequestDto);
+
+                Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
+                Assert.NotNull(result.Value);
+
+                var dto = (CalculatorComputeCostDto)result.Value;
+
+                Assert.Equal(115, dto.TotalCost);
             }
 
             [Theory]

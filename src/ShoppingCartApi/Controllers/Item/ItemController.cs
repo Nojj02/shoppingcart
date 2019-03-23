@@ -35,7 +35,8 @@ namespace ShoppingCartApi.Controllers.Item
                 var entity = new Model.Item(
                     id: Guid.NewGuid(),
                     code: postRequestDto.Code,
-                    price: postRequestDto.Price);
+                    price: postRequestDto.Price,
+                    itemTypeId: postRequestDto.ItemTypeId);
                 await _repository.SaveAsync(entity);
 
                 var selfUrl = Url.Action("GetByItemCode", new { code = entity.Code });
@@ -79,6 +80,7 @@ namespace ShoppingCartApi.Controllers.Item
             {
                 Id = entity.Id,
                 Code = entity.Code,
+                ItemTypeId = entity.ItemTypeId,
                 Price = entity.Price,
                 PercentOff = entity.PercentOff.Value,
                 AmountOff = entity.AmountOff

@@ -45,16 +45,20 @@ namespace ShoppingCartApi.IntegrationTests
 
         public static async Task GivenAShopWithItems(List<dynamic> items)
         {
+            var itemTypeApi = new ItemTypeApi(ApiUrl);
             foreach (var item in items)
             {
+                var itemType = await itemTypeApi.GetByCodeAsync(item.ItemTypeCode);
+
                 var itemDto = new
                 {
                     Code = item.Code,
-                    Price = item.Price
+                    Price = item.Price,
+                    ItemTypeId = itemType.Id
                 };
 
                 var httpContent = new StringContent(JsonConvert.SerializeObject(itemDto), Encoding.UTF8, "application/json");
-
+                
                 var postRequestMessage =
                     new HttpRequestMessage(
                         method: HttpMethod.Post,
@@ -153,6 +157,7 @@ namespace ShoppingCartApi.IntegrationTests
                                     Quantity = x.Quantity
                                 };
                             }).Select(x => x.Result)
+                            .ToList()
                 };
 
             var httpContent = new StringContent(JsonConvert.SerializeObject(computeCostDto), Encoding.UTF8, "application/json");

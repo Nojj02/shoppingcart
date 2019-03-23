@@ -24,14 +24,14 @@ namespace ShoppingCartApi.Controllers.Coupon
                 new Model.Coupon(
                     id: Guid.NewGuid(),
                     code: postRequestDto.Code,
-                    amountOff: postRequestDto.AmountOff,
-                    percentOff: new Percentage(postRequestDto.PercentOff));
+                    percentOff: new Percentage(postRequestDto.PercentOff),
+                    forItemTypeId: postRequestDto.ForItemTypeId);
 
             await _couponRepository.SaveAsync(coupon);
 
             var dto = MapToDto(coupon);
 
-            var url = Url.Action(nameof(Get), new { id = Guid.NewGuid() });
+            var url = Url.Action(nameof(Get), new { id = coupon.Id });
 
             return Created(url, dto);
         }
@@ -53,7 +53,6 @@ namespace ShoppingCartApi.Controllers.Coupon
             {
                 Id = coupon.Id,
                 Code = coupon.Code,
-                AmountOff = coupon.AmountOff,
                 PercentOff = coupon.PercentOff.Value
             };
             return dto;

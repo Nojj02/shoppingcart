@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using ShoppingCartApi.Controllers;
@@ -37,9 +38,12 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                     new ItemController(repository)
                         .BootstrapForTests();
 
+                var itemTypeId = Guid.NewGuid();
+
                 var postNewItemDto = new PostRequestDto
                 {
-                    Code = "lettuce"
+                    Code = "lettuce",
+                    ItemTypeId = itemTypeId
                 };
 
                 var result = await itemController.Post(postNewItemDto);
@@ -48,6 +52,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                 var itemDto = (ItemDto) result.Value;
 
                 Assert.Equal("lettuce", itemDto.Code);
+                Assert.Equal(itemTypeId, itemDto.ItemTypeId);
             }
 
             [Fact]

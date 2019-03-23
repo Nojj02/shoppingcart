@@ -33,8 +33,6 @@ namespace ShoppingCartApi.Controllers.Calculator
             
             var coupon = await _couponRepository.GetByCouponCodeAsync(requestDto.CouponCode);
 
-            var percentDiscountFromCoupon = coupon != null ? coupon.PercentOff : Percentage.Zero;
-
             var totalCost =
                 requestDto.ShoppingItems
                     .Sum(shoppingItem =>
@@ -44,6 +42,11 @@ namespace ShoppingCartApi.Controllers.Calculator
                         if (item == null) return 0;
 
                         var grossAmount = item.Price * Convert.ToDecimal(shoppingItem.Quantity);
+
+                        var percentDiscountFromCoupon = 
+                            coupon != null && (coupon.ForItemTypeId == null || coupon.ForItemTypeId == item.ItemTypeId)
+                                ? coupon.PercentOff 
+                                : Percentage.Zero;
 
                         var discountedAmountByFixedAmount = item.AmountOff * Convert.ToDecimal(shoppingItem.Quantity);
                         var discountedAmountByPercentage = item.PercentOff.Of(grossAmount);

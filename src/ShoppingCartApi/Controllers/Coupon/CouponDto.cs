@@ -7,7 +7,6 @@ namespace ShoppingCartApi.Controllers.Coupon
     {
         public IEnumerable<char> Code { get; set; }
         public double PercentOff { get; set; }
-        public decimal AmountOff { get; set; }
         public Guid Id { get; set; }
     }
 }
