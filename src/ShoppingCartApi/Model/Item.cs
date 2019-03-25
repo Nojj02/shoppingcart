@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 
 namespace ShoppingCartApi.Model
@@ -8,7 +10,8 @@ namespace ShoppingCartApi.Model
     public class Item : AggregateRoot
     {
         private readonly List<IItemEvent> _events = new List<IItemEvent>();
-        
+        private readonly List<IItemEvent> _newEvents = new List<IItemEvent>();
+
         public Item(
             Guid id,
             string code,
@@ -16,45 +19,45 @@ namespace ShoppingCartApi.Model
             Guid itemTypeId)
             : base(id)
         {
-            Code = code;
-            Price = price;
-            ItemTypeId = itemTypeId;
-            PercentOff = Percent.Zero;
-            
-            _events.Add(
-                new ItemCreatedEvent
-                {
-                    Id = id,
-                    Code = code,
-                    Price = price,
-                    ItemTypeId = itemTypeId
-                });
+            var itemCreatedEvent = new ItemCreatedEvent
+            {
+                Id = id,
+                Code = code,
+                Price = price,
+                ItemTypeId = itemTypeId
+            };
+            Apply(itemCreatedEvent, isNew: true);
         }
 
-        [JsonConstructor]
-        private Item(
-            Guid id,
-            string code,
-            Guid itemTypeId,
-            decimal price,
-            Percent percentOff,
-            decimal amountOff)
+        private Item(Guid id, IReadOnlyList<IItemEvent> itemEvents)
             : base(id)
         {
-            Code = code;
-            ItemTypeId = itemTypeId;
-            Price = price;
-            PercentOff = percentOff;
-            AmountOff = amountOff;
+            foreach (var itemEvent in itemEvents)
+            {
+                switch (itemEvent)
+                {
+                    case ItemCreatedEvent itemCreatedEvent:
+                        Apply(itemCreatedEvent);
+                        break;
+                    case ItemPercentageDiscountSetEvent itemPercentageDiscountSetEvent:
+                        Apply(itemPercentageDiscountSetEvent);
+                        break;
+                    case ItemAmountDiscountSetEvent itemAmountDiscountSetEvent:
+                        Apply(itemAmountDiscountSetEvent);
+                        break;
+                }
+            }
         }
 
         public IReadOnlyList<IItemEvent> Events => _events;
 
-        public string Code { get; }
+        public IReadOnlyList<IItemEvent> NewEvents => _newEvents;
 
-        public Guid ItemTypeId { get; }
+        public string Code { get; private set; }
 
-        public decimal Price { get; }
+        public Guid ItemTypeId { get; private set; }
+
+        public decimal Price { get; private set; }
 
         public Percent PercentOff { get; private set; }
 
@@ -62,12 +65,60 @@ namespace ShoppingCartApi.Model
 
         public void SetPercentageDiscount(Percent percentOff)
         {
-            PercentOff = percentOff;
+            var itemPercentageDiscountSetEvent = new ItemPercentageDiscountSetEvent
+            {
+                PercentOff = percentOff
+            };
+
+            Apply(itemPercentageDiscountSetEvent, isNew: true);
         }
 
         public void SetAmountDiscount(decimal amountOff)
         {
-            AmountOff = amountOff;
+            var itemAmountDiscountSetEvent = new ItemAmountDiscountSetEvent
+            {
+                AmountOff = amountOff
+            };
+
+            Apply(itemAmountDiscountSetEvent, isNew: true);
+        }
+
+        private void Apply(ItemCreatedEvent itemCreatedEvent, bool isNew = false)
+        {
+            AddEvent(itemCreatedEvent, isNew);
+
+            Code = itemCreatedEvent.Code;
+            Price = itemCreatedEvent.Price;
+            ItemTypeId = itemCreatedEvent.ItemTypeId;
+            PercentOff = Percent.Zero;
+        }
+
+        private void Apply(ItemPercentageDiscountSetEvent itemPercentageDiscountSetEvent, bool isNew = false)
+        {
+            AddEvent(itemPercentageDiscountSetEvent, isNew);
+
+            PercentOff = itemPercentageDiscountSetEvent.PercentOff;
+        }
+
+        private void Apply(ItemAmountDiscountSetEvent itemAmountDiscountSetEvent, bool isNew = false)
+        {
+            AddEvent(itemAmountDiscountSetEvent, isNew);
+
+            AmountOff = itemAmountDiscountSetEvent.AmountOff;
+        }
+
+        private void AddEvent(IItemEvent anEvent, bool isNew)
+        {
+            _events.Add(anEvent);
+            if (isNew)
+            {
+                _newEvents.Add(anEvent);
+            }
+        }
+
+        public static Item Reconstitute(Guid id, IReadOnlyList<IItemEvent> itemEvents)
+        {
+            return EnumerableExtensions.Any(itemEvents) ? new Item(id, itemEvents) : null;
         }
     }
 }
