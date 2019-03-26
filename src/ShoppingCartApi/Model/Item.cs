@@ -8,11 +8,8 @@ using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.Model
 {
-    public class Item : AggregateRoot
+    public class Item : AggregateRoot<IItemEvent>
     {
-        private readonly List<IItemEvent> _events = new List<IItemEvent>();
-        private readonly List<IItemEvent> _newEvents = new List<IItemEvent>();
-
         public Item(
             Guid id,
             string code,
@@ -30,29 +27,28 @@ namespace ShoppingCartApi.Model
             Apply(itemCreatedEvent, isNew: true);
         }
 
-        private Item(Guid id, IReadOnlyList<IItemEvent> itemEvents)
-            : base(id)
+        public Item(Guid id, IReadOnlyList<IItemEvent> itemEvents)
+            : base(id, itemEvents)
         {
-            foreach (var itemEvent in itemEvents)
-            {
-                switch (itemEvent)
-                {
-                    case ItemCreatedEvent itemCreatedEvent:
-                        Apply(itemCreatedEvent);
-                        break;
-                    case ItemPercentageDiscountSetEvent itemPercentageDiscountSetEvent:
-                        Apply(itemPercentageDiscountSetEvent);
-                        break;
-                    case ItemAmountDiscountSetEvent itemAmountDiscountSetEvent:
-                        Apply(itemAmountDiscountSetEvent);
-                        break;
-                }
-            }
         }
 
-        public IReadOnlyList<IItemEvent> Events => _events;
-
-        public IReadOnlyList<IItemEvent> NewEvents => _newEvents;
+        protected override void ApplyEventsOnConstruction(IItemEvent anEvent)
+        {
+            switch (anEvent)
+            {
+                case ItemCreatedEvent itemCreatedEvent:
+                    Apply(itemCreatedEvent);
+                    break;
+                case ItemPercentageDiscountSetEvent itemPercentageDiscountSetEvent:
+                    Apply(itemPercentageDiscountSetEvent);
+                    break;
+                case ItemAmountDiscountSetEvent itemAmountDiscountSetEvent:
+                    Apply(itemAmountDiscountSetEvent);
+                    break;
+                default:
+                    throw new UnsupportedEventException(anEvent.GetType());
+            }
+        }
 
         public string Code { get; private set; }
 
@@ -106,20 +102,6 @@ namespace ShoppingCartApi.Model
             AddEvent(itemAmountDiscountSetEvent, isNew);
 
             AmountOff = itemAmountDiscountSetEvent.AmountOff;
-        }
-
-        private void AddEvent(IItemEvent anEvent, bool isNew)
-        {
-            _events.Add(anEvent);
-            if (isNew)
-            {
-                _newEvents.Add(anEvent);
-            }
-        }
-
-        public static Item Reconstitute(Guid id, IReadOnlyList<IItemEvent> itemEvents)
-        {
-            return EnumerableExtensions.Any(itemEvents) ? new Item(id, itemEvents) : null;
         }
     }
 }

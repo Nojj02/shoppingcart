@@ -100,7 +100,7 @@ namespace ShoppingCartApi.Tests.Model
                 item.SetAmountDiscount(30);
                 item.SetPercentageDiscount(new Percent(70));
                 
-                var reconstitutedItem = Item.Reconstitute(item.Id, item.Events);
+                var reconstitutedItem = new Item(item.Id, item.Events);
 
                 Assert.Equal(3, reconstitutedItem.Events.Count);
 
@@ -125,7 +125,7 @@ namespace ShoppingCartApi.Tests.Model
                 item.SetAmountDiscount(30);
                 item.SetPercentageDiscount(new Percent(70));
 
-                var reconstitutedItem = Item.Reconstitute(item.Id, item.Events);
+                var reconstitutedItem = new Item(item.Id, item.Events);
                 reconstitutedItem.SetAmountDiscount(40);
 
                 Assert.Equal(4, reconstitutedItem.Events.Count);

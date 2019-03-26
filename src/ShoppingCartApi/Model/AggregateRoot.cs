@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.Model
 {

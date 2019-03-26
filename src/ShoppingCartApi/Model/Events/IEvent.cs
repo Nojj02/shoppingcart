@@ -1,6 +1,6 @@
 namespace ShoppingCartApi.Model.Events
 {
-    public interface IItemEvent : IEvent
+    public interface IEvent
     {
     }
 }
