@@ -82,7 +82,7 @@ namespace ShoppingCartApi.Model
 
         private void Apply(ItemCreatedEvent itemCreatedEvent, bool isNew = false)
         {
-            AddEvent(itemCreatedEvent, isNew);
+            base.AddEvent(itemCreatedEvent, isNew);
 
             Code = itemCreatedEvent.Code;
             Price = itemCreatedEvent.Price;
@@ -92,14 +92,14 @@ namespace ShoppingCartApi.Model
 
         private void Apply(ItemPercentageDiscountSetEvent itemPercentageDiscountSetEvent, bool isNew = false)
         {
-            AddEvent(itemPercentageDiscountSetEvent, isNew);
+            base.AddEvent(itemPercentageDiscountSetEvent, isNew);
 
             PercentOff = itemPercentageDiscountSetEvent.PercentOff;
         }
 
         private void Apply(ItemAmountDiscountSetEvent itemAmountDiscountSetEvent, bool isNew = false)
         {
-            AddEvent(itemAmountDiscountSetEvent, isNew);
+            base.AddEvent(itemAmountDiscountSetEvent, isNew);
 
             AmountOff = itemAmountDiscountSetEvent.AmountOff;
         }

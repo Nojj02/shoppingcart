@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.Model
 {
-    public class Coupon : AggregateRoot
+    public class Coupon : AggregateRoot<ICouponEvent>
     {
         /// <summary>
         /// 
@@ -22,15 +23,42 @@ namespace ShoppingCartApi.Model
             Guid? forItemTypeId = null)
             : base(id)
         {
-            Code = code;
-            PercentOff = percentOff;
-            ForItemTypeId = forItemTypeId;
+            Apply(
+                new CouponCreatedEvent
+                {
+                    Id = id,
+                    Code = code,
+                    PercentOff = percentOff,
+                    ForItemTypeId = forItemTypeId
+                },
+                isNew: true);
         }
 
-        public string Code { get; }
+        public string Code { get; private set; }
 
-        public Percent PercentOff { get; }
+        public Percent PercentOff { get; private set; }
 
-        public Guid? ForItemTypeId { get; }
+        public Guid? ForItemTypeId { get; private set; }
+
+        public void Apply(CouponCreatedEvent anEvent, bool isNew = false)
+        {
+            Code = anEvent.Code;
+            PercentOff = anEvent.PercentOff;
+            ForItemTypeId = anEvent.ForItemTypeId;
+            
+            base.AddEvent(anEvent, isNew);
+        }
+
+        protected override void ApplyEventsOnConstruction(ICouponEvent anEvent)
+        {
+            switch (anEvent)
+            {
+                case CouponCreatedEvent couponCreatedEvent:
+                    Apply(couponCreatedEvent);
+                    break;
+                default:
+                    throw new UnsupportedEventException(anEvent.GetType());
+            }
+        }
     }
 }
