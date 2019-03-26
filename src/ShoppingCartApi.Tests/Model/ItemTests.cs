@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ShoppingCartApi.Model;
+using ShoppingCartApi.Model.Events;
 using Xunit;
 
 namespace ShoppingCartApi.Tests.Model

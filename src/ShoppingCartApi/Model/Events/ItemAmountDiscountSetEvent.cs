@@ -1,4 +1,4 @@
-namespace ShoppingCartApi.Model
+namespace ShoppingCartApi.Model.Events
 {
     public class ItemAmountDiscountSetEvent : IItemEvent
     {
