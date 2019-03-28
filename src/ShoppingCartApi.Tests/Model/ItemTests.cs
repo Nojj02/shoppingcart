@@ -31,6 +31,7 @@ namespace ShoppingCartApi.Tests.Model
                 var anEvent = item.Events[0] as ItemCreatedEvent;
                 Assert.NotNull(anEvent);
                 Assert.Equal(new Guid("f61f0355-796e-4f56-963c-734ac2e52121"), anEvent.Id);
+                Assert.Equal(1, anEvent.Version);
                 Assert.Equal("banana", anEvent.Code);
                 Assert.Equal(50m, anEvent.Price);
                 Assert.Equal(new Guid("c8867796-5cc5-49b2-ac9f-e559085d6b04"), anEvent.ItemTypeId);
@@ -57,6 +58,8 @@ namespace ShoppingCartApi.Tests.Model
 
                 var anEvent = item.Events[1] as ItemPercentageDiscountSetEvent;
                 Assert.NotNull(anEvent);
+                Assert.Equal(new Guid("f61f0355-796e-4f56-963c-734ac2e52121"), anEvent.Id);
+                Assert.Equal(2, anEvent.Version);
                 Assert.Equal(new Percent(50), anEvent.PercentOff);
             }
         }
@@ -81,6 +84,8 @@ namespace ShoppingCartApi.Tests.Model
 
                 var anEvent = item.Events[1] as ItemAmountDiscountSetEvent;
                 Assert.NotNull(anEvent);
+                Assert.Equal(new Guid("f61f0355-796e-4f56-963c-734ac2e52121"), anEvent.Id);
+                Assert.Equal(2, anEvent.Version);
                 Assert.Equal(30m, anEvent.AmountOff);
             }
         }

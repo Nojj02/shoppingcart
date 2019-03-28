@@ -20,6 +20,7 @@ namespace ShoppingCartApi.Model
             var itemCreatedEvent = new ItemCreatedEvent
             {
                 Id = id,
+                Version = CurrentVersion + 1,
                 Code = code,
                 Price = price,
                 ItemTypeId = itemTypeId
@@ -64,6 +65,8 @@ namespace ShoppingCartApi.Model
         {
             var itemPercentageDiscountSetEvent = new ItemPercentageDiscountSetEvent
             {
+                Id = Id,
+                Version = CurrentVersion + 1,
                 PercentOff = percentOff
             };
 
@@ -74,6 +77,8 @@ namespace ShoppingCartApi.Model
         {
             var itemAmountDiscountSetEvent = new ItemAmountDiscountSetEvent
             {
+                Id = Id,
+                Version = CurrentVersion + 1,
                 AmountOff = amountOff
             };
 

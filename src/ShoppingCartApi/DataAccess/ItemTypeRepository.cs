@@ -4,10 +4,11 @@ using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Model;
+using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class ItemTypeRepository : Repository<ItemType>, IItemTypeRepository
+    public class ItemTypeRepository : Repository<ItemType, IItemTypeEvent>, IItemTypeRepository
     {
         public ItemTypeRepository(string connectionString)
             : base(connectionString)

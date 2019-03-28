@@ -17,6 +17,8 @@ namespace ShoppingCartApi.Model
             Apply(
                 new ItemTypeCreatedEvent
                 {
+                    Id = id,
+                    Version = CurrentVersion + 1,
                     Code = code
                 },
                 isNew: true);

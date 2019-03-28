@@ -27,6 +27,7 @@ namespace ShoppingCartApi.Model
                 new CouponCreatedEvent
                 {
                     Id = id,
+                    Version = CurrentVersion + 1,
                     Code = code,
                     PercentOff = percentOff,
                     ForItemTypeId = forItemTypeId

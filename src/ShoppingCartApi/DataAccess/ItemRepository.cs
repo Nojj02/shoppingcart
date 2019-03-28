@@ -7,10 +7,11 @@ using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.Model;
+using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class ItemRepository : Repository<Item>, IItemRepository
+    public class ItemRepository : Repository<Item, IItemEvent>, IItemRepository
     {
         private readonly string _connectionString;
         

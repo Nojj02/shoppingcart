@@ -4,10 +4,11 @@ using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Model;
+using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class CouponRepository : Repository<Coupon>, ICouponRepository
+    public class CouponRepository : Repository<Coupon, ICouponEvent>, ICouponRepository
     {
         public CouponRepository(string connectionString)
             : base(connectionString)

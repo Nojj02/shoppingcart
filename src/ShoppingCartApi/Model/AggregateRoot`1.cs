@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Metadata;
 using ShoppingCartApi.Model.Events;
 
@@ -28,6 +29,8 @@ namespace ShoppingCartApi.Model
         public IReadOnlyList<TEvent> Events => _events;
 
         public IReadOnlyList<TEvent> NewEvents => _newEvents;
+
+        public int CurrentVersion => _events.Any() ? _events.Max(x => x.Version) : 0;
 
         /// <summary>
         /// Called during reconstitution of an object from its events.

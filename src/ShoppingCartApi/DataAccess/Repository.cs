@@ -6,11 +6,13 @@ using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Model;
+using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public abstract class Repository<T> : IRepository<T>
-        where T : AggregateRoot
+    public abstract class Repository<T, TEvent> : IRepository<T>
+        where T : AggregateRoot<TEvent>
+        where TEvent : IEvent
     {
         protected const string SchemaName = "shoppingcart";
 
@@ -18,7 +20,7 @@ namespace ShoppingCartApi.DataAccess
         {
             ConnectionString = connectionString;
         }
-        
+
         protected abstract string TableName { get; }
 
         protected string ConnectionString { get; }
@@ -28,18 +30,33 @@ namespace ShoppingCartApi.DataAccess
         public async Task SaveAsync(T entity)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
+            using (var transaction = connection.BeginTransaction())
             {
-                await connection.ExecuteAsync(
-                    $@"INSERT INTO {SchemaAndTableName} 
-                            (id, content, timestamp) 
-                        VALUES 
-                            (@id, @content::jsonb, @timestamp)",
-                    new
+                try
+                {
+                    foreach (var newEvent in entity.NewEvents)
                     {
-                        id = entity.Id,
-                        content = JsonConvert.SerializeObject(entity),
-                        timestamp = DateTimeOffset.UtcNow
-                    });
+                        await connection.ExecuteAsync(
+                            $@"INSERT INTO {SchemaAndTableName} 
+                            (id, version, event_type, event, timestamp) 
+                        VALUES 
+                            (@id, @version, @event_type, @event_content::jsonb, @timestamp)",
+                            new
+                            {
+                                id = entity.Id,
+                                version = newEvent.Version,
+                                event_type = newEvent.GetType().FullName,
+                                event_content = JsonConvert.SerializeObject(newEvent),
+                                timestamp = DateTimeOffset.UtcNow
+                            });
+                    }
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
             }
         }
 
