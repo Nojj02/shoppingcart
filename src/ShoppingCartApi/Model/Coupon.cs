@@ -35,6 +35,13 @@ namespace ShoppingCartApi.Model
                 isNew: true);
         }
 
+        public Coupon(
+            Guid id,
+            IReadOnlyList<ICouponEvent> events)
+            : base(id, events)
+        {
+        }
+
         public string Code { get; private set; }
 
         public Percent PercentOff { get; private set; }

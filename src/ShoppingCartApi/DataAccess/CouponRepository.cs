@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Newtonsoft.Json;
@@ -16,6 +17,8 @@ namespace ShoppingCartApi.DataAccess
         }
 
         protected override string TableName => "coupon";
+        
+        protected override Coupon MapEventsToEntity(Guid id, IReadOnlyList<ICouponEvent> events) => new Coupon(id, events);
 
         public async Task<Coupon> GetByAsync(string code)
         {

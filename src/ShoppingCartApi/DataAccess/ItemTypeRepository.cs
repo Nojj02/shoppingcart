@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Newtonsoft.Json;
@@ -16,6 +17,8 @@ namespace ShoppingCartApi.DataAccess
         }
 
         protected override string TableName => "item_type";
+        
+        protected override ItemType MapEventsToEntity(Guid id, IReadOnlyList<IItemTypeEvent> events) => new ItemType(id, events);
 
         public async Task<ItemType> GetAsync(string code)
         {

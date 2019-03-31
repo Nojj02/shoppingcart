@@ -14,7 +14,7 @@ CREATE TABLE "shoppingcart"."item_type"
     "event" jsonb NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "item_type_pkey" PRIMARY KEY ("db_id")
-    ,CONSTRAINT "version_uq" UNIQUE ("id", "version")
+    ,CONSTRAINT "item_type_version_uq" UNIQUE ("id", "version")
 );
 
 ALTER TABLE "shoppingcart"."item_type"
@@ -30,7 +30,7 @@ CREATE TABLE "shoppingcart"."item"
     "event" jsonb NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "item_pkey" PRIMARY KEY ("db_id")
-    ,CONSTRAINT "version_uq" UNIQUE ("id", "version")
+    ,CONSTRAINT "item_version_uq" UNIQUE ("id", "version")
 );
 
 ALTER TABLE "shoppingcart"."item"
@@ -46,7 +46,7 @@ CREATE TABLE "shoppingcart"."cart"
     "event" jsonb NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "cart_pkey" PRIMARY KEY ("db_id")
-    ,CONSTRAINT "version_uq" UNIQUE ("id", "version")
+    ,CONSTRAINT "cart_version_uq" UNIQUE ("id", "version")
 );
 
 ALTER TABLE "shoppingcart"."cart"
@@ -62,8 +62,28 @@ CREATE TABLE "shoppingcart"."coupon"
     "event" jsonb NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "coupon_pkey" PRIMARY KEY ("db_id")
-    ,CONSTRAINT "version_uq" UNIQUE ("id", "version")
+    ,CONSTRAINT "coupon_version_uq" UNIQUE ("id", "version")
 );
 
 ALTER TABLE "shoppingcart"."coupon"
+    OWNER to postgres;
+
+ -- shoppingcart Schema for view models
+CREATE SCHEMA "shoppingcart_views"
+    AUTHORIZATION postgres;
+
+-- item table
+CREATE TABLE "shoppingcart_views"."item"
+(
+    "db_id" bigserial NOT NULL,
+    "id" uuid NOT NULL,
+    "version" bigint NOT NULL,
+    "type" CHARACTER VARYING(255) COLLATE pg_catalog."default"  NOT NULL,
+    "content" jsonb NOT NULL,
+    "timestamp" timestamp with time zone NOT NULL,
+    CONSTRAINT "v_item_pkey" PRIMARY KEY ("db_id")
+    ,CONSTRAINT "v_item_uq" UNIQUE ("id")
+);
+
+ALTER TABLE "shoppingcart_views"."item"
     OWNER to postgres;

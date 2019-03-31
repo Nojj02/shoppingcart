@@ -24,6 +24,13 @@ namespace ShoppingCartApi.Model
                 isNew: true);
         }
 
+        public ItemType(
+            Guid id,
+            IReadOnlyList<IItemTypeEvent> itemTypeEvents)
+            : base(id, itemTypeEvents)
+        {
+        }
+
         protected override void ApplyEventsOnConstruction(IItemTypeEvent anEvent)
         {
             switch (anEvent)

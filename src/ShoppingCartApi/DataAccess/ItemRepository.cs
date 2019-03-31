@@ -22,6 +22,8 @@ namespace ShoppingCartApi.DataAccess
         }
 
         protected override string TableName => "item";
+        
+        protected override Item MapEventsToEntity(Guid id, IReadOnlyList<IItemEvent> events) => new Item(id, events);
 
         public async Task<Item> GetAsync(string code)
         {
@@ -29,9 +31,7 @@ namespace ShoppingCartApi.DataAccess
             {
                 var content = 
                     await connection.QuerySingleOrDefaultAsync<string>(
-                        "SELECT content " +
-                        "FROM shoppingcart.item " +
-                        "WHERE content->>'Code' = @code",
+                        $@"SELECT event FROM shoppingcart.item WHERE event->>'Code' = @code",
                         new
                         {
                             code = code
