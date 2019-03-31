@@ -8,7 +8,7 @@ namespace ShoppingCartApi.DataAccess
 {
     public class InMemoryCouponRepository : InMemoryRepository<Coupon>, ICouponRepository
     {
-        public Task<Coupon> GetByAsync(string code)
+        public Task<Coupon> GetAsync(string code)
         {
             var entity = Entities.SingleOrDefault(x => x.Code == code);
 

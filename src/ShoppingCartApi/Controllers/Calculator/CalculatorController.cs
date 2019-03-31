@@ -31,7 +31,7 @@ namespace ShoppingCartApi.Controllers.Calculator
 
             var allMatchingItems = await _itemRepository.GetAsync(shoppingItemIds);
             
-            var coupon = await _couponRepository.GetByAsync(requestDto.CouponCode);
+            var coupon = await _couponRepository.GetAsync(requestDto.CouponCode);
 
             var totalCost =
                 requestDto.ShoppingItems

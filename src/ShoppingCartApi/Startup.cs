@@ -21,7 +21,7 @@ namespace ShoppingCartApi
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,9 +30,9 @@ namespace ShoppingCartApi
 
             var connectionString = Configuration.GetConnectionString(ConfigurationKeys.ConnectionString.Postgres);
 
-            services.AddScoped<IItemTypeRepository, ItemTypeRepository>(x => new ItemTypeRepository(connectionString));
-            services.AddScoped<IItemRepository, ItemRepository>(x => new ItemRepository(connectionString));
-            services.AddScoped<ICouponRepository, CouponRepository>(x => new CouponRepository(connectionString));
+            services.AddScoped<IItemTypeRepository, ItemTypeCompositeRepository>(x => new ItemTypeCompositeRepository(connectionString));
+            services.AddScoped<IItemRepository, ItemCompositeRepository>(x => new ItemCompositeRepository(connectionString));
+            services.AddScoped<ICouponRepository, CouponCompositeRepository>(x => new CouponCompositeRepository(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

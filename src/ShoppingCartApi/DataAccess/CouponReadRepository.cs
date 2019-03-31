@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Model;
-using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class CouponRepository : Repository<Coupon, ICouponEvent>, ICouponRepository
+    public class CouponReadRepository : ReadRepository<Coupon>, ICouponRepository
     {
-        public CouponRepository(string connectionString)
+        public CouponReadRepository(string connectionString)
             : base(connectionString)
         {
         }
 
         protected override string TableName => "coupon";
         
-        protected override Coupon MapEventsToEntity(Guid id, IReadOnlyList<ICouponEvent> events) => new Coupon(id, events);
-
         public async Task<Coupon> GetAsync(string code)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
@@ -36,21 +31,6 @@ namespace ShoppingCartApi.DataAccess
 
                 return content == null ? null : JsonConvert.DeserializeObject<Coupon>(content);
             }
-        }
-    }
-
-    public class CouponCompositeRepository : 
-        CompositeRepository<Coupon, CouponRepository, CouponReadRepository>,
-        ICouponRepository
-    {
-        public CouponCompositeRepository(string connectionString) 
-            : base(new CouponRepository(connectionString), new CouponReadRepository(connectionString))
-        {
-        }
-
-        public async Task<Coupon> GetAsync(string code)
-        {
-            return await ReadRepository.GetAsync(code);
         }
     }
 }

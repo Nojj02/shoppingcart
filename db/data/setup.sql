@@ -77,8 +77,6 @@ CREATE TABLE "shoppingcart_views"."item"
 (
     "db_id" bigserial NOT NULL,
     "id" uuid NOT NULL,
-    "version" bigint NOT NULL,
-    "type" CHARACTER VARYING(255) COLLATE pg_catalog."default"  NOT NULL,
     "content" jsonb NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
     CONSTRAINT "v_item_pkey" PRIMARY KEY ("db_id")
@@ -86,4 +84,32 @@ CREATE TABLE "shoppingcart_views"."item"
 );
 
 ALTER TABLE "shoppingcart_views"."item"
+    OWNER to postgres;
+
+-- item_type table
+CREATE TABLE "shoppingcart_views"."item_type"
+(
+    "db_id" bigserial NOT NULL,
+    "id" uuid NOT NULL,
+    "content" jsonb NOT NULL,
+    "timestamp" timestamp with time zone NOT NULL,
+    CONSTRAINT "v_item_type_pkey" PRIMARY KEY ("db_id")
+    ,CONSTRAINT "v_item_type_uq" UNIQUE ("id")
+);
+
+ALTER TABLE "shoppingcart_views"."item_type"
+    OWNER to postgres;
+
+-- coupon table
+CREATE TABLE "shoppingcart_views"."coupon"
+(
+    "db_id" bigserial NOT NULL,
+    "id" uuid NOT NULL,
+    "content" jsonb NOT NULL,
+    "timestamp" timestamp with time zone NOT NULL,
+    CONSTRAINT "v_coupon_pkey" PRIMARY KEY ("db_id")
+    ,CONSTRAINT "v_coupon_uq" UNIQUE ("id")
+);
+
+ALTER TABLE "shoppingcart_views"."coupon"
     OWNER to postgres;
