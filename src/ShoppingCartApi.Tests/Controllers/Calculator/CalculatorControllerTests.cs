@@ -41,7 +41,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -85,7 +85,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -143,7 +143,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -202,7 +202,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -274,7 +274,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -339,7 +339,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -405,7 +405,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -480,7 +480,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var itemRepository = new InMemoryItemRepository();
                 var couponRepository = new InMemoryCouponRepository();
 
-                var itemTypeController = new ItemTypeController(itemTypeRepository)
+                var itemTypeController = new ItemTypeController(itemTypeRepository, itemTypeRepository)
                     .BootstrapForTests();
 
                 var postFruitResult = await itemTypeController.Post(
@@ -497,7 +497,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                     });
                 var vegetableItemTypeDto = (ItemTypeDto) postVegetableResult.Value;
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postPotatoResult = await itemController.Post(new PostRequestDto
@@ -573,7 +573,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -640,7 +640,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
 
-                var itemController = new ItemController(itemRepository)
+                var itemController = new ItemController(itemRepository, itemRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto

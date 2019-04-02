@@ -9,8 +9,12 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public abstract class ReadRepository<T> : IRepository<T>
-        where T : AggregateRoot
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TReadModel">The Read Model of the same Aggregate Root</typeparam>
+    public abstract class ReadRepository<TReadModel>
+        where TReadModel : class, IEntity
     {
         protected const string SchemaName = "shoppingcart_views";
 
@@ -25,25 +29,7 @@ namespace ShoppingCartApi.DataAccess
 
         protected string SchemaAndTableName => $"{SchemaName}.{TableName}";
 
-        public async Task SaveAsync(T entity)
-        {
-            using (var connection = new NpgsqlConnection(ConnectionString))
-            {
-                await connection.ExecuteAsync(
-                    $@"INSERT INTO {SchemaAndTableName} 
-                            (id, content, timestamp) 
-                        VALUES 
-                            (@id, @content::jsonb, @timestamp)",
-                    new
-                    {
-                        id = entity.Id,
-                        content = JsonConvert.SerializeObject(entity),
-                        timestamp = DateTimeOffset.UtcNow
-                    });
-            }
-        }
-
-        public async Task<T> GetAsync(Guid id)
+        public async Task<TReadModel> GetAsync(Guid id)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
@@ -57,11 +43,11 @@ namespace ShoppingCartApi.DataAccess
                             id = id
                         });
 
-                return content == null ? null : JsonConvert.DeserializeObject<T>(content);
+                return content == null ? null : JsonConvert.DeserializeObject<TReadModel>(content);
             }
         }
 
-        public async Task<IReadOnlyList<T>> GetAsync(IEnumerable<Guid> ids)
+        public async Task<IReadOnlyList<TReadModel>> GetAsync(IEnumerable<Guid> ids)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
@@ -75,25 +61,7 @@ namespace ShoppingCartApi.DataAccess
                             ids = ids
                         });
 
-                return content.Select(JsonConvert.DeserializeObject<T>).ToList();
-            }
-        }
-
-        public async Task UpdateAsync(T entity)
-        {
-            using (var connection = new NpgsqlConnection(ConnectionString))
-            {
-                await connection.ExecuteAsync(
-                    $@"UPDATE {SchemaAndTableName}
-                        SET content = @content::jsonb,
-                            timestamp = @timestamp 
-                        WHERE id = @id",
-                    new
-                    {
-                        id = entity.Id,
-                        content = JsonConvert.SerializeObject(entity),
-                        timestamp = DateTimeOffset.UtcNow
-                    });
+                return content.Select(JsonConvert.DeserializeObject<TReadModel>).ToList();
             }
         }
     }

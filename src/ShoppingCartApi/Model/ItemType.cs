@@ -7,7 +7,7 @@ using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.Model
 {
-    public class ItemType : AggregateRoot<IItemTypeEvent>
+    public class ItemType : AggregateRoot<IItemTypeEvent>, IItemType
     {
         public ItemType(
             Guid id,

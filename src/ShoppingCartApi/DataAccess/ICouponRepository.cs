@@ -6,6 +6,5 @@ namespace ShoppingCartApi.DataAccess
 {
     public interface ICouponRepository : IRepository<Coupon>
     {
-        Task<Coupon> GetAsync(string code);
     }
 }

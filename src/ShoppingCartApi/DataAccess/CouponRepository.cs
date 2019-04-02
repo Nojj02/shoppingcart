@@ -38,19 +38,4 @@ namespace ShoppingCartApi.DataAccess
             }
         }
     }
-
-    public class CouponCompositeRepository : 
-        CompositeRepository<Coupon, CouponRepository, CouponReadRepository>,
-        ICouponRepository
-    {
-        public CouponCompositeRepository(string connectionString) 
-            : base(new CouponRepository(connectionString), new CouponReadRepository(connectionString))
-        {
-        }
-
-        public async Task<Coupon> GetAsync(string code)
-        {
-            return await ReadRepository.GetAsync(code);
-        }
-    }
 }

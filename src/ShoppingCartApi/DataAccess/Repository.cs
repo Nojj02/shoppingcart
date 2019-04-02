@@ -15,6 +15,7 @@ namespace ShoppingCartApi.DataAccess
         where TEvent : IEvent
     {
         protected const string SchemaName = "shoppingcart";
+        protected const string ViewsSchemaName = "shoppingcart_views";
 
         protected Repository(string connectionString)
         {
@@ -26,6 +27,7 @@ namespace ShoppingCartApi.DataAccess
         protected string ConnectionString { get; }
 
         protected string SchemaAndTableName => $"{SchemaName}.{TableName}";
+        protected string ViewsSchemaAndTableName => $"{ViewsSchemaName}.{TableName}";
 
         public async Task SaveAsync(T entity)
         {
@@ -36,6 +38,18 @@ namespace ShoppingCartApi.DataAccess
                 {
                     try
                     {
+                        await connection.ExecuteAsync(
+                            $@"INSERT INTO {ViewsSchemaAndTableName} 
+                            (id, content, timestamp) 
+                        VALUES 
+                            (@id, @content::jsonb, @timestamp)",
+                            new
+                            {
+                                id = entity.Id,
+                                content = JsonConvert.SerializeObject(entity),
+                                timestamp = DateTimeOffset.UtcNow
+                            });
+                        
                         foreach (var newEvent in entity.Events)
                         {
                             await connection.ExecuteAsync(
@@ -96,7 +110,7 @@ namespace ShoppingCartApi.DataAccess
                             WHERE id = ANY(@ids)",
                         new
                         {
-                            id = ids
+                            ids = ids
                         });
                 
                 var events = eventStrings
@@ -119,13 +133,25 @@ namespace ShoppingCartApi.DataAccess
                 {
                     try
                     {
+                        await connection.ExecuteAsync(
+                            $@"UPDATE {ViewsSchemaAndTableName}
+                                SET content = @content::jsonb,
+                                    timestamp = @timestamp 
+                                WHERE id = @id",
+                            new
+                            {
+                                id = entity.Id,
+                                content = JsonConvert.SerializeObject(entity),
+                                timestamp = DateTimeOffset.UtcNow
+                            });
+                        
                         foreach (var newEvent in entity.NewEvents)
                         {
                             await connection.ExecuteAsync(
                                 $@"INSERT INTO {SchemaAndTableName} 
-                            (id, version, event_type, event, timestamp) 
-                        VALUES 
-                            (@id, @version, @event_type, @event_content::jsonb, @timestamp)",
+                                        (id, version, event_type, event, timestamp) 
+                                    VALUES 
+                                        (@id, @version, @event_type, @event_content::jsonb, @timestamp)",
                                 new
                                 {
                                     id = entity.Id,

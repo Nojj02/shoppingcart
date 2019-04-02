@@ -7,7 +7,7 @@ using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.Model
 {
-    public class Coupon : AggregateRoot<ICouponEvent>
+    public class Coupon : AggregateRoot<ICouponEvent>, ICoupon
     {
         /// <summary>
         /// 

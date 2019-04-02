@@ -10,10 +10,12 @@ namespace ShoppingCartApi.Controllers.ItemType
     public class ItemTypeController : Controller
     {
         private readonly IItemTypeRepository _itemTypeRepository;
+        private readonly IItemTypeReadRepository _readRepository;
 
-        public ItemTypeController(IItemTypeRepository itemTypeRepository)
+        public ItemTypeController(IItemTypeRepository itemTypeRepository, IItemTypeReadRepository readRepository)
         {
             _itemTypeRepository = itemTypeRepository;
+            _readRepository = readRepository;
         }
 
         [HttpPost]
@@ -27,7 +29,7 @@ namespace ShoppingCartApi.Controllers.ItemType
 
             await _itemTypeRepository.SaveAsync(itemType);
 
-            var dto = MapToDto(itemType);
+            var dto = MapToDto(ItemTypeReadModel.Map(itemType));
 
             var url = Url.Action(nameof(Get), new { id = itemType.Id });
 
@@ -38,7 +40,7 @@ namespace ShoppingCartApi.Controllers.ItemType
         [Route("")]
         public async Task<ObjectResult> GetByItemCode([FromQuery]string code)
         {
-            var entity = await _itemTypeRepository.GetAsync(code);
+            var entity = await _readRepository.GetAsync(code);
             if (entity == null)
             {
                 return NotFound(code);
@@ -53,12 +55,12 @@ namespace ShoppingCartApi.Controllers.ItemType
         {
             var entity = await _itemTypeRepository.GetAsync(id);
 
-            var dto = MapToDto(entity);
+            var dto = MapToDto(ItemTypeReadModel.Map(entity));
 
             return Ok(dto);
         }
 
-        private static ItemTypeDto MapToDto(Model.ItemType itemType)
+        private static ItemTypeDto MapToDto(Model.ItemTypeReadModel itemType)
         {
             var dto = new ItemTypeDto
             {

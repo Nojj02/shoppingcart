@@ -6,11 +6,13 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class InMemoryItemTypeRepository : InMemoryRepository<ItemType>, IItemTypeRepository
+    public class InMemoryItemTypeRepository : InMemoryRepository<ItemType>, IItemTypeRepository, IItemTypeReadRepository
     {
-        public Task<ItemType> GetAsync(string code)
+        public Task<ItemTypeReadModel> GetAsync(string code)
         {
-            var entity = Entities.SingleOrDefault(x => x.Code == code);
+            var entity = Entities
+                .Select(ItemTypeReadModel.Map)
+                .SingleOrDefault(x => x.Code == code);
 
             return Task.FromResult(entity);
         }

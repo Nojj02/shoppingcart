@@ -18,10 +18,10 @@ namespace ShoppingCartApi.Tests.Controllers.ItemType
             [Fact]
             public async Task RespondsWithCreated_PostNewItemType()
             {
-                var couponRepository = new InMemoryItemTypeRepository();
+                var itemTypeRepository = new InMemoryItemTypeRepository();
 
-                var couponController =
-                    new ItemTypeController(couponRepository)
+                var itemTypeController =
+                    new ItemTypeController(itemTypeRepository, itemTypeRepository)
                         .BootstrapForTests(urlHelper: new ActionNameOnlyUrlHelper());
 
                 var postRequestDto = new PostRequestDto
@@ -29,15 +29,15 @@ namespace ShoppingCartApi.Tests.Controllers.ItemType
                     Code = "fruit"
                 };
 
-                var postResponse = (CreatedResult)await couponController.Post(postRequestDto);
+                var postResponse = (CreatedResult)await itemTypeController.Post(postRequestDto);
 
                 Assert.Equal((int)HttpStatusCode.Created, postResponse.StatusCode);
 
-                var couponDto = (ItemTypeDto) postResponse.Value;
+                var itemTypeDto = (ItemTypeDto) postResponse.Value;
 
                 Assert.Equal(nameof(ItemTypeController.Get), postResponse.Location);
 
-                Assert.Equal("fruit", couponDto.Code);
+                Assert.Equal("fruit", itemTypeDto.Code);
             }
         }
     }

@@ -18,10 +18,5 @@ namespace ShoppingCartApi.DataAccess
         protected override string TableName => "item";
         
         protected override Item MapEventsToEntity(Guid id, IReadOnlyList<IItemEvent> events) => new Item(id, events);
-
-        public Task<Item> GetAsync(string code)
-        {
-            throw new NotSupportedException();
-        }
     }
 }

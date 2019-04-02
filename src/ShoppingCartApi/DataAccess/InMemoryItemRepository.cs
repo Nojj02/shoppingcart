@@ -7,11 +7,13 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class InMemoryItemRepository : InMemoryRepository<Item>, IItemRepository
+    public class InMemoryItemRepository : InMemoryRepository<Item>, IItemRepository, IItemReadRepository
     {
-        public Task<Item> GetAsync(string code)
+        public Task<ItemReadModel> GetAsync(string code)
         {
-            var result = Entities.SingleOrDefault(x => x.Code == code);
+            var result = Entities
+                .Select(ItemReadModel.Map)
+                .SingleOrDefault(x => x.Code == code);
             return Task.FromResult(result);
         }
     }

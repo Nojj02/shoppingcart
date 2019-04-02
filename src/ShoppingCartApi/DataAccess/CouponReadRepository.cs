@@ -6,7 +6,7 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class CouponReadRepository : ReadRepository<Coupon>, ICouponRepository
+    public class CouponReadRepository : ReadRepository<CouponReadModel>, ICouponReadRepository
     {
         public CouponReadRepository(string connectionString)
             : base(connectionString)
@@ -15,7 +15,7 @@ namespace ShoppingCartApi.DataAccess
 
         protected override string TableName => "coupon";
         
-        public async Task<Coupon> GetAsync(string code)
+        public async Task<CouponReadModel> GetAsync(string code)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
@@ -29,7 +29,7 @@ namespace ShoppingCartApi.DataAccess
                             code = code
                         });
 
-                return content == null ? null : JsonConvert.DeserializeObject<Coupon>(content);
+                return content == null ? null : JsonConvert.DeserializeObject<CouponReadModel>(content);
             }
         }
     }

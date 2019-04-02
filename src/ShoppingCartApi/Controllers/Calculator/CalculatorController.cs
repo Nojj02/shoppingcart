@@ -12,9 +12,9 @@ namespace ShoppingCartApi.Controllers.Calculator
     public class CalculatorController : Controller
     {
         private readonly IItemRepository _itemRepository;
-        private readonly ICouponRepository _couponRepository;
+        private readonly ICouponReadRepository _couponRepository;
 
-        public CalculatorController(IItemRepository itemRepository, ICouponRepository couponRepository)
+        public CalculatorController(IItemRepository itemRepository, ICouponReadRepository couponRepository)
         {
             _itemRepository = itemRepository;
             _couponRepository = couponRepository;

@@ -6,7 +6,12 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class ItemReadRepository : ReadRepository<Item>, IItemRepository
+    public interface IItemReadRepository
+    {
+        Task<ItemReadModel> GetAsync(string code);
+    }
+
+    public class ItemReadRepository : ReadRepository<Item>, IItemReadRepository
     {
         private readonly string _connectionString;
         
@@ -18,19 +23,19 @@ namespace ShoppingCartApi.DataAccess
 
         protected override string TableName => "item";
 
-        public async Task<Item> GetAsync(string code)
+        public async Task<ItemReadModel> GetAsync(string code)
         {
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 var content = 
                     await connection.QuerySingleOrDefaultAsync<string>(
-                        $@"SELECT event FROM {SchemaAndTableName} WHERE event->>'Code' = @code",
+                        $@"SELECT content FROM {SchemaAndTableName} WHERE content->>'Code' = @code",
                         new
                         {
                             code = code
                         });
 
-                return content == null ? null : JsonConvert.DeserializeObject<Item>(content);
+                return content == null ? null : JsonConvert.DeserializeObject<ItemReadModel>(content);
             }
         }
     }

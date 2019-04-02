@@ -18,7 +18,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var result = await itemController.GetByItemCode("unknown");
@@ -35,7 +35,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var itemTypeId = Guid.NewGuid();
@@ -60,7 +60,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var postNewItemDto = new PostRequestDto
@@ -71,7 +71,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                 await itemController.Post(postNewItemDto);
 
                 var anotherItemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
                 var result = await anotherItemController.GetByItemCode("lettuce");
                 Assert.Equal((int) HttpStatusCode.OK, result.StatusCode);
@@ -86,7 +86,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -118,7 +118,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -161,7 +161,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -191,7 +191,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -223,7 +223,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -255,7 +255,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var itemController = 
-                    new ItemController(repository)
+                    new ItemController(repository, repository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
