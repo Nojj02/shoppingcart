@@ -1,6 +1,6 @@
 namespace ShoppingCartApi.Model
 {
-    public interface IItemType : IEntity
+    public interface IItemType : IAggregateRoot
     {
         string Code { get; }
     }

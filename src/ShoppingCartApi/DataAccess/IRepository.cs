@@ -6,7 +6,7 @@ using ShoppingCartApi.Model;
 namespace ShoppingCartApi.DataAccess
 {
     public interface IRepository<T>
-        where T : AggregateRoot
+        where T : IAggregateRoot
     {
         Task SaveAsync(T entity);
         Task<T> GetAsync(Guid id);

@@ -1,19 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
     public class InMemoryRepository<T> : IRepository<T>
-        where T : AggregateRoot
+        where T : IAggregateRoot
     {
         public List<T> Entities { get; } = new List<T>();
+
+        public event Action<T> EventOccurred = x => { };
 
         public Task SaveAsync(T entity)
         {
             Entities.Add(entity);
+
+            EventOccurred(entity);
             return Task.CompletedTask;
         }
 
@@ -32,8 +37,14 @@ namespace ShoppingCartApi.DataAccess
         public Task UpdateAsync(T entity)
         {
             var matchingT = Entities.SingleOrDefault(x => x.Id == entity.Id);
-            Entities.Remove(matchingT);
+            if (matchingT != null)
+            {
+                Entities.Remove(matchingT);
+            }
+
             Entities.Add(entity);
+            
+            EventOccurred(entity);
             return Task.CompletedTask;
         }
     }

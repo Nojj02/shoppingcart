@@ -6,14 +6,7 @@ using ShoppingCartApi.Model;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public class InMemoryCouponRepository : InMemoryRepository<Coupon>, ICouponRepository, ICouponReadRepository
+    public class InMemoryCouponRepository : InMemoryRepository<Coupon>, ICouponRepository
     {
-        public Task<CouponReadModel> GetAsync(string code)
-        {
-            var entity = Entities
-                .Select(CouponReadModel.Map).SingleOrDefault(x => x.Code == code);
-
-            return Task.FromResult(entity);
-        }
     }
 }

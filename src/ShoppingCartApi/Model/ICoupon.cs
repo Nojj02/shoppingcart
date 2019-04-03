@@ -2,7 +2,7 @@ using System;
 
 namespace ShoppingCartApi.Model
 {
-    public interface ICoupon : IEntity
+    public interface ICoupon : IAggregateRoot
     {
         string Code { get; }
         Percent PercentOff { get; }

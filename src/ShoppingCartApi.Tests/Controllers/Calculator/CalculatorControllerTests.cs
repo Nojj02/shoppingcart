@@ -9,6 +9,7 @@ using ShoppingCartApi.Controllers.Coupon;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.Controllers.ItemType;
 using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Model;
 using ShoppingCartApi.Tests.Helpers;
 using Xunit;
 using PostRequestDto = ShoppingCartApi.Controllers.Item.PostRequestDto;
@@ -23,7 +24,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task CostIsZero_NoShoppingItems()
             {
                 var itemRepository = new InMemoryItemRepository();
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var result = await calculatorController.ComputeCost(new CalculatorComputeCostRequestDto());
@@ -40,8 +41,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ReturnsTotalCost_SingleItem_SingleQuantity()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -53,7 +57,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postPotatoResult = await itemController.Post(postNewPotatoItemDto);
                 var potatoDto = (ItemDto)postPotatoResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -84,8 +88,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ReturnsTotalCost_TwoItems_SingleQuantities()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -106,7 +113,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postLettuceResult = await itemController.Post(postNewLettuceItemDto);
                 var lettuceDto = (ItemDto)postLettuceResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -142,8 +149,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ReturnsTotalCost_TwoItems_DifferentQuantities()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -164,7 +174,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postLettuceResult = await itemController.Post(postNewLettuceItemDto);
                 var lettuceDto = (ItemDto)postLettuceResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -201,8 +211,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ReturnsTotalCost_ThreeItems_DifferentQuantities()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -232,7 +245,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var postCabbageResult = await itemController.Post(postNewCabbageItemDto);
                 var cabbageDto = (ItemDto)postCabbageResult.Value;
 
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -273,8 +286,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ApplyDiscount_TwoItems_DiscountedOneItemByPercentage()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -302,7 +318,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
 
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -338,8 +354,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ApplyDiscount_TwoItems_DiscountedOneItemByFixedAmount()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -368,7 +387,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
 
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -404,8 +423,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ApplyDiscount_FromCoupon()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -427,6 +449,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 var lettuceDto = (ItemDto)postLettuceResult.Value;
 
                 var couponRepository = new InMemoryCouponRepository();
+                var couponReadRepository = new InMemoryCouponReadRepository();
+                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(CouponReadModel.Map(entity));
 
                 var couponController = new CouponController(couponRepository)
                     .BootstrapForTests();
@@ -440,7 +464,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 await couponController.Post(postRequestDto);
 
                 var calculatorController = 
-                    new CalculatorController(itemRepository, couponRepository)
+                    new CalculatorController(itemRepository, couponReadRepository)
                         .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -477,10 +501,16 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ApplyDiscount_FromCouponOnlyForSelectItemType()
             {
                 var itemTypeRepository = new InMemoryItemTypeRepository();
+                var itemTypeReadRepository = new InMemoryItemTypeReadRepository();
+                itemTypeRepository.EventOccurred += entity => itemTypeReadRepository.UpdateAsync(ItemTypeReadModel.Map(entity));
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
                 var couponRepository = new InMemoryCouponRepository();
+                var couponReadRepository = new InMemoryCouponReadRepository();
+                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(CouponReadModel.Map(entity));
 
-                var itemTypeController = new ItemTypeController(itemTypeRepository, itemTypeRepository)
+                var itemTypeController = new ItemTypeController(itemTypeRepository, itemTypeReadRepository)
                     .BootstrapForTests();
 
                 var postFruitResult = await itemTypeController.Post(
@@ -497,7 +527,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                     });
                 var vegetableItemTypeDto = (ItemTypeDto) postVegetableResult.Value;
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController = new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postPotatoResult = await itemController.Post(new PostRequestDto
@@ -527,7 +557,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 await couponController.Post(postRequestDto);
 
                 var calculatorController =
-                    new CalculatorController(itemRepository, couponRepository)
+                    new CalculatorController(itemRepository, couponReadRepository)
                         .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -572,8 +602,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 decimal expectedTotalCost)
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -594,6 +627,8 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
 
                 var couponRepository = new InMemoryCouponRepository();
+                var couponReadRepository = new InMemoryCouponReadRepository();
+                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(CouponReadModel.Map(entity));
 
                 var couponController = new CouponController(couponRepository)
                     .BootstrapForTests();
@@ -607,7 +642,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
                 await couponController.Post(postRequestDto);
 
                 var calculatorController =
-                    new CalculatorController(itemRepository, couponRepository)
+                    new CalculatorController(itemRepository, couponReadRepository)
                         .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =
@@ -639,8 +674,11 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             public async Task ApplyHighestDiscount_TwoItems_DiscountedOneItemByFixedAmountAndPercentage()
             {
                 var itemRepository = new InMemoryItemRepository();
+                var itemReadRepository = new InMemoryItemReadRepository();
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
 
-                var itemController = new ItemController(itemRepository, itemRepository)
+                var itemController =
+                    new ItemController(itemRepository, itemReadRepository)
                     .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -668,7 +706,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 await itemController.SetDiscount(potatoDto.Id, setDiscountOnPotatoDto);
 
-                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponRepository())
+                var calculatorController = new CalculatorController(itemRepository, new InMemoryCouponReadRepository())
                     .BootstrapForTests();
 
                 var calculatorComputeCostRequestDto =

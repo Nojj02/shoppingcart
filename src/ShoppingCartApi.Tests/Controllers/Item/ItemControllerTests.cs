@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ShoppingCartApi.Controllers;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Model;
 using ShoppingCartApi.Tests.Helpers;
 using Xunit;
 
@@ -17,8 +18,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task Returns404_GetNonExistentItem()
             {
                 var repository = new InMemoryItemRepository();
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
                 var itemController = 
-                    new ItemController(repository, repository)
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var result = await itemController.GetByItemCode("unknown");
@@ -34,8 +38,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task RespondsWithCreated_PostNewItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var itemTypeId = Guid.NewGuid();
@@ -59,8 +66,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItem_PostNewItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var postNewItemDto = new PostRequestDto
@@ -71,7 +81,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
                 await itemController.Post(postNewItemDto);
 
                 var anotherItemController = 
-                    new ItemController(repository, repository)
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
                 var result = await anotherItemController.GetByItemCode("lettuce");
                 Assert.Equal((int) HttpStatusCode.OK, result.StatusCode);
@@ -85,8 +95,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task GetReturnsTheSameItem_PostsTheSameItemTwiceButUsesDataOfTheFirst()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -117,8 +130,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItems_PostMultipleItems()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -160,8 +176,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task ReturnsOk_SetsDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -190,8 +209,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItemWithDiscount_SetsDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -222,8 +244,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItemWithDiscount_SetsAmountDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto
@@ -254,8 +279,11 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             public async Task CanGetItemWithDiscount_SetsAmountDiscountAndPercentageDiscountOnItem()
             {
                 var repository = new InMemoryItemRepository();
-                var itemController = 
-                    new ItemController(repository, repository)
+                var readRepository = new InMemoryItemReadRepository();
+                repository.EventOccurred += entity => readRepository.UpdateAsync(ItemReadModel.Map(entity));
+
+                var itemController =
+                    new ItemController(repository, readRepository)
                         .BootstrapForTests();
 
                 var postNewPotatoItemDto = new PostRequestDto

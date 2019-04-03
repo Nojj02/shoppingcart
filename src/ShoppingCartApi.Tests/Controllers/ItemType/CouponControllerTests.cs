@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.Controllers.ItemType;
 using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Model;
 using ShoppingCartApi.Tests.Helpers;
 using Xunit;
 
@@ -19,9 +20,11 @@ namespace ShoppingCartApi.Tests.Controllers.ItemType
             public async Task RespondsWithCreated_PostNewItemType()
             {
                 var itemTypeRepository = new InMemoryItemTypeRepository();
+                var itemTypeReadRepository = new InMemoryItemTypeReadRepository();
+                itemTypeRepository.EventOccurred += entity => itemTypeReadRepository.UpdateAsync(ItemTypeReadModel.Map(entity));
 
                 var itemTypeController =
-                    new ItemTypeController(itemTypeRepository, itemTypeRepository)
+                    new ItemTypeController(itemTypeRepository, itemTypeReadRepository)
                         .BootstrapForTests(urlHelper: new ActionNameOnlyUrlHelper());
 
                 var postRequestDto = new PostRequestDto
