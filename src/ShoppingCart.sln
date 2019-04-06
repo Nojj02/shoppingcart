@@ -1,15 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartApi", "ShoppingCartApi\ShoppingCartApi.csproj", "{D2810778-B15A-4327-B6B1-B1189992666B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartApi", "ShoppingCartApi\ShoppingCartApi.csproj", "{D2810778-B15A-4327-B6B1-B1189992666B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartApi.Tests", "ShoppingCartApi.Tests\ShoppingCartApi.Tests.csproj", "{9CF6768A-453D-406D-86FC-C13D6CEEC1DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartApi.Tests", "ShoppingCartApi.Tests\ShoppingCartApi.Tests.csproj", "{9CF6768A-453D-406D-86FC-C13D6CEEC1DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartApi.IntegrationTests", "ShoppingCartApi.IntegrationTests\ShoppingCartApi.IntegrationTests.csproj", "{E2F79D0E-1214-43E0-9904-59A22256088D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartApi.IntegrationTests", "ShoppingCartApi.IntegrationTests\ShoppingCartApi.IntegrationTests.csproj", "{E2F79D0E-1214-43E0-9904-59A22256088D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartConsole", "ShoppingCartConsole\ShoppingCartConsole.csproj", "{AF00576E-CF2F-434D-A524-D383730ABD19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartConsole", "ShoppingCartConsole\ShoppingCartConsole.csproj", "{AF00576E-CF2F-434D-A524-D383730ABD19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartHandlers", "ShoppingCartHandlers\ShoppingCartHandlers.csproj", "{26D644C6-E21C-4476-989B-2019CE6E07F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartHandlers.Tests", "ShoppingCartHandlers.Tests\ShoppingCartHandlers.Tests.csproj", "{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{AF00576E-CF2F-434D-A524-D383730ABD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF00576E-CF2F-434D-A524-D383730ABD19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF00576E-CF2F-434D-A524-D383730ABD19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26D644C6-E21C-4476-989B-2019CE6E07F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26D644C6-E21C-4476-989B-2019CE6E07F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26D644C6-E21C-4476-989B-2019CE6E07F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26D644C6-E21C-4476-989B-2019CE6E07F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
