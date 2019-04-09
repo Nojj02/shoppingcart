@@ -1,19 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ShoppingCartHandlers.Tests.Handlers
 {
-    public class FakeHttpClientWrapper : IHttpClientWrapper
+    public class FakeEventHttpClientWrapper : IHttpClientWrapper
     {
         private readonly List<HttpRequestMessage> _messagesSent = new List<HttpRequestMessage>();
 
         private readonly string _message;
 
-        public FakeHttpClientWrapper(string message = null)
+        public FakeEventHttpClientWrapper()
         {
-            _message = message;
+        }
+
+        public FakeEventHttpClientWrapper(string messageType, IEnumerable<object> events)
+        {
+            var message = new
+            {
+                messageType = messageType,
+                events = events
+            };
+            _message = JsonConvert.SerializeObject(message);
         }
 
         public IReadOnlyList<HttpRequestMessage> MessagesSent => _messagesSent;
