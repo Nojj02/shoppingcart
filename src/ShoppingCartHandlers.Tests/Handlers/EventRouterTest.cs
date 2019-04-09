@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ShoppingCartHandlers.Tests.Handlers
 {
-    public class EventRouterTest
+    public class EventRouterTests
     {
         [Fact]
-        public void HandleSingleSubscription()
+        public async Task HandleSingleSubscription()
         {
-            var api = new TestApiHelper();
+            var api = new TestEventApi();
             api.SetupTestResource(
                 resourceName: "resource",
                 newTestEvents: new List<TestResourceEvent>
@@ -25,16 +26,16 @@ namespace ShoppingCartHandlers.Tests.Handlers
             var handler = new OnAnyEventRecordInListEventHandler<TestResourceEvent>();
             eventMonitor.Subscribe<TestResourceEvent>("resource", handler);
 
-            eventMonitor.Poll();
+            await eventMonitor.Poll();
 
             Assert.Equal(1, handler.Events.Count);
             Assert.Equal(new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0"), handler.Events[0].Id);
         }
 
         [Fact]
-        public void HandleMultipleSubscriptions()
+        public async Task HandleMultipleSubscriptions()
         {
-            var api = new TestApiHelper();
+            var api = new TestEventApi();
             api.SetupTestResource(
                 resourceName: "resource",
                 newTestEvents: new List<TestResourceEvent>
@@ -62,7 +63,7 @@ namespace ShoppingCartHandlers.Tests.Handlers
             var alternativeHandler = new OnAnyEventRecordInListEventHandler<AlternativeTestResourceEvent>();
             eventMonitor.Subscribe<TestResourceEvent>("alternativeResource", alternativeHandler);
 
-            eventMonitor.Poll();
+            await eventMonitor.Poll();
 
             Assert.Equal(1, handler.Events.Count);
             Assert.Equal(new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0"), handler.Events[0].Id);

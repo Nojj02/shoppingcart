@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShoppingCartHandlers.Tests.Handlers
 {
-    public class TestApiHelper : IApiHelper
+    public class TestEventApi : IEventApi
     {
         private readonly Dictionary<string, IList<object>> _newApiEvents = new Dictionary<string, IList<object>>();
 
@@ -12,9 +13,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
             _newApiEvents.Add(resourceName, newTestEvents.Cast<object>().ToList());
         }
 
-        public IList<object> GetNewEvents(string resourceName)
+        public Task<IList<object>> GetNewEventsAsync(string resourceName)
         {
-            return _newApiEvents.GetValueOrDefault(resourceName) ?? new List<object>();
+            return Task.FromResult(_newApiEvents.GetValueOrDefault(resourceName) ?? new List<object>());
         }
     }
 }
