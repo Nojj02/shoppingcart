@@ -9,19 +9,6 @@ using Newtonsoft.Json.Linq;
 
 namespace ShoppingCartHandlers.Tests.Handlers
 {
-    public class RecordHttpRequestMessagesHttpClientWrapper : IHttpClientWrapper
-    {
-        private readonly List<HttpRequestMessage> _messagesSent = new List<HttpRequestMessage>();
-
-        public IReadOnlyList<HttpRequestMessage> MessagesSent => _messagesSent;
-
-        public Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequestMessage)
-        {
-            _messagesSent.Add(httpRequestMessage);
-            return Task.FromResult(new HttpResponseMessage());
-        }
-    }
-
     public class EventApi : IEventApi
     {
         private readonly string _host;

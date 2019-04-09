@@ -9,17 +9,17 @@ namespace ShoppingCartHandlers.Tests.Handlers
     public class EventApiTests
     {
         [Fact]
-        public async Task CallsFirstBatchOfEvents()
+        public async Task CallsFirstBatchOfEvents_ResponseHasNoContent()
         {
-            var recordUrlsHttpClientWrapper = new RecordHttpRequestMessagesHttpClientWrapper();
+            var httpClientWrapper = new FakeHttpClientWrapper(null);
 
-            var apiHelper = new EventApi("http://localhost/", recordUrlsHttpClientWrapper, EventConverter.Empty);
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, EventConverter.Empty);
 
             await apiHelper.GetNewEventsAsync("resource");
 
-            Assert.Equal(1, recordUrlsHttpClientWrapper.MessagesSent.Count);
+            Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
 
-            Assert.Equal("/resource/0-10", recordUrlsHttpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/resource/0-10", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
         }
 
         [Fact]
@@ -37,14 +37,14 @@ namespace ShoppingCartHandlers.Tests.Handlers
                 }
             };
 
-            var recordUrlsHttpClientWrapper = new FakeHttpClientWrapper(JsonConvert.SerializeObject(message));
+            var httpClientWrapper = new FakeHttpClientWrapper(JsonConvert.SerializeObject(message));
 
             var eventConverter = new EventConverter(new Dictionary<string, Type>
             {
                 { "test-message-type", typeof(TestResourceEvent) }
             });
 
-            var apiHelper = new EventApi("http://localhost/", recordUrlsHttpClientWrapper, eventConverter);
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, eventConverter);
 
             var result = await apiHelper.GetNewEventsAsync("resource");
 
