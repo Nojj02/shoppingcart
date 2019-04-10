@@ -14,17 +14,32 @@ namespace ShoppingCartHandlers.Tests.Handlers
         private readonly string _host;
         private readonly IHttpClientWrapper _httpClientWrapper;
         private readonly EventConverter _eventConverter;
+        private readonly int _batchSize;
+        private readonly IEventTrackingRepository _eventTrackingRepository;
 
-        public EventApi(string host, IHttpClientWrapper httpClientWrapper, EventConverter eventConverter)
+        public EventApi(
+            string host, 
+            IHttpClientWrapper httpClientWrapper, 
+            EventConverter eventConverter, 
+            int batchSize,
+            IEventTrackingRepository eventTrackingRepository)
         {
             _host = host;
             _httpClientWrapper = httpClientWrapper;
             _eventConverter = eventConverter;
+            _batchSize = batchSize;
+            _eventTrackingRepository = eventTrackingRepository;
         }
 
         public async Task<IList<object>> GetNewEventsAsync(string resourceName)
         {
-            var url = new Uri(Path.Combine(_host, resourceName, "0-10"));
+            var lastMessageNumber = _eventTrackingRepository.GetLastMessageNumber(resourceName);
+
+            var batchesSkipped = lastMessageNumber / _batchSize;
+            var startRange = batchesSkipped * _batchSize;
+            var endRange = startRange + _batchSize - 1;
+            
+            var url = new Uri(Path.Combine(_host, resourceName, $"{startRange}-{endRange}"));
             var message =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
@@ -38,9 +53,11 @@ namespace ShoppingCartHandlers.Tests.Handlers
 
             var json = JObject.Parse(content);
 
-            var type = _eventConverter.GetTypeOf((string)json["messageType"]);
-
-            var eventsJson = json["events"].Select(x => x.ToObject(type)).ToList();
+            var eventsJson = json["events"].Select(x =>
+            {
+                var type = _eventConverter.GetTypeOf((string)x["eventType"]);
+                return x["event"].ToObject(type);
+            }).ToList();
 
             return eventsJson;
         }

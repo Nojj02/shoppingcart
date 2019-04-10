@@ -13,9 +13,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
             var api = new TestEventApi();
             api.SetupTestResource(
                 resourceName: "resource",
-                newTestEvents: new List<TestResourceEvent>
+                newTestEvents: new List<TestResourceCreatedEvent>
                 {
-                    new TestResourceEvent
+                    new TestResourceCreatedEvent
                     {
                         Id = new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0")
                     }
@@ -23,8 +23,8 @@ namespace ShoppingCartHandlers.Tests.Handlers
 
             var eventMonitor = new EventMonitor(api);
             
-            var handler = new OnAnyEventRecordInListEventHandler<TestResourceEvent>();
-            eventMonitor.Subscribe<TestResourceEvent>("resource", handler);
+            var handler = new OnAnyEventRecordInListEventHandler<TestResourceCreatedEvent>();
+            eventMonitor.Subscribe<TestResourceCreatedEvent>("resource", handler);
 
             await eventMonitor.Poll();
 
@@ -38,9 +38,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
             var api = new TestEventApi();
             api.SetupTestResource(
                 resourceName: "resource",
-                newTestEvents: new List<TestResourceEvent>
+                newTestEvents: new List<TestResourceCreatedEvent>
                 {
-                    new TestResourceEvent
+                    new TestResourceCreatedEvent
                     {
                         Id = new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0")
                     }
@@ -57,11 +57,11 @@ namespace ShoppingCartHandlers.Tests.Handlers
 
             var eventMonitor = new EventMonitor(api);
 
-            var handler = new OnAnyEventRecordInListEventHandler<TestResourceEvent>();
-            eventMonitor.Subscribe<TestResourceEvent>("resource", handler);
+            var handler = new OnAnyEventRecordInListEventHandler<TestResourceCreatedEvent>();
+            eventMonitor.Subscribe<TestResourceCreatedEvent>("resource", handler);
 
             var alternativeHandler = new OnAnyEventRecordInListEventHandler<AlternativeTestResourceEvent>();
-            eventMonitor.Subscribe<TestResourceEvent>("alternativeResource", alternativeHandler);
+            eventMonitor.Subscribe<TestResourceCreatedEvent>("alternativeResource", alternativeHandler);
 
             await eventMonitor.Poll();
 

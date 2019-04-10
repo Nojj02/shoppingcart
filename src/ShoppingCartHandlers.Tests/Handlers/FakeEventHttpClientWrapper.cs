@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ShoppingCartHandlers.Tests.Handlers
 {
@@ -17,14 +18,17 @@ namespace ShoppingCartHandlers.Tests.Handlers
         {
         }
 
-        public FakeEventHttpClientWrapper(string messageType, IEnumerable<object> events)
+        public FakeEventHttpClientWrapper(string resourceName, IEnumerable<EventInfo> events)
         {
             var message = new
             {
-                messageType = messageType,
+                messageType = resourceName,
                 events = events
             };
-            _message = JsonConvert.SerializeObject(message);
+            
+            var serializerSettings = new JsonSerializerSettings();
+            serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            _message = JsonConvert.SerializeObject(message, serializerSettings);
         }
 
         public IReadOnlyList<HttpRequestMessage> MessagesSent => _messagesSent;
