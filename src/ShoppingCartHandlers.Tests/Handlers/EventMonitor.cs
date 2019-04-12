@@ -24,7 +24,7 @@ namespace ShoppingCartHandlers.Tests.Handlers
         {
             foreach (var subscription in _eventSubscriptions)
             {
-                var newEvents = await _eventApi.GetNewEventsAsync(subscription.ResourceName);
+                var newEvents = await _eventApi.GetAllEventsAsync(subscription.ResourceName);
                 subscription.Handler.Handle(newEvents);
             }
         }

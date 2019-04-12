@@ -13,7 +13,12 @@ namespace ShoppingCartHandlers.Tests.Handlers
             _newApiEvents.Add(resourceName, newTestEvents.Cast<object>().ToList());
         }
 
-        public Task<IList<object>> GetNewEventsAsync(string resourceName)
+        public Task<IList<object>> GetAllEventsAsync(string resourceName)
+        {
+            return GetEventsAfterAsync(resourceName, -1);
+        }
+
+        public Task<IList<object>> GetEventsAfterAsync(string resourceName, int lastMessageNumber)
         {
             return Task.FromResult(_newApiEvents.GetValueOrDefault(resourceName) ?? new List<object>());
         }

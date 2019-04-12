@@ -17,25 +17,26 @@ namespace ShoppingCartHandlers.Tests.Handlers
         private readonly IHttpClientWrapper _httpClientWrapper;
         private readonly EventConverter _eventConverter;
         private readonly int _batchSize;
-        private readonly IEventTrackingRepository _eventTrackingRepository;
 
         public EventApi(
             string host,
             IHttpClientWrapper httpClientWrapper,
             EventConverter eventConverter,
-            int batchSize,
-            IEventTrackingRepository eventTrackingRepository)
+            int batchSize)
         {
             _host = host;
             _httpClientWrapper = httpClientWrapper;
             _eventConverter = eventConverter;
             _batchSize = batchSize;
-            _eventTrackingRepository = eventTrackingRepository;
         }
 
-        public async Task<IList<object>> GetNewEventsAsync(string resourceName)
+        public async Task<IList<object>> GetAllEventsAsync(string resourceName)
         {
-            var lastMessageNumber = _eventTrackingRepository.GetLastMessageNumber(resourceName);
+            return await GetEventsAfterAsync(resourceName, -1);
+        }
+
+        public async Task<IList<object>> GetEventsAfterAsync(string resourceName, int lastMessageNumber)
+        {
             var allEvents = new List<object>();
 
             var skipped = lastMessageNumber / _batchSize;

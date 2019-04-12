@@ -14,9 +14,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
         {
             var httpClientWrapper = new FakeEventHttpClientWrapper();
 
-            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, EventConverter.Empty, 10, new TestEventTrackingRepository());
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, EventConverter.Empty, 10);
 
-            var result = await apiHelper.GetNewEventsAsync("resource");
+            var result = await apiHelper.GetAllEventsAsync("resource");
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
             Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
@@ -44,9 +44,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
                         }
                     });
 
-            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 10, new TestEventTrackingRepository());
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 10);
 
-            var result = await apiHelper.GetNewEventsAsync("resource");
+            var result = await apiHelper.GetAllEventsAsync("resource");
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
             Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
@@ -94,9 +94,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
                         }
                     });
 
-            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 10, new TestEventTrackingRepository());
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 10);
 
-            var result = await apiHelper.GetNewEventsAsync("resource");
+            var result = await apiHelper.GetAllEventsAsync("resource");
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
             Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
@@ -144,9 +144,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
                         }
                     });
 
-            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 10, new TestEventTrackingRepository());
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 10);
 
-            var result = await apiHelper.GetNewEventsAsync("resource");
+            var result = await apiHelper.GetAllEventsAsync("resource");
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
             Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
@@ -194,9 +194,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
                         }
                     });
 
-            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 3, new TestEventTrackingRepository());
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 3);
 
-            var result = await apiHelper.GetNewEventsAsync("resource");
+            var result = await apiHelper.GetAllEventsAsync("resource");
 
             Assert.Equal(2, httpClientWrapper.MessagesSent.Count);
             Assert.Equal("/resource/0-2", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
@@ -264,16 +264,9 @@ namespace ShoppingCartHandlers.Tests.Handlers
                         }
                     });
 
-            var eventTrackingRepository = 
-                new TestEventTrackingRepository(
-                    new List<EventTracking>
-                    {
-                        new EventTracking(resourceName : "resource", lastMessageNumber : 4)
-                    });
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 3);
 
-            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 3, eventTrackingRepository);
-
-            var result = await apiHelper.GetNewEventsAsync("resource");
+            var result = await apiHelper.GetEventsAfterAsync(resourceName: "resource", lastMessageNumber: 4);
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
             Assert.Equal("/resource/3-5", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
