@@ -156,7 +156,58 @@ namespace ShoppingCartHandlers.Tests.Handlers
             Assert.Equal(new Guid("9435310E-098B-4598-A378-5862D9A9E9AE"), ((TestResourceCreatedEvent)result[1]).Id);
             Assert.Equal(new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0"), ((TestResourceUpdatedEvent)result[2]).Id);
         }
-        
+
+        [Fact]
+        public async Task MakesAnExtraCall_NumberOfEventsExactSizeAsOneBatch()
+        {
+            var httpClientWrapper =
+                new FakeEventHttpClientWrapper(
+                    resourceName: "resource",
+                    events: new List<EventInfo>
+                    {
+                        new EventInfo
+                        {
+                            EventType = "resource-created",
+                            Event =
+                                new TestResourceCreatedEvent
+                                {
+                                    Id = new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0")
+                                }
+                        },
+                        new EventInfo
+                        {
+                            EventType = "resource-created",
+                            Event =
+                                new TestResourceCreatedEvent
+                                {
+                                    Id = new Guid("9435310E-098B-4598-A378-5862D9A9E9AE")
+                                }
+                        },
+                        new EventInfo
+                        {
+                            EventType = "resource-updated",
+                            Event =
+                                new TestResourceCreatedEvent
+                                {
+                                    Id = new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0")
+                                }
+                        }
+                    });
+
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance, 3, new TestEventTrackingRepository());
+
+            var result = await apiHelper.GetNewEventsAsync("resource");
+
+            Assert.Equal(2, httpClientWrapper.MessagesSent.Count);
+            Assert.Equal("/resource/0-2", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/resource/3-5", httpClientWrapper.MessagesSent[1].RequestUri.AbsolutePath);
+
+            Assert.Equal(3, result.Count);
+            Assert.Equal(new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0"), ((TestResourceCreatedEvent)result[0]).Id);
+            Assert.Equal(new Guid("9435310E-098B-4598-A378-5862D9A9E9AE"), ((TestResourceCreatedEvent)result[1]).Id);
+            Assert.Equal(new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0"), ((TestResourceUpdatedEvent)result[2]).Id);
+        }
+
 
         [Fact]
         public async Task CallsSecondBatchOfEvents_LastMessageNumberIsHigherThanOneBatchSize()
