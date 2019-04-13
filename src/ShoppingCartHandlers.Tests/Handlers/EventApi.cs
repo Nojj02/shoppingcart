@@ -39,18 +39,22 @@ namespace ShoppingCartHandlers.Tests.Handlers
         {
             var allEvents = new List<object>();
 
-            var skipped = lastMessageNumber / _batchSize;
-            var start = skipped * _batchSize;
+            var skippedBatches = lastMessageNumber / _batchSize;
+            var start = skippedBatches * _batchSize;
             var end = start + _batchSize - 1;
-            var eventsList = await GetAsync(resourceName, start, end);
-            allEvents.AddRange(eventsList);
+            
+            var retrievedEventsList = await GetAsync(resourceName, start, end);
+            var skippedInCurrentBatch = lastMessageNumber % _batchSize;
+            var eventsListStartingFromLastMessageNumber = retrievedEventsList.Skip(skippedInCurrentBatch).ToList();
+            
+            allEvents.AddRange(eventsListStartingFromLastMessageNumber);
 
-            while (eventsList.Count == _batchSize)
+            while (retrievedEventsList.Count == _batchSize)
             {
                 start = end + 1;
                 end = start + _batchSize - 1;
-                eventsList = await GetAsync(resourceName, start, end);
-                allEvents.AddRange(eventsList);
+                retrievedEventsList = await GetAsync(resourceName, start, end);
+                allEvents.AddRange(retrievedEventsList);
             }
 
             return allEvents;
