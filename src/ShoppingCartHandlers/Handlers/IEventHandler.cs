@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Handlers
 {
     public interface IEventHandler
     {

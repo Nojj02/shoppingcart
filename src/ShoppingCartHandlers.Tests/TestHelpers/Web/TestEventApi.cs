@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShoppingCartHandlers.Web;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Tests.TestHelpers.Web
 {
     public class TestEventApi : IEventApi
     {

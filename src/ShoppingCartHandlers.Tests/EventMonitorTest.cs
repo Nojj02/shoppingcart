@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ShoppingCartHandlers.Tests.TestHelpers;
+using ShoppingCartHandlers.Tests.TestHelpers.DataAccess;
+using ShoppingCartHandlers.Tests.TestHelpers.Handlers;
+using ShoppingCartHandlers.Tests.TestHelpers.Web;
 using Xunit;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Tests
 {
     public class EventMonitorTest
     {

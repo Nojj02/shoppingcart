@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers
 {
     public class EventConverter
     {

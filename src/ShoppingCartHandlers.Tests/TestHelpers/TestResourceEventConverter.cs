@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Tests.TestHelpers
 {
     public class TestResourceEventConverter : EventConverter
     {

@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Web
 {
     public interface IHttpClientWrapper
     {

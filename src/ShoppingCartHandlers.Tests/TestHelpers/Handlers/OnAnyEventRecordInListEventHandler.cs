@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using ShoppingCartHandlers.Handlers;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Tests.TestHelpers.Handlers
 {
     public class OnAnyEventRecordInListEventHandler<T> : IEventHandler
         where T : class

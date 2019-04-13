@@ -1,6 +1,4 @@
-using System;
-
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers
 {
     public class EventInfo
     {

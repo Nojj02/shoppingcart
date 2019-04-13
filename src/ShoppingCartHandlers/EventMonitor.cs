@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ShoppingCartHandlers.DataAccess;
+using ShoppingCartHandlers.Handlers;
+using ShoppingCartHandlers.Web;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers
 {
     public class EventMonitor
     {

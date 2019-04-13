@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using ShoppingCartHandlers.Tests.TestHelpers;
+using ShoppingCartHandlers.Tests.TestHelpers.Web;
+using ShoppingCartHandlers.Web;
 using Xunit;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Tests.Web
 {
     public class EventApiTests
     {
@@ -387,48 +388,6 @@ namespace ShoppingCartHandlers.Tests.Handlers
             Assert.Equal(new Guid("F2E3B971-28C9-474E-9EFA-231C86A673B4"), ((TestResourceCreatedEvent) result[2]).Id);
             Assert.Equal(new Guid("76027085-3B4C-4724-A88C-375E5AB24E7A"), ((TestResourceCreatedEvent) result[3]).Id);
             Assert.Equal(new Guid("E34AD640-B4D0-4A31-9A19-7F1B869937C2"), ((TestResourceCreatedEvent) result[4]).Id);
-        }
-    }
-
-    public class EventTracking
-    {
-        public EventTracking(string resourceName, int lastMessageNumber)
-        {
-            ResourceName = resourceName;
-            LastMessageNumber = lastMessageNumber;
-        }
-
-        public string ResourceName { get; private set; }
-
-        /// <summary>
-        /// 0-based tracking of the number associated with an Event.
-        /// </summary>
-        public int LastMessageNumber { get; private set; }
-    }
-
-    public interface IEventTrackingRepository
-    {
-        int GetLastMessageNumber(string resourceName);
-    }
-
-    public class TestEventTrackingRepository : IEventTrackingRepository
-    {
-        private readonly IReadOnlyList<EventTracking> _eventTrackings;
-
-        public TestEventTrackingRepository()
-            : this(new List<EventTracking>())
-        {
-        }
-
-        public TestEventTrackingRepository(IReadOnlyList<EventTracking> eventTrackings)
-        {
-            _eventTrackings = eventTrackings;
-        }
-
-        public int GetLastMessageNumber(string resourceName)
-        {
-            var eventTracking = _eventTrackings.SingleOrDefault(x => x.ResourceName == resourceName);
-            return eventTracking?.LastMessageNumber ?? -1;
         }
     }
 }

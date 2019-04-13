@@ -1,6 +1,6 @@
 using System;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Tests.TestHelpers
 {
     public class TestResourceUpdatedEvent
     {

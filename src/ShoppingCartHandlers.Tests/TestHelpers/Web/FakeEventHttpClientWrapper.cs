@@ -6,8 +6,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using ShoppingCartHandlers.Web;
 
-namespace ShoppingCartHandlers.Tests.Handlers
+namespace ShoppingCartHandlers.Tests.TestHelpers.Web
 {
     public class FakeEventHttpClientWrapper : IHttpClientWrapper
     {
