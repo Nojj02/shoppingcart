@@ -287,12 +287,15 @@ namespace ShoppingCartHandlers.Tests.Handlers
         
         public string ResourceName { get; private set; }
         
+        /// <summary>
+        /// 0-based tracking of the number associated with an Event.
+        /// </summary>
         public int LastMessageNumber { get; private set; }
     }
 
     public interface IEventTrackingRepository
     {
-        int GetLastMessageNumber(string eventType);
+        int GetLastMessageNumber(string resourceName);
     }
 
     public class TestEventTrackingRepository : IEventTrackingRepository
@@ -310,10 +313,10 @@ namespace ShoppingCartHandlers.Tests.Handlers
             _eventTrackings = eventTrackings;
         }
 
-        public int GetLastMessageNumber(string eventType)
+        public int GetLastMessageNumber(string resourceName)
         {
-            var eventTracking = _eventTrackings.SingleOrDefault(x => x.ResourceName == eventType);
-            return eventTracking?.LastMessageNumber ?? 0;
+            var eventTracking = _eventTrackings.SingleOrDefault(x => x.ResourceName == resourceName);
+            return eventTracking?.LastMessageNumber ?? -1;
         }
     }
 }

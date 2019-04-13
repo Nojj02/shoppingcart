@@ -5,7 +5,7 @@ using Xunit;
 
 namespace ShoppingCartHandlers.Tests.Handlers
 {
-    public class EventRouterTests
+    public class EventMonitorTest
     {
         [Fact]
         public async Task HandleSingleSubscription()
@@ -21,7 +21,7 @@ namespace ShoppingCartHandlers.Tests.Handlers
                     }
                 });
 
-            var eventMonitor = new EventMonitor(api);
+            var eventMonitor = new EventMonitor(api, new TestEventTrackingRepository());
             
             var handler = new OnAnyEventRecordInListEventHandler<TestResourceCreatedEvent>();
             eventMonitor.Subscribe<TestResourceCreatedEvent>("resource", handler);
@@ -30,6 +30,44 @@ namespace ShoppingCartHandlers.Tests.Handlers
 
             Assert.Equal(1, handler.Events.Count);
             Assert.Equal(new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0"), handler.Events[0].Id);
+        }
+        
+        [Fact]
+        public async Task TakeEventsOnlyAfterLastMessageNumber()
+        {
+            var api = new TestEventApi();
+            api.SetupTestResource(
+                resourceName: "resource",
+                newTestEvents: new List<TestResourceCreatedEvent>
+                {
+                    new TestResourceCreatedEvent
+                    {
+                        Id = new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0")
+                    },
+                    new TestResourceCreatedEvent
+                    {
+                        Id = new Guid("C471D99B-2C72-44F6-898F-F0BABCBAC9D7")
+                    },
+                    new TestResourceCreatedEvent
+                    {
+                        Id = new Guid("6843FE44-3029-47D3-A9B9-C21A3BAB4397")
+                    }
+                });
+
+            var eventTrackingRepository = new TestEventTrackingRepository(new List<EventTracking>
+            {
+                new EventTracking("resource", 1)
+            });
+
+            var eventMonitor = new EventMonitor(api, eventTrackingRepository);
+
+            var handler = new OnAnyEventRecordInListEventHandler<TestResourceCreatedEvent>();
+            eventMonitor.Subscribe<TestResourceCreatedEvent>("resource", handler);
+
+            await eventMonitor.Poll();
+
+            Assert.Equal(1, handler.Events.Count);
+            Assert.Equal(new Guid("6843FE44-3029-47D3-A9B9-C21A3BAB4397"), handler.Events[0].Id);
         }
 
         [Fact]
@@ -55,7 +93,7 @@ namespace ShoppingCartHandlers.Tests.Handlers
                     }
                 });
 
-            var eventMonitor = new EventMonitor(api);
+            var eventMonitor = new EventMonitor(api, new TestEventTrackingRepository());
 
             var handler = new OnAnyEventRecordInListEventHandler<TestResourceCreatedEvent>();
             eventMonitor.Subscribe<TestResourceCreatedEvent>("resource", handler);

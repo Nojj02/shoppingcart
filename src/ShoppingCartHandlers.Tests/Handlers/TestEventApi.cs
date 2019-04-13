@@ -20,7 +20,10 @@ namespace ShoppingCartHandlers.Tests.Handlers
 
         public Task<IList<object>> GetEventsAfterAsync(string resourceName, int lastMessageNumber)
         {
-            return Task.FromResult(_newApiEvents.GetValueOrDefault(resourceName) ?? new List<object>());
+            var events = (_newApiEvents.GetValueOrDefault(resourceName) ?? new List<object>())
+                .Skip(lastMessageNumber + 1)
+                .ToList();
+            return Task.FromResult((IList<object>)events);
         }
     }
 }
