@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -60,12 +61,15 @@ namespace ShoppingCartHandlers.Web
         private async Task<List<object>> GetAsync(string resourceName, int start, int end)
         {
             var url = new Uri(Path.Combine(_host, resourceName, $"{start}-{end}"));
+            Console.WriteLine($"Getting events from {url}");
             var message =
                 new HttpRequestMessage(
                     method: HttpMethod.Post,
                     requestUri: url);
 
             var responseMessage = await _httpClientWrapper.SendAsync(message);
+
+            if (!responseMessage.IsSuccessStatusCode) throw new EventApiRequestFailedException(url, statusCode: responseMessage.StatusCode);
 
             if (responseMessage.Content == null) return new List<object>();
 
@@ -76,6 +80,8 @@ namespace ShoppingCartHandlers.Web
 
         private List<object> MapJsonContentToObjects(string content)
         {
+            if (content == String.Empty) return new List<object>();
+            
             var json = JObject.Parse(content);
 
             var eventsJson = json["events"].Select(x =>
@@ -84,6 +90,23 @@ namespace ShoppingCartHandlers.Web
                 return x["event"].ToObject(type);
             }).ToList();
             return eventsJson;
+        }
+    }
+
+    public class EventApiRequestFailedException : Exception
+    {
+        private readonly Uri _url;
+        private readonly HttpStatusCode _statusCode;
+
+        public EventApiRequestFailedException(Uri url, HttpStatusCode statusCode)
+        {
+            _url = url;
+            _statusCode = statusCode;
+        }
+
+        public override string ToString()
+        {
+            return _url.ToString() + " " + Enum.GetName(typeof(HttpStatusCode), _statusCode);
         }
     }
 }

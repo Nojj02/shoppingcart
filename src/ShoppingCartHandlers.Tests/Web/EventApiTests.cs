@@ -13,7 +13,23 @@ namespace ShoppingCartHandlers.Tests.Web
         [Fact]
         public async Task CallsFirstBatchOfEvents_ResponseHasNoContent()
         {
-            var httpClientWrapper = new FakeEventHttpClientWrapper();
+            var httpClientWrapper = new MockEventHttpClientWrapper(null);
+
+            var apiHelper = new EventApi("http://localhost/", httpClientWrapper, EventConverter.Empty, 10);
+
+            var result = await apiHelper.GetAllEventsAsync("resource");
+
+            Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
+            Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+        
+        [Fact]
+        public async Task CallsFirstBatchOfEvents_ResponseContentIsEmptyString()
+        {
+            var httpClientWrapper = new MockEventHttpClientWrapper(String.Empty);
 
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, EventConverter.Empty, 10);
 
