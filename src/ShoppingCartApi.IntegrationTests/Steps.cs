@@ -49,6 +49,8 @@ namespace ShoppingCartApi.IntegrationTests
             foreach (var item in items)
             {
                 var itemType = await itemTypeApi.GetByCodeAsync(item.ItemTypeCode);
+                
+                Assert.NotNull(itemType);
 
                 var itemDto = new
                 {
