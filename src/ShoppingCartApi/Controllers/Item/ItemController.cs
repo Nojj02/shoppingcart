@@ -39,7 +39,7 @@ namespace ShoppingCartApi.Controllers.Item
                     code: postRequestDto.Code,
                     price: postRequestDto.Price,
                     itemTypeId: postRequestDto.ItemTypeId);
-                await _repository.SaveAsync(entity);
+                await _repository.SaveAsync(entity, DateTimeOffset.UtcNow);
 
                 var selfUrl = Url.Action("GetByItemCode", new { code = entity.Code });
                 return Created(selfUrl, MapToDto(ItemReadModel.Map(entity)));
@@ -71,7 +71,7 @@ namespace ShoppingCartApi.Controllers.Item
 
             entity.SetPercentageDiscount(new Percent(setDiscountRequestDto.PercentOff));
             entity.SetAmountDiscount(setDiscountRequestDto.AmountOff);
-            await _repository.UpdateAsync(entity);
+            await _repository.UpdateAsync(entity, DateTimeOffset.UtcNow);
 
             return Ok(MapToDto(ItemReadModel.Map(entity)));
         }

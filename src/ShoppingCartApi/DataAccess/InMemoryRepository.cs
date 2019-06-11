@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using ShoppingCartApi.Model;
+using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.DataAccess
 {
@@ -15,6 +16,14 @@ namespace ShoppingCartApi.DataAccess
         public event Action<T> EventOccurred = x => { };
 
         public Task SaveAsync(T entity)
+        {
+            Entities.Add(entity);
+
+            EventOccurred(entity);
+            return Task.CompletedTask;
+        }
+
+        public Task SaveAsync(T entity, DateTimeOffset timestamp)
         {
             Entities.Add(entity);
 
@@ -46,6 +55,30 @@ namespace ShoppingCartApi.DataAccess
             
             EventOccurred(entity);
             return Task.CompletedTask;
+        }
+
+        public Task UpdateAsync(T entity, DateTimeOffset dateTimeOffset)
+        {
+            var matchingT = Entities.SingleOrDefault(x => x.Id == entity.Id);
+            if (matchingT != null)
+            {
+                Entities.Remove(matchingT);
+            }
+
+            Entities.Add(entity);
+            
+            EventOccurred(entity);
+            return Task.CompletedTask;
+        }
+    }
+
+    public class InMemoryRepository<T, TEvent> : InMemoryRepository<T>, IRepository<T, TEvent> 
+        where T : IAggregateRoot<TEvent> 
+        where TEvent : IEvent
+    {
+        public Task<IReadOnlyList<TEvent>> GetEventsAsync(int startIndex, int endIndex)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace ShoppingCartHandlers
                 { "coupons", typeof(CouponDto) }
             });
             var eventApi = new EventApi(
-                host: "http://localhost:9050",
+                host: "http://localhost:9050/events",
                 httpClientWrapper: httpClientWrapper,
                 eventConverter: eventConverter,
                 batchSize: 10

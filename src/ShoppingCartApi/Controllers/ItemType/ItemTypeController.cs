@@ -27,7 +27,7 @@ namespace ShoppingCartApi.Controllers.ItemType
                     id: Guid.NewGuid(),
                     code: postRequestDto.Code);
 
-            await _itemTypeRepository.SaveAsync(itemType);
+            await _itemTypeRepository.SaveAsync(itemType, DateTimeOffset.UtcNow);
 
             var dto = MapToDto(ItemTypeReadModel.Map(itemType));
 

@@ -27,7 +27,7 @@ namespace ShoppingCartApi.Controllers.Coupon
                     percentOff: new Percent(postRequestDto.PercentOff),
                     forItemTypeId: postRequestDto.ForItemTypeId);
 
-            await _couponRepository.SaveAsync(coupon);
+            await _couponRepository.SaveAsync(coupon, DateTimeOffset.UtcNow);
 
             var dto = MapToDto(coupon);
 

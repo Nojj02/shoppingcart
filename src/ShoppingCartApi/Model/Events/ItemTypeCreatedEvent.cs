@@ -2,10 +2,8 @@
 
 namespace ShoppingCartApi.Model.Events
 {
-    public class ItemTypeCreatedEvent : IItemTypeEvent
+    public class ItemTypeCreatedEvent : DomainEvent, IItemTypeEvent
     {
-        public Guid Id { get; set; }
-        public int Version { get; set; }
         public string Code { get; set; }
     }
 }

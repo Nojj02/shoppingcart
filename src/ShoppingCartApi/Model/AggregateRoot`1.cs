@@ -6,7 +6,7 @@ using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.Model
 {
-    public abstract class AggregateRoot<TEvent> : AggregateRoot
+    public abstract class AggregateRoot<TEvent> : AggregateRoot, IAggregateRoot<TEvent>
         where TEvent : IEvent
     {
         private readonly List<TEvent> _events = new List<TEvent>();

@@ -10,7 +10,7 @@ using ShoppingCartApi.Model.Events;
 
 namespace ShoppingCartApi.DataAccess
 {
-    public abstract class Repository<T, TEvent> : IRepository<T>
+    public abstract class Repository<T, TEvent> : IRepository<T, TEvent>
         where T : AggregateRoot<TEvent>
         where TEvent : IEvent
     {
@@ -61,6 +61,65 @@ namespace ShoppingCartApi.DataAccess
                         throw;
                     }
                 }
+            }
+        }
+
+        public async Task SaveAsync(T entity, DateTimeOffset timestamp)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var newEvent in entity.Events)
+                        {
+                            await connection.ExecuteAsync(
+                                $@"INSERT INTO {SchemaAndTableName} 
+                            (id, version, event_type, event, timestamp) 
+                        VALUES 
+                            (@id, @version, @event_type, @event_content::jsonb, @timestamp)",
+                                new
+                                {
+                                    id = entity.Id,
+                                    version = newEvent.Version,
+                                    event_type = newEvent.GetType().FullName,
+                                    event_content = JsonConvert.SerializeObject(newEvent),
+                                    timestamp = timestamp
+                                });
+                        }
+
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public async Task<IReadOnlyList<TEvent>> GetEventsAsync(int startIndex, int endIndex)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                var eventStrings =
+                    await connection.QueryAsync<dynamic>(
+                        $@"SELECT event as event_content, event_type
+                            FROM {SchemaAndTableName}
+                            LIMIT @limit OFFSET @offset",
+                        new
+                        {
+                            offset = startIndex,
+                            limit = endIndex - startIndex + 1
+                        });
+                var events = eventStrings
+                    .Select(x => (TEvent)JsonConvert.DeserializeObject(x.event_content, Type.GetType(x.event_type)))
+                    .ToList();
+
+                return events;
             }
         }
 
@@ -133,6 +192,43 @@ namespace ShoppingCartApi.DataAccess
                                     event_type = newEvent.GetType().FullName,
                                     event_content = JsonConvert.SerializeObject(newEvent),
                                     timestamp = DateTimeOffset.UtcNow
+                                });
+                        }
+
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public async Task UpdateAsync(T entity, DateTimeOffset timestamp)
+        {
+            using (var connection = new NpgsqlConnection(ConnectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var newEvent in entity.NewEvents)
+                        {
+                            await connection.ExecuteAsync(
+                                $@"INSERT INTO {SchemaAndTableName} 
+                                        (id, version, event_type, event, timestamp) 
+                                    VALUES 
+                                        (@id, @version, @event_type, @event_content::jsonb, @timestamp)",
+                                new
+                                {
+                                    id = entity.Id,
+                                    version = newEvent.Version,
+                                    event_type = newEvent.GetType().FullName,
+                                    event_content = JsonConvert.SerializeObject(newEvent),
+                                    timestamp = timestamp
                                 });
                         }
 
