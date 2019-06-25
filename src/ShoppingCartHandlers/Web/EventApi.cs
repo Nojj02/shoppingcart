@@ -64,7 +64,7 @@ namespace ShoppingCartHandlers.Web
             Console.WriteLine($"Getting events from {url}");
             var message =
                 new HttpRequestMessage(
-                    method: HttpMethod.Post,
+                    method: HttpMethod.Get,
                     requestUri: url);
 
             var responseMessage = await _httpClientWrapper.SendAsync(message);
@@ -104,9 +104,6 @@ namespace ShoppingCartHandlers.Web
             _statusCode = statusCode;
         }
 
-        public override string ToString()
-        {
-            return _url.ToString() + " " + Enum.GetName(typeof(HttpStatusCode), _statusCode);
-        }
+        public override string Message => $"Event API request failed [{Enum.GetName(typeof(HttpStatusCode), _statusCode)}] to {_url}";
     }
 }

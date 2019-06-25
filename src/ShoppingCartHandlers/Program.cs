@@ -17,7 +17,8 @@ namespace ShoppingCartHandlers
             var httpClientWrapper = new HttpClientWrapper();
             var eventConverter = new EventConverter(new Dictionary<string, Type>
             {
-                { "coupons", typeof(CouponDto) }
+                //{ "coupon", typeof(CouponDto) },
+                { "itemtype-created", typeof(ItemTypeCreatedEvent) }
             });
             var eventApi = new EventApi(
                 host: "http://localhost:9050/events",
@@ -27,14 +28,15 @@ namespace ShoppingCartHandlers
             );
 
             var eventMonitor = new EventMonitor(eventApi:eventApi, eventTrackingRepository: new ListEventTrackingRepository());
-            eventMonitor.Subscribe<CouponDto>("coupons", new ConsoleEventHandler());
-            await eventMonitor.Poll();
+            eventMonitor.Subscribe<ItemTypeCreatedEvent>("itemType", new ConsoleEventHandler());
+            
+            await PollEvents(eventMonitor);
 
             var timer = new Timer(async state =>
-                    {
-                        Console.WriteLine("Polling...");
-                        await eventMonitor.Poll();
-                    }, 
+                {
+                    Console.WriteLine("Polling...");
+                    await PollEvents(eventMonitor);
+                }, 
                 state: null,
                 period: TimeSpan.FromSeconds(5), 
                 dueTime: TimeSpan.FromSeconds(0));
@@ -47,6 +49,18 @@ namespace ShoppingCartHandlers
             }
             
             Console.ReadKey(true);
+        }
+
+        private static async Task PollEvents(EventMonitor eventMonitor)
+        {
+            try
+            {
+                await eventMonitor.Poll();
+            }
+            catch (EventApiRequestFailedException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 
@@ -65,12 +79,5 @@ namespace ShoppingCartHandlers
             Console.WriteLine("Events received.");
             Console.WriteLine("=> " + JsonConvert.SerializeObject(newEvents));
         }
-    }
-
-    public class CouponDto
-    {
-        public string Code { get; set; }
-        public double PercentOff { get; set; }
-        public Guid Id { get; set; }
     }
 }

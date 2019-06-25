@@ -1,7 +1,9 @@
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.DataAccess;
+using ShoppingCartApi.Events;
 
 namespace ShoppingCartApi.Controllers.Events
 {
@@ -20,8 +22,19 @@ namespace ShoppingCartApi.Controllers.Events
         public async Task<ObjectResult> Get(int startIndex, int endIndex)
         {
             var events = await _itemTypeRepository.GetEventsAsync(startIndex, endIndex);
+            var transportMessage =
+                new TransportMessage
+                {
+                    Events = events
+                        .Select(x => new EventInfo
+                        {
+                            EventType = "itemtype-created",
+                            Event = x
+                        }).ToList(),
+                    MessageType = "itemtype"
+                };
 
-            return Ok(events);
+            return Ok(transportMessage);
         }
     }
 }
