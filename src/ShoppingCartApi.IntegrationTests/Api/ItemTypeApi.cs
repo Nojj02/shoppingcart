@@ -23,19 +23,17 @@ namespace ShoppingCartApi.IntegrationTests.Api
                     method: HttpMethod.Get,
                     requestUri: new Uri(_apiUrl.GetFor($"/itemTypes?code={code}")));
 
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var getItemResponse = await httpClient.SendAsync(getItemRequestMessage);
+
+            if (getItemResponse.StatusCode == HttpStatusCode.NotFound)
             {
-                var getItemResponse = await httpClient.SendAsync(getItemRequestMessage);
-
-                if (getItemResponse.StatusCode == HttpStatusCode.NotFound)
-                {
-                    return null;
-                }
-
-                Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
-
-                return JsonConvert.DeserializeObject<ItemTypeDto>(await getItemResponse.Content.ReadAsStringAsync());
+                return null;
             }
+
+            Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
+
+            return JsonConvert.DeserializeObject<ItemTypeDto>(await getItemResponse.Content.ReadAsStringAsync());
         }
 
         public class ItemTypeDto

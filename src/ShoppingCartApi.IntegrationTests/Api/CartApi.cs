@@ -7,21 +7,21 @@ using Xunit;
 
 namespace ShoppingCartApi.IntegrationTests.Api
 {
-    public class ItemApi
+    public class CartApi
     {
         private readonly ApiUrl _apiUrl;
 
-        public ItemApi(ApiUrl apiUrl)
+        public CartApi(ApiUrl apiUrl)
         {
             _apiUrl = apiUrl;
         }
 
-        public async Task<ItemDto> GetByCodeAsync(string code)
+        public async Task<CartDto> GetAsync(Guid id)
         {
             var getItemRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Get,
-                    requestUri: new Uri(_apiUrl.GetFor($"/items?code={code}")));
+                    requestUri: new Uri(_apiUrl.GetFor($"/cart/{id}")));
 
             using var httpClient = new HttpClient();
 
@@ -29,12 +29,14 @@ namespace ShoppingCartApi.IntegrationTests.Api
 
             Assert.Equal(HttpStatusCode.OK, getItemResponse.StatusCode);
 
-            return JsonConvert.DeserializeObject<ItemDto>(await getItemResponse.Content.ReadAsStringAsync());
+            return JsonConvert.DeserializeObject<CartDto>(await getItemResponse.Content.ReadAsStringAsync());
         }
 
-        public class ItemDto
+        public class CartDto
         {
             public Guid Id { get; set; }
+
+            public decimal TotalCost { get; set; }
         }
     }
 }

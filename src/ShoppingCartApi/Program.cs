@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace ShoppingCartApi
@@ -21,17 +22,20 @@ namespace ShoppingCartApi
                 .AddEnvironmentVariables()
                 .Build();
 
-            var host = new WebHostBuilder()
-                .UseKestrel()
+            var host = new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .UseConfiguration(config)
-                .ConfigureLogging((hostingContext, logging) =>
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddConsole();
-                    logging.AddDebug();
-                    logging.AddEventSourceLogger();
+                    webBuilder.UseKestrel()
+                        .UseConfiguration(config)
+                        .UseStartup<Startup>()
+                        .ConfigureLogging((hostingContext, logging) =>
+                        {
+                            logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                            logging.AddConsole();
+                            logging.AddDebug();
+                            logging.AddEventSourceLogger();
+                        });
                 })
                 .Build();
             

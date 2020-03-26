@@ -7,7 +7,7 @@ using ShoppingCartApi.Model;
 namespace ShoppingCartApi.Controllers.ItemType
 {
     [Route("itemTypes")]
-    public class ItemTypeController : Controller
+    public class ItemTypeController : ControllerBase
     {
         private readonly IItemTypeRepository _itemTypeRepository;
         private readonly IItemTypeReadRepository _readRepository;

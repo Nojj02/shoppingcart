@@ -9,7 +9,7 @@ namespace ShoppingCartApi.Tests.Helpers
     {
         public static T BootstrapForTests<T>(this T controller,
             IUrlHelper urlHelper = null)
-            where T : Controller
+            where T : ControllerBase
         {
             controller.Url = urlHelper ?? new AlwaysEmptyUrlHelper();
 

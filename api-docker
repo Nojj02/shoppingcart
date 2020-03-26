@@ -6,7 +6,7 @@ COPY ./src .
 WORKDIR /app/ShoppingCartApi
 RUN dotnet publish -c Release -o /publish
 
-FROM microsoft/dotnet:2.1.7-aspnetcore-runtime AS runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
 COPY --from=build /publish /app
 
 EXPOSE 9050
