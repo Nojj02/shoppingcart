@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartHandlers", "Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartHandlers.Tests", "ShoppingCartHandlers.Tests\ShoppingCartHandlers.Tests.csproj", "{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartSharedKernel", "ShoppingCartSharedKernel\ShoppingCartSharedKernel.csproj", "{F150A14B-E3A2-462C-B9E5-8EA36EDF9D7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartEvents", "ShoppingCartEvents\ShoppingCartEvents.csproj", "{843DDEAA-E9BC-48EF-B7F4-59C385721E51}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartReader", "ShoppingCartReader\ShoppingCartReader.csproj", "{1454F5BE-3604-44BD-B251-D54AD4911032}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +45,18 @@ Global
 		{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED5F72CC-965E-4A2D-8CC8-9340C4BC98AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F150A14B-E3A2-462C-B9E5-8EA36EDF9D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F150A14B-E3A2-462C-B9E5-8EA36EDF9D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F150A14B-E3A2-462C-B9E5-8EA36EDF9D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F150A14B-E3A2-462C-B9E5-8EA36EDF9D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{843DDEAA-E9BC-48EF-B7F4-59C385721E51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{843DDEAA-E9BC-48EF-B7F4-59C385721E51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{843DDEAA-E9BC-48EF-B7F4-59C385721E51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{843DDEAA-E9BC-48EF-B7F4-59C385721E51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1454F5BE-3604-44BD-B251-D54AD4911032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1454F5BE-3604-44BD-B251-D54AD4911032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1454F5BE-3604-44BD-B251-D54AD4911032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1454F5BE-3604-44BD-B251-D54AD4911032}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

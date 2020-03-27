@@ -6,6 +6,9 @@ using Microsoft.Extensions.Primitives;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Model;
 using ShoppingCartApi.Utilities.CustomActionResults;
+using ShoppingCartReader.DataAccess;
+using ShoppingCartReader.Model;
+using ShoppingCartSharedKernel;
 
 namespace ShoppingCartApi.Controllers.Item
 {
@@ -15,10 +18,10 @@ namespace ShoppingCartApi.Controllers.Item
         private readonly IItemRepository _repository;
         private readonly IItemReadRepository _readRepository;
 
-        public ItemController(IItemRepository repository, IItemReadRepository _readRepository)
+        public ItemController(IItemRepository repository, IItemReadRepository readRepository)
         {
             _repository = repository;
-            this._readRepository = _readRepository;
+            _readRepository = readRepository;
         }
 
         [HttpPost]
@@ -42,7 +45,7 @@ namespace ShoppingCartApi.Controllers.Item
                 await _repository.SaveAsync(entity, DateTimeOffset.UtcNow);
 
                 var selfUrl = Url.Action("GetByItemCode", new { code = entity.Code });
-                return Created(selfUrl, MapToDto(ItemReadModel.Map(entity)));
+                return Created(selfUrl, MapToDto(entity));
             }
         }
 
@@ -73,10 +76,23 @@ namespace ShoppingCartApi.Controllers.Item
             entity.SetAmountDiscount(setDiscountRequestDto.AmountOff);
             await _repository.UpdateAsync(entity, DateTimeOffset.UtcNow);
 
-            return Ok(MapToDto(ItemReadModel.Map(entity)));
+            return Ok(MapToDto(entity));
         }
 
-        private static ItemDto MapToDto(Model.ItemReadModel entity)
+        private static ItemDto MapToDto(Model.Item entity)
+        {
+            return new ItemDto
+            {
+                Id = entity.Id,
+                Code = entity.Code,
+                ItemTypeId = entity.ItemTypeId,
+                Price = entity.Price,
+                PercentOff = entity.PercentOff.Value,
+                AmountOff = entity.AmountOff
+            };
+        }
+
+        private static ItemDto MapToDto(ItemReadModel entity)
         {
             return new ItemDto
             {

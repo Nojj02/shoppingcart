@@ -2,20 +2,20 @@ using System.Threading.Tasks;
 using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
-using ShoppingCartApi.Model;
+using ShoppingCartReader.Model;
 
-namespace ShoppingCartApi.DataAccess
+namespace ShoppingCartReader.DataAccess
 {
-    public class CouponReadRepository : ReadRepository<CouponReadModel>, ICouponReadRepository
+    public class ItemTypeReadRepository : ReadRepository<ItemTypeReadModel>, IItemTypeReadRepository
     {
-        public CouponReadRepository(string connectionString)
+        public ItemTypeReadRepository(string connectionString)
             : base(connectionString)
         {
         }
 
-        protected override string TableName => "coupon";
+        protected override string TableName => "item_type";
         
-        public async Task<CouponReadModel> GetAsync(string code)
+        public async Task<ItemTypeReadModel> GetAsync(string code)
         {
             using (var connection = new NpgsqlConnection(ConnectionString))
             {
@@ -29,7 +29,7 @@ namespace ShoppingCartApi.DataAccess
                             code = code
                         });
 
-                return content == null ? null : JsonConvert.DeserializeObject<CouponReadModel>(content);
+                return content == null ? null : JsonConvert.DeserializeObject<ItemTypeReadModel>(content);
             }
         }
     }

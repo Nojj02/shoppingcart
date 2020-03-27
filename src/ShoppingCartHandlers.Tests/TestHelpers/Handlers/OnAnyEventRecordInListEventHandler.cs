@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ShoppingCartHandlers.Handlers;
 
 namespace ShoppingCartHandlers.Tests.TestHelpers.Handlers
@@ -11,7 +12,7 @@ namespace ShoppingCartHandlers.Tests.TestHelpers.Handlers
 
         public IReadOnlyList<T> Events => _events;
 
-        public void Handle(IList<object> newEvents)
+        public Task Handle(IList<object> newEvents)
         {
             var matchingEvents =
                 newEvents.Select(x => x as T)
@@ -19,6 +20,7 @@ namespace ShoppingCartHandlers.Tests.TestHelpers.Handlers
                     .ToList();
 
             _events.AddRange(matchingEvents);
+            return Task.CompletedTask;
         }
     }
 }

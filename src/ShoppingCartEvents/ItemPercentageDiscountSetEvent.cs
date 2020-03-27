@@ -1,4 +1,5 @@
 using System;
+using ShoppingCartSharedKernel;
 
 namespace ShoppingCartApi.Model.Events
 {

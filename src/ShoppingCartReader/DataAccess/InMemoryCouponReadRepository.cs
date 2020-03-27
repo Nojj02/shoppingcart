@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ShoppingCartApi.Model;
+using ShoppingCartReader.Model;
 
-namespace ShoppingCartApi.DataAccess
+namespace ShoppingCartReader.DataAccess
 {
     public class InMemoryCouponReadRepository : InMemoryRepository<CouponReadModel>, ICouponReadRepository
     {

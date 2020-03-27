@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Model;
+using ShoppingCartReader.DataAccess;
+using ShoppingCartSharedKernel;
 
 namespace ShoppingCartApi.Controllers.Calculator
 {

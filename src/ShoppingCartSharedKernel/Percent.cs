@@ -1,6 +1,6 @@
 using System;
 
-namespace ShoppingCartApi.Model
+namespace ShoppingCartSharedKernel
 {
     public class Percent
     {

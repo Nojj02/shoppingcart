@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using ShoppingCartApi.Model;
+using ShoppingCartReader.Model;
 
-namespace ShoppingCartApi.DataAccess
+namespace ShoppingCartReader.DataAccess
 {
     public interface ICouponReadRepository
     {

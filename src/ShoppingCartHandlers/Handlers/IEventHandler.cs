@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ShoppingCartHandlers.Handlers
 {
     public interface IEventHandler
     {
-        void Handle(IList<object> newEvents);
+        Task Handle(IList<object> newEvents);
     }
 }

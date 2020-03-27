@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ShoppingCartApi.Model;
 using ShoppingCartApi.Model.Events;
+using ShoppingCartSharedKernel;
 using Xunit;
 
 namespace ShoppingCartApi.Tests.Model

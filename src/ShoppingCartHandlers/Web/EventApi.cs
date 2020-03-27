@@ -60,7 +60,7 @@ namespace ShoppingCartHandlers.Web
 
         private async Task<List<object>> GetAsync(string resourceName, int start, int end)
         {
-            var url = new Uri(Path.Combine(_host, resourceName, $"{start}-{end}"));
+            var url = new Uri(new Uri(_host), relativeUri: Path.Combine(resourceName, $"{start}-{end}"));
             Console.WriteLine($"Getting events from {url}");
             var message =
                 new HttpRequestMessage(
@@ -68,6 +68,7 @@ namespace ShoppingCartHandlers.Web
                     requestUri: url);
 
             var responseMessage = await _httpClientWrapper.SendAsync(message);
+            if (!responseMessage.IsSuccessStatusCode) throw new Exception();
 
             if (!responseMessage.IsSuccessStatusCode) throw new EventApiRequestFailedException(url, statusCode: responseMessage.StatusCode);
 

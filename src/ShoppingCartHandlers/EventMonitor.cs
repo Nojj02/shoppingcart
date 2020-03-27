@@ -36,7 +36,7 @@ namespace ShoppingCartHandlers
                 }
 
                 var newEvents = await _eventApi.GetEventsAfterAsync(subscription.ResourceName, lastMessageNumber);
-                subscription.Handler.Handle(newEvents);
+                await subscription.Handler.Handle(newEvents);
             }
         }
     }

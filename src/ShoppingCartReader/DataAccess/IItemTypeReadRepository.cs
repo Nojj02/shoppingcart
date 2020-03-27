@@ -1,10 +1,13 @@
+using System;
 using System.Threading.Tasks;
-using ShoppingCartApi.Model;
+using ShoppingCartReader.Model;
 
-namespace ShoppingCartApi.DataAccess
+namespace ShoppingCartReader.DataAccess
 {
     public interface IItemTypeReadRepository
     {
+        Task<ItemTypeReadModel> GetAsync(Guid id);
+
         Task<ItemTypeReadModel> GetAsync(string code);
     }
 }

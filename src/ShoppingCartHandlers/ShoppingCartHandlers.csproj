@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <ProjectReference Include="..\ShoppingCartEvents\ShoppingCartEvents.csproj" />
+    <ProjectReference Include="..\ShoppingCartReader\ShoppingCartReader.csproj" />
+    <ProjectReference Include="..\ShoppingCartSharedKernel\ShoppingCartSharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,6 +11,8 @@ using ShoppingCartApi.Controllers.ItemType;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Model;
 using ShoppingCartApi.Tests.Helpers;
+using ShoppingCartReader.DataAccess;
+using ShoppingCartReader.Model;
 using Xunit;
 using PostRequestDto = ShoppingCartApi.Controllers.Item.PostRequestDto;
 
@@ -42,7 +44,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -89,7 +94,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -150,7 +158,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -212,7 +223,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -287,7 +301,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -355,7 +372,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -424,7 +444,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -450,7 +473,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 var couponRepository = new InMemoryCouponRepository();
                 var couponReadRepository = new InMemoryCouponReadRepository();
-                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(CouponReadModel.Map(entity));
+                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(new CouponReadModel()); // This is broke
 
                 var couponController = new CouponController(couponRepository)
                     .BootstrapForTests();
@@ -502,13 +525,20 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemTypeRepository = new InMemoryItemTypeRepository();
                 var itemTypeReadRepository = new InMemoryItemTypeReadRepository();
-                itemTypeRepository.EventOccurred += entity => itemTypeReadRepository.UpdateAsync(ItemTypeReadModel.Map(entity));
+                itemTypeRepository.EventOccurred += entity => itemTypeReadRepository.UpdateAsync(new ItemTypeReadModel
+                {
+                    Id = entity.Id,
+                    Code = entity.Code
+                });
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
                 var couponRepository = new InMemoryCouponRepository();
                 var couponReadRepository = new InMemoryCouponReadRepository();
-                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(CouponReadModel.Map(entity));
+                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(new CouponReadModel()); // This is broke
 
                 var itemTypeController = new ItemTypeController(itemTypeRepository, itemTypeReadRepository)
                     .BootstrapForTests();
@@ -603,7 +633,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)
@@ -628,7 +661,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
 
                 var couponRepository = new InMemoryCouponRepository();
                 var couponReadRepository = new InMemoryCouponReadRepository();
-                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(CouponReadModel.Map(entity));
+                couponRepository.EventOccurred += entity => couponReadRepository.UpdateAsync(new CouponReadModel()); // This is broke
 
                 var couponController = new CouponController(couponRepository)
                     .BootstrapForTests();
@@ -675,7 +708,10 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
-                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(ItemReadModel.Map(entity));
+                itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel
+                {
+                    // TODO: This is still broke
+                });
 
                 var itemController =
                     new ItemController(itemRepository, itemReadRepository)

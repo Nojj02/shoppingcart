@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ShoppingCartApi.Model.Events;
 using ShoppingCartHandlers.DataAccess;
 using ShoppingCartHandlers.Handlers;
 using ShoppingCartHandlers.Web;

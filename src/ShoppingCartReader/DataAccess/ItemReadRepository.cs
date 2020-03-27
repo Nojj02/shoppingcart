@@ -2,16 +2,16 @@ using System.Threading.Tasks;
 using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
-using ShoppingCartApi.Model;
+using ShoppingCartReader.Model;
 
-namespace ShoppingCartApi.DataAccess
+namespace ShoppingCartReader.DataAccess
 {
     public interface IItemReadRepository
     {
         Task<ItemReadModel> GetAsync(string code);
     }
 
-    public class ItemReadRepository : ReadRepository<Item>, IItemReadRepository
+    public class ItemReadRepository : ReadRepository<ItemReadModel>, IItemReadRepository
     {
         private readonly string _connectionString;
         

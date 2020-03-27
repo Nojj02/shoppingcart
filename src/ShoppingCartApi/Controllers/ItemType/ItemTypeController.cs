@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Model;
+using ShoppingCartReader.DataAccess;
 
 namespace ShoppingCartApi.Controllers.ItemType
 {
@@ -29,7 +30,11 @@ namespace ShoppingCartApi.Controllers.ItemType
 
             await _itemTypeRepository.SaveAsync(itemType, DateTimeOffset.UtcNow);
 
-            var dto = MapToDto(ItemTypeReadModel.Map(itemType));
+            var dto = new ItemTypeDto
+            {
+                Id = itemType.Id,
+                Code = itemType.Code
+            };
 
             var url = Url.Action(nameof(Get), new { id = itemType.Id });
 
@@ -46,28 +51,28 @@ namespace ShoppingCartApi.Controllers.ItemType
                 return NotFound(code);
             }
 
-            return Ok(MapToDto(entity));
+            var dto = new ItemTypeDto
+            {
+                Id = entity.Id,
+                Code = entity.Code
+            };
+
+            return Ok(dto);
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<ObjectResult> Get([FromRoute] Guid id)
         {
-            var entity = await _itemTypeRepository.GetAsync(id);
+            var entity = await _readRepository.GetAsync(id);
 
-            var dto = MapToDto(ItemTypeReadModel.Map(entity));
-
-            return Ok(dto);
-        }
-
-        private static ItemTypeDto MapToDto(Model.ItemTypeReadModel itemType)
-        {
             var dto = new ItemTypeDto
             {
-                Id = itemType.Id,
-                Code = itemType.Code
+                Id = entity.Id,
+                Code = entity.Code
             };
-            return dto;
+
+            return Ok(dto);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ShoppingCartApi.Model;
+using ShoppingCartSharedKernel;
 using Xunit;
 
 namespace ShoppingCartApi.Tests.Model
