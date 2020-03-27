@@ -60,7 +60,7 @@ namespace ShoppingCartHandlers.Web
 
         private async Task<List<object>> GetAsync(string resourceName, int start, int end)
         {
-            var url = new Uri(new Uri(_host), relativeUri: Path.Combine(resourceName, $"{start}-{end}"));
+            var url = new Uri(new Uri(_host), relativeUri: Path.Combine("events", resourceName, $"{start}-{end}"));
             Console.WriteLine($"Getting events from {url}");
             var message =
                 new HttpRequestMessage(

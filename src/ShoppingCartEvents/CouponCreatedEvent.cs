@@ -1,7 +1,7 @@
 ﻿using System;
 using ShoppingCartSharedKernel;
 
-namespace ShoppingCartApi.Model.Events
+namespace ShoppingCartEvents
 {
     public class CouponCreatedEvent : DomainEvent, ICouponEvent
     {

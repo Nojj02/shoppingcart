@@ -1,4 +1,4 @@
-﻿namespace ShoppingCartApi.Model.Events
+﻿namespace ShoppingCartEvents
 {
     public interface ICouponEvent : IEvent
     {

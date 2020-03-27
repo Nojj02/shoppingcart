@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 
 namespace ShoppingCartApi.Model
 {

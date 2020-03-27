@@ -6,7 +6,7 @@ using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Model;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 
 namespace ShoppingCartApi.DataAccess
 {
@@ -116,7 +116,7 @@ namespace ShoppingCartApi.DataAccess
                             limit = endIndex - startIndex + 1
                         });
                 var events = eventStrings
-                    .Select(x => (TEvent)JsonConvert.DeserializeObject(x.event_content, Type.GetType(x.event_type)))
+                    .Select(x => (TEvent)JsonConvert.DeserializeObject(x.event_content, GetTypeOfEvent(x.event_type), settings: null))
                     .ToList();
 
                 return events;
@@ -137,7 +137,7 @@ namespace ShoppingCartApi.DataAccess
                             id = id
                         });
                 var events = eventStrings
-                    .Select(x => (TEvent)JsonConvert.DeserializeObject(x.event_content, Type.GetType(x.event_type)))
+                    .Select(x => (TEvent)JsonConvert.DeserializeObject(x.event_content, GetTypeOfEvent(x.event_type), settings: null))
                     .ToList();
 
                 return MapEventsToEntity(id, events);
@@ -159,7 +159,7 @@ namespace ShoppingCartApi.DataAccess
                         });
                 
                 var events = eventStrings
-                    .Select(x => (TEvent)JsonConvert.DeserializeObject(x.event_content, Type.GetType(x.event_type)))
+                    .Select(x => (TEvent)JsonConvert.DeserializeObject(x.event_content, GetTypeOfEvent(x.event_type), settings: null))
                     .ToList()
                     .GroupBy(x => x.Id)
                     .Select(x => MapEventsToEntity(x.Key, x.ToList()))
@@ -244,5 +244,10 @@ namespace ShoppingCartApi.DataAccess
         }
 
         protected abstract T MapEventsToEntity(Guid id, IReadOnlyList<TEvent> events);
+
+        private static Type GetTypeOfEvent(string eventTypeName)
+        {
+            return Type.GetType(eventTypeName + ", ShoppingCartEvents");
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ShoppingCartApi.Model;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 
 namespace ShoppingCartApi.DataAccess
 {

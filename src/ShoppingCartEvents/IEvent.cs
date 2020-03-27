@@ -1,6 +1,6 @@
 using System;
 
-namespace ShoppingCartApi.Model.Events
+namespace ShoppingCartEvents
 {
     public interface IEvent
     {

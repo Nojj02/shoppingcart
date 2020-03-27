@@ -5,7 +5,7 @@ using Dapper;
 using Newtonsoft.Json;
 using Npgsql;
 using ShoppingCartApi.Model;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 
 namespace ShoppingCartApi.DataAccess
 {

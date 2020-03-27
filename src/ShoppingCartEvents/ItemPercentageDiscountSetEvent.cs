@@ -1,7 +1,6 @@
-using System;
 using ShoppingCartSharedKernel;
 
-namespace ShoppingCartApi.Model.Events
+namespace ShoppingCartEvents
 {
     public class ItemPercentageDiscountSetEvent : DomainEvent, IItemEvent
     {

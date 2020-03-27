@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 
 namespace ShoppingCartApi.Model
 {

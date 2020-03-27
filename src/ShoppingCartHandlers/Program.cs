@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using ShoppingCartApi.Model.Events;
 using ShoppingCartHandlers.DataAccess;
 using ShoppingCartHandlers.Handlers;
 using ShoppingCartHandlers.Web;
@@ -22,7 +22,7 @@ namespace ShoppingCartHandlers
                 { "itemtype-created", typeof(ItemTypeCreatedEvent) }
             });
             var eventApi = new EventApi(
-                host: "http://localhost:9050/events",
+                host: "http://localhost:9050",
                 httpClientWrapper: httpClientWrapper,
                 eventConverter: eventConverter,
                 batchSize: 10
@@ -67,18 +67,39 @@ namespace ShoppingCartHandlers
 
     public class ListEventTrackingRepository : IEventTrackingRepository
     {
+        private readonly List<EventTracking> _eventTrackingList;
+
+        public ListEventTrackingRepository(List<EventTracking> predefinedEventTrackingList = null)
+        {
+            _eventTrackingList = predefinedEventTrackingList ?? new List<EventTracking>();
+        }
+
         public int GetLastMessageNumber(string resourceName)
         {
-            return -1;
+            var eventTracking = _eventTrackingList.SingleOrDefault(x => x.ResourceName == resourceName);
+            if (eventTracking == null)
+            {
+                eventTracking = new EventTracking(resourceName, -1);
+                _eventTrackingList.Add(eventTracking);
+            }
+
+            return eventTracking.LastMessageNumber;
+        }
+
+        public Task UpdateLastMessageNumberAsync(string resourceName, int lastMessageNumber)
+        {
+            _eventTrackingList.Single(x => x.ResourceName == resourceName).UpdateLastMessageNumber(lastMessageNumber);
+            return Task.CompletedTask;
         }
     }
 
     public class ConsoleEventHandler : IEventHandler
     {
-        public void Handle(IList<object> newEvents)
+        public Task Handle(IList<object> newEvents)
         {
             Console.WriteLine("Events received.");
             Console.WriteLine("=> " + JsonConvert.SerializeObject(newEvents));
+            return Task.CompletedTask;
         }
     }
 }

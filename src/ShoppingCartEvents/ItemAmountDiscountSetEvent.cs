@@ -1,6 +1,4 @@
-using System;
-
-namespace ShoppingCartApi.Model.Events
+namespace ShoppingCartEvents
 {
     public class ItemAmountDiscountSetEvent : DomainEvent, IItemEvent
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ShoppingCartApi.Controllers.Events;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Events;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 using Xunit;
 
 namespace ShoppingCartApi.Tests.Controllers.Events

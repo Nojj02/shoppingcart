@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.Model;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 
 namespace ShoppingCartApi.DataAccess
 {

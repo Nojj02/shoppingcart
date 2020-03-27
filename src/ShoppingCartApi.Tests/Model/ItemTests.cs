@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ShoppingCartApi.Model;
-using ShoppingCartApi.Model.Events;
+using ShoppingCartEvents;
 using ShoppingCartSharedKernel;
 using Xunit;
 
