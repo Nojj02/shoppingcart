@@ -26,4 +26,8 @@
     <ProjectReference Include="..\ShoppingCartHandlers\ShoppingCartHandlers.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestHelpers\DataAccess\" />
+  </ItemGroup>
+
 </Project>

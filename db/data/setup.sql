@@ -36,6 +36,19 @@ CREATE TABLE "shoppingcart"."item"
 ALTER TABLE "shoppingcart"."item"
     OWNER to postgres;
 
+-- event tracking table
+CREATE TABLE "shoppingcart"."event_tracking"
+(
+    "db_id" bigserial NOT NULL,
+    "resource_name" CHARACTER VARYING(255) COLLATE pg_catalog."default" NOT NULL,
+    "last_message_number" int NOT NULL,
+    "timestamp" timestamp with time zone NOT NULL,
+    CONSTRAINT "event_tracking_pkey" PRIMARY KEY ("db_id")
+);
+
+ALTER TABLE "shoppingcart"."event_tracking"
+    OWNER to postgres;
+
 -- cart table
 CREATE TABLE "shoppingcart"."cart"
 (

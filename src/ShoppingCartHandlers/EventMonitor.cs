@@ -32,7 +32,7 @@ namespace ShoppingCartHandlers
             foreach (var subscriptionByResourceGroup in subscriptionsByResource)
             {
                 var resourceName = subscriptionByResourceGroup.Key;
-                var lastMessageNumber = _eventTrackingRepository.GetLastMessageNumber(resourceName);
+                var lastMessageNumber = await _eventTrackingRepository.GetLastMessageNumber(resourceName);
                 var newEvents = await _eventApi.GetEventsAfterAsync(resourceName, lastMessageNumber);
 
                 foreach (var subscription in subscriptionByResourceGroup)
