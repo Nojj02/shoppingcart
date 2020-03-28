@@ -28,39 +28,44 @@ namespace ShoppingCartHandlers.Web
             _batchSize = batchSize;
         }
 
-        public async Task<IList<object>> GetAllEventsAsync(string resourceName)
-        {
-            return await GetEventsAfterAsync(resourceName, -1);
-        }
-
-        public async Task<IList<object>> GetEventsAfterAsync(string resourceName, int lastMessageNumber)
+        public async Task<IList<object>> GetEventsAfterAsync(string resourceName, MessageNumber lastMessageNumber)
         {
             var allEvents = new List<object>();
 
-            var skippedBatches = lastMessageNumber / _batchSize;
-            var start = skippedBatches * _batchSize;
-            var end = start + _batchSize - 1;
-            
-            var retrievedEventsList = await GetAsync(resourceName, start, end);
-            var skippedInCurrentBatch = lastMessageNumber % _batchSize;
-            var eventsListStartingFromLastMessageNumber = retrievedEventsList.Skip(skippedInCurrentBatch + 1).ToList();
-            
-            allEvents.AddRange(eventsListStartingFromLastMessageNumber);
+            List<object> retrievedEventsList;
+            MessageNumberRange numberRange;
+            if (lastMessageNumber == MessageNumber.NotSet)
+            {
+                numberRange = new MessageNumberRange(MessageNumber.New(0), _batchSize);
+
+                retrievedEventsList = await GetAsync(resourceName, numberRange);
+                allEvents.AddRange(retrievedEventsList);
+            }
+            else
+            {
+                var skippedBatches = lastMessageNumber.Value / _batchSize;
+                numberRange = new MessageNumberRange(MessageNumber.New(skippedBatches * _batchSize), _batchSize);
+
+                retrievedEventsList = await GetAsync(resourceName, numberRange);
+                var skippedBatchSize = lastMessageNumber.Value % _batchSize;
+                var eventsListStartingFromLastMessageNumber = retrievedEventsList.Skip(skippedBatchSize + 1).ToList();
+
+                allEvents.AddRange(eventsListStartingFromLastMessageNumber);
+            }
 
             while (retrievedEventsList.Count == _batchSize)
             {
-                start = end + 1;
-                end = start + _batchSize - 1;
-                retrievedEventsList = await GetAsync(resourceName, start, end);
+                numberRange = new MessageNumberRange(MessageNumber.New(numberRange.End.Value + 1), _batchSize);
+                retrievedEventsList = await GetAsync(resourceName, numberRange);
                 allEvents.AddRange(retrievedEventsList);
             }
 
             return allEvents;
         }
 
-        private async Task<List<object>> GetAsync(string resourceName, int start, int end)
+        private async Task<List<object>> GetAsync(string resourceName, MessageNumberRange range)
         {
-            var url = new Uri(new Uri(_host), relativeUri: Path.Combine("events", resourceName, $"{start}-{end}"));
+            var url = new Uri(new Uri(_host), relativeUri: Path.Combine("events", resourceName, $"{range.Start}-{range.End}"));
             Console.WriteLine($"Getting events from {url}");
             var message =
                 new HttpRequestMessage(
@@ -82,7 +87,7 @@ namespace ShoppingCartHandlers.Web
         private List<object> MapJsonContentToObjects(string content)
         {
             if (content == String.Empty) return new List<object>();
-            
+
             var json = JObject.Parse(content);
 
             var eventsJson = json["events"].Select(x =>
@@ -91,6 +96,33 @@ namespace ShoppingCartHandlers.Web
                 return x["event"].ToObject(type);
             }).ToList();
             return eventsJson;
+        }
+
+        private class MessageNumberRange
+        {
+            public MessageNumberRange(MessageNumber start, int batchSize)
+            {
+                if (start == MessageNumber.NotSet)
+                {
+                    throw new InvalidMessageNumberRangeException("Range cannot start with NotSet value");
+                }
+
+                Start = start;
+                End = MessageNumber.New(start.Value + batchSize - 1);
+            }
+            
+            public MessageNumber Start { get; }
+
+            public MessageNumber End { get; }
+        }
+
+        public class InvalidMessageNumberRangeException : Exception
+        {
+            public InvalidMessageNumberRangeException(string message)
+                : base(message)
+            {
+
+            }
         }
     }
 

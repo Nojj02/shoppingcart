@@ -10,7 +10,7 @@ namespace ShoppingCartHandlers
 {
     public class EventTrackingRepository : IEventTrackingRepository
     {
-        public async Task<int> GetLastMessageNumber(string resourceName)
+        public async Task<MessageNumber> GetLastMessageNumber(string resourceName)
         {
             await using var connection = new NpgsqlConnection(Database.ConnectionString);
             await connection.OpenAsync();
@@ -18,14 +18,14 @@ namespace ShoppingCartHandlers
 
             if (eventTracking == null)
             {
-                eventTracking = new EventTracking(resourceName, -1);
+                eventTracking = EventTracking.New(resourceName);
                 await SaveAsync(eventTracking);
             }
 
             return eventTracking.LastMessageNumber;
         }
 
-        public async Task UpdateLastMessageNumberAsync(string resourceName, int newLastMessageNumber)
+        public async Task UpdateLastMessageNumberAsync(string resourceName, MessageNumber newLastMessageNumber)
         {
             var eventTracking = await GetEventTracking(resourceName);
             eventTracking.UpdateLastMessageNumber(newLastMessageNumber);

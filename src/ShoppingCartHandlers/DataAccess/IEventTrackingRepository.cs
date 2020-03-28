@@ -4,7 +4,7 @@ namespace ShoppingCartHandlers.DataAccess
 {
     public interface IEventTrackingRepository
     {
-        Task<int> GetLastMessageNumber(string resourceName);
-        Task UpdateLastMessageNumberAsync(string resourceName, int newLastMessageNumber);
+        Task<MessageNumber> GetLastMessageNumber(string resourceName);
+        Task UpdateLastMessageNumberAsync(string resourceName, MessageNumber newLastMessageNumber);
     }
 }

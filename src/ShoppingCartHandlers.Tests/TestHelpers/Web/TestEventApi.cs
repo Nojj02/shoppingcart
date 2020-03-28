@@ -14,15 +14,10 @@ namespace ShoppingCartHandlers.Tests.TestHelpers.Web
             _newApiEvents.Add(resourceName, newTestEvents.Cast<object>().ToList());
         }
 
-        public Task<IList<object>> GetAllEventsAsync(string resourceName)
-        {
-            return GetEventsAfterAsync(resourceName, -1);
-        }
-
-        public Task<IList<object>> GetEventsAfterAsync(string resourceName, int lastMessageNumber)
+        public Task<IList<object>> GetEventsAfterAsync(string resourceName, MessageNumber lastMessageNumber)
         {
             var events = (_newApiEvents.GetValueOrDefault(resourceName) ?? new List<object>())
-                .Skip(lastMessageNumber + 1)
+                .Skip(lastMessageNumber == MessageNumber.NotSet ? 0 : lastMessageNumber.Value + 1)
                 .ToList();
             return Task.FromResult((IList<object>)events);
         }

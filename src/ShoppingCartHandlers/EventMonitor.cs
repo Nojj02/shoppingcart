@@ -39,7 +39,9 @@ namespace ShoppingCartHandlers
                 {
                     await subscription.Handler.Handle(newEvents);
                 }
-                await _eventTrackingRepository.UpdateLastMessageNumberAsync(resourceName, lastMessageNumber + newEvents.Count);
+                await _eventTrackingRepository.UpdateLastMessageNumberAsync(
+                    resourceName: resourceName, 
+                    newLastMessageNumber: lastMessageNumber.AddMessageCount(newEvents.Count));
             }
         }
     }

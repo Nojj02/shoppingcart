@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ShoppingCartHandlers.DataAccess.TypeHandlers;
 using ShoppingCartHandlers.Handlers;
 using ShoppingCartHandlers.Web;
 
@@ -12,6 +13,8 @@ namespace ShoppingCartHandlers
         public static async Task Main(string[] args)
         {
             Console.WriteLine("Service started...");
+            Dapper.SqlMapper.AddTypeHandler(typeof(MessageNumber), new MessageNumberEventHandler());
+
             var httpClientWrapper = new HttpClientWrapper();
             var eventConverter = new EventConverter(new Dictionary<string, Type>
             {

@@ -1,13 +1,31 @@
 using System;
+using Microsoft.VisualBasic.CompilerServices;
+using Newtonsoft.Json;
 
 namespace ShoppingCartHandlers
 {
     public class EventTracking
     {
-        public EventTracking(string resourceName, int lastMessageNumber)
+        public static EventTracking New(string resourceName)
         {
-            ResourceName = resourceName;
-            LastMessageNumber = lastMessageNumber;
+            return new EventTracking
+            {
+                ResourceName = resourceName,
+                LastMessageNumber = MessageNumber.NotSet
+            };
+        }
+
+        public static EventTracking Preset(string resourceName, MessageNumber messageNumber)
+        {
+            return new EventTracking
+            {
+                ResourceName = resourceName,
+                LastMessageNumber = messageNumber
+            };
+        }
+
+        private EventTracking()
+        {
         }
 
         public string ResourceName { get; private set; }
@@ -15,9 +33,9 @@ namespace ShoppingCartHandlers
         /// <summary>
         /// 0-based tracking of the number associated with an Event.
         /// </summary>
-        public int LastMessageNumber { get; private set; }
+        public MessageNumber LastMessageNumber { get; private set; }
 
-        public void UpdateLastMessageNumber(int newLastMessageNumber)
+        public void UpdateLastMessageNumber(MessageNumber newLastMessageNumber)
         {
             if (newLastMessageNumber < LastMessageNumber)
             {
@@ -29,7 +47,7 @@ namespace ShoppingCartHandlers
 
         public class LastMessageNumberMustNeverDecreaseException : Exception
         {
-            public LastMessageNumberMustNeverDecreaseException(int currentValue, int attemptedValue)
+            public LastMessageNumberMustNeverDecreaseException(MessageNumber currentValue, MessageNumber attemptedValue)
                 : base($"Attempted to set the last message number to [{attemptedValue}] when the current last message number is [{currentValue}]. The value is expected to always increase.")
             {
 
