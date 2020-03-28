@@ -84,7 +84,8 @@ namespace ShoppingCartHandlers
             {
                 await connection.ExecuteAsync(
                     $@"UPDATE shoppingcart.event_tracking
-                            SET resource_name = @resource_name, last_message_number = @last_message_number, timestamp = @timestamp",
+                            SET resource_name = @resource_name, last_message_number = @last_message_number, timestamp = @timestamp
+                            WHERE resource_name = @resource_name",
                     new
                     {
                         resource_name = entity.ResourceName,

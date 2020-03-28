@@ -46,9 +46,9 @@ namespace ShoppingCartApi.IntegrationTests
         public static async Task GivenAShopWithItems(List<dynamic> items)
         {
             var itemTypeApi = new ItemTypeApi(ApiUrl);
+            await Task.Delay(2000); // try to get events through first
             foreach (var item in items)
             {
-                await Task.Delay(5000);
                 var itemType = await itemTypeApi.GetByCodeAsync(item.ItemTypeCode);
                 
                 Assert.NotNull(itemType);

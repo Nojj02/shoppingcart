@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using ShoppingCartEvents;
 
 namespace ShoppingCartHandlers.Web
 {
@@ -30,6 +31,7 @@ namespace ShoppingCartHandlers.Web
 
         public async Task<IList<object>> GetEventsAfterAsync(string resourceName, MessageNumber lastMessageNumber)
         {
+            Console.WriteLine($"GetEventsAfterAsync with Last message number: {lastMessageNumber}");
             var allEvents = new List<object>();
 
             List<object> retrievedEventsList;

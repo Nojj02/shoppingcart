@@ -29,8 +29,4 @@
     <ProjectReference Include="..\ShoppingCartSharedKernel\ShoppingCartSharedKernel.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Events\" />
-  </ItemGroup>
-
 </Project>

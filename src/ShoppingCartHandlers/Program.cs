@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ShoppingCartEvents;
 using ShoppingCartHandlers.DataAccess.TypeHandlers;
 using ShoppingCartHandlers.Handlers;
 using ShoppingCartHandlers.Web;
+using ShoppingCartReader.DataAccess;
 
 namespace ShoppingCartHandlers
 {
@@ -16,11 +18,7 @@ namespace ShoppingCartHandlers
             Dapper.SqlMapper.AddTypeHandler(typeof(MessageNumber), new MessageNumberEventHandler());
 
             var httpClientWrapper = new HttpClientWrapper();
-            var eventConverter = new EventConverter(new Dictionary<string, Type>
-            {
-                //{ "coupon", typeof(CouponDto) },
-                { "itemtype-created", typeof(ItemTypeCreatedEvent) }
-            });
+            var eventConverter = new ShoppingCartEventConverter();
 
             var eventApi = new EventApi(
                 host: "http://localhost:9050",
@@ -30,8 +28,15 @@ namespace ShoppingCartHandlers
             );
 
             var eventMonitor = new EventMonitor(eventApi:eventApi, eventTrackingRepository: new EventTrackingRepository());
-            eventMonitor.Subscribe<ItemTypeCreatedEvent>("itemType", new ItemTypeReadModelHandler());
-            eventMonitor.Subscribe<ItemTypeCreatedEvent>("itemType", new ConsoleEventHandler());
+            var consoleEventHandler = new ConsoleEventHandler();
+
+            var itemTypeReadModelHandler = new ItemTypeReadModelHandler(new ItemTypeReadRepository(Database.ConnectionString));
+            eventMonitor.Subscribe<ItemTypeCreatedEvent>("itemType", itemTypeReadModelHandler, consoleEventHandler);
+
+            var itemReadModelHandler = new ItemReadModelHandler(new ItemReadRepository(Database.ConnectionString));
+            eventMonitor.Subscribe<ItemCreatedEvent>("item", itemReadModelHandler, consoleEventHandler);
+            eventMonitor.Subscribe<ItemAmountDiscountSetEvent>("item", itemReadModelHandler, consoleEventHandler);
+            eventMonitor.Subscribe<ItemPercentageDiscountSetEvent>("item", itemReadModelHandler, consoleEventHandler);
 
             var cancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = cancellationTokenSource.Token;
@@ -60,7 +65,7 @@ namespace ShoppingCartHandlers
 
             Console.ReadKey(true);
             cancellationTokenSource.Cancel();
-        }
+        } 
 
         private static async Task PollEvents(EventMonitor eventMonitor)
         {

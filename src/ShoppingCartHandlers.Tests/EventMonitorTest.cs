@@ -167,7 +167,6 @@ namespace ShoppingCartHandlers.Tests
             Assert.Equal(0, alternativeLastMessageNumber.Value);
         }
 
-
         [Fact]
         public async Task MultipleHandlersForTheSameResource()
         {
@@ -201,6 +200,40 @@ namespace ShoppingCartHandlers.Tests
 
             var lastMessageNumber = await eventTrackingRepository.GetLastMessageNumber("resource");
             Assert.Equal(0, lastMessageNumber.Value);
+        }
+
+        [Fact]
+        public async Task MultipleEventsOfTheSameResourceForTheSameHandler()
+        {
+            var api = new TestEventApi();
+            api.SetupTestResource(
+                resourceName: "resource",
+                newTestEvents: new List<ITestResourceCreatedEvent>
+                {
+                    new TestResourceCreatedEvent
+                    {
+                        Id = new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0")
+                    },
+                    new AnotherTestResourceCreatedEvent
+                    {
+                        Id = new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0")
+                    }
+                });
+
+            var eventTrackingRepository = new ListEventTrackingRepository();
+            var eventMonitor = new EventMonitor(api, eventTrackingRepository);
+
+            var handler = new OnAnyEventRecordInListEventHandler();
+            eventMonitor.Subscribe<TestResourceCreatedEvent>("resource", handler);
+            eventMonitor.Subscribe<AnotherTestResourceCreatedEvent>("resource", handler);
+
+            await eventMonitor.Poll();
+
+            Assert.Equal(2, handler.Events.Count);
+            Assert.Equal(new Guid("0683f052-40f0-4bff-879e-f4bea94c0ed0"), handler.Events[0].Id);
+
+            var lastMessageNumber = await eventTrackingRepository.GetLastMessageNumber("resource");
+            Assert.Equal(1, lastMessageNumber.Value);
         }
     }
 }

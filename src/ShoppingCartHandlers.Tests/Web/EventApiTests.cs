@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ShoppingCartEvents;
 using ShoppingCartHandlers.Tests.TestHelpers;
 using ShoppingCartHandlers.Tests.TestHelpers.Web;
 using ShoppingCartHandlers.Web;

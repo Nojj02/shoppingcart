@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShoppingCartEvents;
 using ShoppingCartHandlers.Handlers;
 
 namespace ShoppingCartHandlers.Tests.TestHelpers.Handlers
@@ -22,5 +23,9 @@ namespace ShoppingCartHandlers.Tests.TestHelpers.Handlers
             _events.AddRange(matchingEvents);
             return Task.CompletedTask;
         }
+    }
+
+    public class OnAnyEventRecordInListEventHandler : OnAnyEventRecordInListEventHandler<IEvent>
+    {
     }
 }

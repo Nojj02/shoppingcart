@@ -18,6 +18,7 @@ namespace ShoppingCartApi.IntegrationTests.Api
 
         public async Task<ItemDto> GetByCodeAsync(string code)
         {
+            await Task.Delay(1000); // just try to get the events through first
             var getItemRequestMessage =
                 new HttpRequestMessage(
                     method: HttpMethod.Get,

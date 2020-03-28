@@ -13,8 +13,7 @@ namespace ShoppingCartReader.DataAccess
     /// 
     /// </summary>
     /// <typeparam name="TReadModel">The Read Model of the same Aggregate Root</typeparam>
-    public abstract class ReadRepository<TReadModel>
-        where TReadModel : class, IEntity
+    public abstract class ReadRepository<TReadModel> : IReadRepository<TReadModel> where TReadModel : class, IEntity
     {
         protected const string SchemaName = "shoppingcart_views";
 

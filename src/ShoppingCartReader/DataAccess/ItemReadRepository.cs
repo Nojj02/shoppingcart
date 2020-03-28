@@ -6,11 +6,6 @@ using ShoppingCartReader.Model;
 
 namespace ShoppingCartReader.DataAccess
 {
-    public interface IItemReadRepository
-    {
-        Task<ItemReadModel> GetAsync(string code);
-    }
-
     public class ItemReadRepository : ReadRepository<ItemReadModel>, IItemReadRepository
     {
         private readonly string _connectionString;
@@ -25,18 +20,16 @@ namespace ShoppingCartReader.DataAccess
 
         public async Task<ItemReadModel> GetAsync(string code)
         {
-            using (var connection = new NpgsqlConnection(_connectionString))
-            {
-                var content = 
-                    await connection.QuerySingleOrDefaultAsync<string>(
-                        $@"SELECT content FROM {SchemaAndTableName} WHERE content->>'Code' = @code",
-                        new
-                        {
-                            code = code
-                        });
+            await using var connection = new NpgsqlConnection(_connectionString);
+            var content = 
+                await connection.QuerySingleOrDefaultAsync<string>(
+                    $@"SELECT content FROM {SchemaAndTableName} WHERE content->>'Code' = @code",
+                    new
+                    {
+                        code = code
+                    });
 
-                return content == null ? null : JsonConvert.DeserializeObject<ItemReadModel>(content);
-            }
+            return content == null ? null : JsonConvert.DeserializeObject<ItemReadModel>(content);
         }
     }
 }

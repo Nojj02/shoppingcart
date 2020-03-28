@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace ShoppingCartHandlers
+namespace ShoppingCartEvents
 {
     public class EventConverter
     {
@@ -17,6 +18,11 @@ namespace ShoppingCartHandlers
         public Type GetTypeOf(string typeName)
         {
             return _knownTypes[typeName];
+        }
+
+        public string GetTypeOf(Type type)
+        {
+            return _knownTypes.Single(x => x.Value == type).Key;
         }
     }
 }

@@ -11,6 +11,7 @@ using ShoppingCartApi.Controllers.ItemType;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Model;
 using ShoppingCartApi.Tests.Helpers;
+using ShoppingCartHandlers.Handlers;
 using ShoppingCartReader.DataAccess;
 using ShoppingCartReader.Model;
 using Xunit;
@@ -525,11 +526,7 @@ namespace ShoppingCartApi.Tests.Controllers.Calculator
             {
                 var itemTypeRepository = new InMemoryItemTypeRepository();
                 var itemTypeReadRepository = new InMemoryItemTypeReadRepository();
-                itemTypeRepository.EventOccurred += entity => itemTypeReadRepository.UpdateAsync(new ItemTypeReadModel
-                {
-                    Id = entity.Id,
-                    Code = entity.Code
-                });
+                itemTypeRepository.EventOccurred += async entity => await new ItemTypeReadModelHandler(itemTypeReadRepository).Handle(entity.NewEvents.ToList<object>());
                 var itemRepository = new InMemoryItemRepository();
                 var itemReadRepository = new InMemoryItemReadRepository();
                 itemRepository.EventOccurred += entity => itemReadRepository.UpdateAsync(new ItemReadModel

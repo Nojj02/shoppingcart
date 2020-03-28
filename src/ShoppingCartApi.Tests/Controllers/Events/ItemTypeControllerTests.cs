@@ -22,16 +22,19 @@ namespace ShoppingCartApi.Tests.Controllers.Events
             
             var itemTypeRepository = new InMemoryItemTypeRepository();
             await itemTypeRepository.SaveAsync(itemType, DateTimeOffset.UtcNow);
-            var controller = new ItemTypeController(itemTypeRepository);
+            var controller = 
+                new EventsController(
+                    itemTypeRepository, 
+                    new InMemoryItemRepository());
 
-            var result = await controller.Get(0, 5);
+            var result = await controller.GetItemTypeEvents(0, 5);
             var transportMessage = (TransportMessage)result.Value;
             
-            Assert.Equal("itemtype", transportMessage.MessageType);
+            Assert.Equal("itemType", transportMessage.MessageType);
             Assert.Equal(1,transportMessage.Events.Count());
             var events = transportMessage.Events.ToList();
             
-            Assert.Equal("itemtype-created", events[0].EventType);
+            Assert.Equal("itemType-created", events[0].EventType);
             Assert.IsType<ItemTypeCreatedEvent>(events[0].Event);
         }
     }

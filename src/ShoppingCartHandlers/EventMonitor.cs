@@ -26,21 +26,29 @@ namespace ShoppingCartHandlers
             _eventSubscriptions.Add((resourceName, typeof(TEvent), handler));
         }
 
+        public void Subscribe<TEvent>(string resourceName, params IEventHandler[] handlers)
+        {
+            foreach (var handler in handlers)
+            {
+                Subscribe<TEvent>(resourceName, handler);
+            }
+        }
+
         public async Task Poll()
         {
-            var subscriptionsByResource = _eventSubscriptions.GroupBy(x => x.ResourceName);
-            foreach (var subscriptionByResourceGroup in subscriptionsByResource)
+            var subscriptionsByResourceAndEvent = _eventSubscriptions.GroupBy(x => new { x.ResourceName, x.EventType });
+            foreach (var subscriptionByResourceAndEventGroup in subscriptionsByResourceAndEvent)
             {
-                var resourceName = subscriptionByResourceGroup.Key;
+                var resourceName = subscriptionByResourceAndEventGroup.Key.ResourceName;
                 var lastMessageNumber = await _eventTrackingRepository.GetLastMessageNumber(resourceName);
                 var newEvents = await _eventApi.GetEventsAfterAsync(resourceName, lastMessageNumber);
 
-                foreach (var subscription in subscriptionByResourceGroup)
+                foreach (var subscription in subscriptionByResourceAndEventGroup)
                 {
                     await subscription.Handler.Handle(newEvents);
                 }
                 await _eventTrackingRepository.UpdateLastMessageNumberAsync(
-                    resourceName: resourceName, 
+                    resourceName: resourceName,
                     newLastMessageNumber: lastMessageNumber.AddMessageCount(newEvents.Count));
             }
         }

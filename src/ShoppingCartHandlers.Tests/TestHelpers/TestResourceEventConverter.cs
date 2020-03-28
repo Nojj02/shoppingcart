@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ShoppingCartEvents;
 
 namespace ShoppingCartHandlers.Tests.TestHelpers
 {

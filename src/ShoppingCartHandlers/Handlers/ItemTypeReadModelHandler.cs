@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using ShoppingCartEvents;
 using ShoppingCartReader.DataAccess;
 using ShoppingCartReader.Model;
 
@@ -9,9 +10,15 @@ namespace ShoppingCartHandlers.Handlers
 {
     public class ItemTypeReadModelHandler : IEventHandler
     {
+        private readonly IItemTypeReadRepository _itemTypeReadRepository;
+
+        public ItemTypeReadModelHandler(IItemTypeReadRepository itemTypeReadRepository)
+        {
+            _itemTypeReadRepository = itemTypeReadRepository;
+        }
+
         public async Task Handle(IList<object> newEvents)
         {
-            var itemTypeRepository = new ItemTypeReadRepository(Database.ConnectionString);
             foreach (var newEvent in newEvents)
             {
                 if (newEvent is ItemTypeCreatedEvent itemTypeCreatedEvent)
@@ -21,7 +28,7 @@ namespace ShoppingCartHandlers.Handlers
                         Id = itemTypeCreatedEvent.Id,
                         Code = itemTypeCreatedEvent.Code
                     };
-                    await itemTypeRepository.SaveAsync(newItemType);
+                    await _itemTypeReadRepository.SaveAsync(newItemType);
                 }
             }
         }

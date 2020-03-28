@@ -43,7 +43,8 @@ CREATE TABLE "shoppingcart"."event_tracking"
     "resource_name" CHARACTER VARYING(255) COLLATE pg_catalog."default" NOT NULL,
     "last_message_number" int NOT NULL,
     "timestamp" timestamp with time zone NOT NULL,
-    CONSTRAINT "event_tracking_pkey" PRIMARY KEY ("db_id")
+    CONSTRAINT "event_tracking_pkey" PRIMARY KEY ("db_id"),
+    CONSTRAINT "event_tracking_resource_name_uq" UNIQUE ("resource_name")
 );
 
 ALTER TABLE "shoppingcart"."event_tracking"
