@@ -17,10 +17,10 @@ namespace ShoppingCartHandlers.Tests.Web
 
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, EventConverter.Empty, 10);
 
-            var result = await apiHelper.GetAllEventsAsync("resource");
+            var result = await apiHelper.GetEventsAfterAsync("resource", lastMessageNumber: -1);
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
 
             Assert.NotNull(result);
             Assert.Empty(result);
@@ -33,10 +33,10 @@ namespace ShoppingCartHandlers.Tests.Web
 
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, EventConverter.Empty, 10);
 
-            var result = await apiHelper.GetAllEventsAsync("resource");
+            var result = await apiHelper.GetEventsAfterAsync("resource", lastMessageNumber: -1);
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
 
             Assert.NotNull(result);
             Assert.Empty(result);
@@ -64,10 +64,10 @@ namespace ShoppingCartHandlers.Tests.Web
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance,
                 10);
 
-            var result = await apiHelper.GetAllEventsAsync("resource");
+            var result = await apiHelper.GetEventsAfterAsync("resource", lastMessageNumber: -1);
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
 
             Assert.NotNull(result);
             Assert.IsType<TestResourceCreatedEvent>(result[0]);
@@ -115,10 +115,10 @@ namespace ShoppingCartHandlers.Tests.Web
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance,
                 10);
 
-            var result = await apiHelper.GetAllEventsAsync("resource");
+            var result = await apiHelper.GetEventsAfterAsync("resource", lastMessageNumber: -1);
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
 
             Assert.Equal(3, result.Count);
             Assert.Equal(new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0"), ((TestResourceCreatedEvent) result[0]).Id);
@@ -166,10 +166,10 @@ namespace ShoppingCartHandlers.Tests.Web
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance,
                 10);
 
-            var result = await apiHelper.GetAllEventsAsync("resource");
+            var result = await apiHelper.GetEventsAfterAsync("resource", lastMessageNumber: -1);
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/0-9", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
 
             Assert.Equal(3, result.Count);
             Assert.Equal(new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0"), ((TestResourceCreatedEvent) result[0]).Id);
@@ -217,11 +217,11 @@ namespace ShoppingCartHandlers.Tests.Web
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance,
                 3);
 
-            var result = await apiHelper.GetAllEventsAsync("resource");
+            var result = await apiHelper.GetEventsAfterAsync("resource", lastMessageNumber: -1);
 
             Assert.Equal(2, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/0-2", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
-            Assert.Equal("/resource/3-5", httpClientWrapper.MessagesSent[1].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/0-2", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/3-5", httpClientWrapper.MessagesSent[1].RequestUri.AbsolutePath);
 
             Assert.Equal(3, result.Count);
             Assert.Equal(new Guid("7a60d915-a25a-4678-b25e-e35a45a2f0c0"), ((TestResourceCreatedEvent) result[0]).Id);
@@ -288,10 +288,10 @@ namespace ShoppingCartHandlers.Tests.Web
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance,
                 3);
 
-            var result = await apiHelper.GetEventsAfterAsync(resourceName: "resource", lastMessageNumber: 4);
+            var result = await apiHelper.GetEventsAfterAsync(resourceName: "resource", lastMessageNumber: 3);
 
             Assert.Equal(1, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/3-5", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/3-5", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
 
             Assert.Equal(1, result.Count);
             Assert.Equal(new Guid("C911BCDB-F23C-4FA3-BE57-E2C0EC3793DC"), ((TestResourceCreatedEvent) result[0]).Id);
@@ -391,12 +391,12 @@ namespace ShoppingCartHandlers.Tests.Web
             var apiHelper = new EventApi("http://localhost/", httpClientWrapper, TestResourceEventConverter.Instance,
                 3);
 
-            var result = await apiHelper.GetEventsAfterAsync(resourceName: "resource", lastMessageNumber: 4);
+            var result = await apiHelper.GetEventsAfterAsync(resourceName: "resource", lastMessageNumber: 3);
 
             Assert.Equal(3, httpClientWrapper.MessagesSent.Count);
-            Assert.Equal("/resource/3-5", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
-            Assert.Equal("/resource/6-8", httpClientWrapper.MessagesSent[1].RequestUri.AbsolutePath);
-            Assert.Equal("/resource/9-11", httpClientWrapper.MessagesSent[2].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/3-5", httpClientWrapper.MessagesSent[0].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/6-8", httpClientWrapper.MessagesSent[1].RequestUri.AbsolutePath);
+            Assert.Equal("/events/resource/9-11", httpClientWrapper.MessagesSent[2].RequestUri.AbsolutePath);
 
             Assert.Equal(5, result.Count);
             Assert.Equal(new Guid("C911BCDB-F23C-4FA3-BE57-E2C0EC3793DC"), ((TestResourceCreatedEvent) result[0]).Id);

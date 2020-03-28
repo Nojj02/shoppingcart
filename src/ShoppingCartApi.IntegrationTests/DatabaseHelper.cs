@@ -18,7 +18,8 @@ DELETE FROM shoppingcart_views.coupon;
 DELETE FROM shoppingcart.item_type;
 DELETE FROM shoppingcart.item;
 DELETE FROM shoppingcart.cart;
-DELETE FROM shoppingcart.coupon;";
+DELETE FROM shoppingcart.coupon;
+DELETE FROM shoppingcart.event_tracking";
 
                 connection.Execute(deletionSql);
             }

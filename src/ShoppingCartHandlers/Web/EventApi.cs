@@ -43,7 +43,7 @@ namespace ShoppingCartHandlers.Web
             
             var retrievedEventsList = await GetAsync(resourceName, start, end);
             var skippedInCurrentBatch = lastMessageNumber % _batchSize;
-            var eventsListStartingFromLastMessageNumber = retrievedEventsList.Skip(skippedInCurrentBatch).ToList();
+            var eventsListStartingFromLastMessageNumber = retrievedEventsList.Skip(skippedInCurrentBatch + 1).ToList();
             
             allEvents.AddRange(eventsListStartingFromLastMessageNumber);
 

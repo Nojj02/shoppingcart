@@ -48,6 +48,7 @@ namespace ShoppingCartApi.IntegrationTests
             var itemTypeApi = new ItemTypeApi(ApiUrl);
             foreach (var item in items)
             {
+                await Task.Delay(5000);
                 var itemType = await itemTypeApi.GetByCodeAsync(item.ItemTypeCode);
                 
                 Assert.NotNull(itemType);
