@@ -151,7 +151,7 @@ namespace ShoppingCartHandlers.Tests
             eventMonitor.Subscribe<TestResourceCreatedEvent>("resource", handler);
 
             var alternativeHandler = new OnAnyEventRecordInListEventHandler<AlternativeTestResourceEvent>();
-            eventMonitor.Subscribe<TestResourceCreatedEvent>("alternativeResource", alternativeHandler);
+            eventMonitor.Subscribe<AlternativeTestResourceEvent>("alternativeResource", alternativeHandler);
 
             await eventMonitor.Poll();
 

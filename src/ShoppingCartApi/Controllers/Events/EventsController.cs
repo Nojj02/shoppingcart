@@ -14,12 +14,15 @@ namespace ShoppingCartApi.Controllers.Events
     {
         private readonly IItemTypeRepository _itemTypeRepository;
         private readonly IItemRepository _itemRepository;
+        private readonly ICouponRepository _couponRepository;
 
         public EventsController(IItemTypeRepository itemTypeRepository,
-            IItemRepository itemRepository)
+            IItemRepository itemRepository,
+            ICouponRepository couponRepository)
         {
             _itemTypeRepository = itemTypeRepository;
             _itemRepository = itemRepository;
+            _couponRepository = couponRepository;
         }
         
         [HttpGet]
@@ -45,7 +48,18 @@ namespace ShoppingCartApi.Controllers.Events
 
             return Ok(transportMessage);
         }
+        
+        [HttpGet]
+        [Route("coupon/{startIndex}-{endIndex}")]
+        public async Task<ObjectResult> GetCouponEvents(int startIndex, int endIndex)
+        {
+            var events = await _couponRepository.GetEventsAsync(startIndex, endIndex);
 
+            var transportMessage =
+                MapEventsToTransportMessage("coupon", events);
+
+            return Ok(transportMessage);
+        }
         private static TransportMessage MapEventsToTransportMessage(
             string messageType,
             IReadOnlyList<IEvent> events)

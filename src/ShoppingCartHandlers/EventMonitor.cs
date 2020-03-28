@@ -36,17 +36,26 @@ namespace ShoppingCartHandlers
 
         public async Task Poll()
         {
-            var subscriptionsByResourceAndEvent = _eventSubscriptions.GroupBy(x => new { x.ResourceName, x.EventType });
-            foreach (var subscriptionByResourceAndEventGroup in subscriptionsByResourceAndEvent)
+            var subscriptionsByResource = _eventSubscriptions.GroupBy(x => x.ResourceName);
+            foreach (var subscriptionByResourceGroup in subscriptionsByResource)
             {
-                var resourceName = subscriptionByResourceAndEventGroup.Key.ResourceName;
+                var resourceName = subscriptionByResourceGroup.Key;
                 var lastMessageNumber = await _eventTrackingRepository.GetLastMessageNumber(resourceName);
                 var newEvents = await _eventApi.GetEventsAfterAsync(resourceName, lastMessageNumber);
 
-                foreach (var subscription in subscriptionByResourceAndEventGroup)
+                foreach (var newEvent in newEvents)
                 {
-                    await subscription.Handler.Handle(newEvents);
+                    var subscriptionByEventType =
+                        subscriptionByResourceGroup
+                            .Where(x => x.EventType == newEvent.GetType())
+                            .ToList();
+
+                    foreach (var subscription in subscriptionByEventType)
+                    {
+                        await subscription.Handler.Handle(new List<object> { newEvent });
+                    }
                 }
+
                 await _eventTrackingRepository.UpdateLastMessageNumberAsync(
                     resourceName: resourceName,
                     newLastMessageNumber: lastMessageNumber.AddMessageCount(newEvents.Count));

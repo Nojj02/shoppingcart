@@ -12,7 +12,7 @@ namespace ShoppingCartEvents
         public ShoppingCartEventConverter() 
             : base(new Dictionary<string, Type>
             {
-                //{ "coupon", typeof(CouponDto) },
+                { "coupon-created", typeof(CouponCreatedEvent) },
                 { "itemType-created", typeof(ItemTypeCreatedEvent) },
                 { "item-created", typeof(ItemCreatedEvent) },
                 { "item-amountDiscountSet", typeof(ItemAmountDiscountSetEvent) },

@@ -38,6 +38,9 @@ namespace ShoppingCartHandlers
             eventMonitor.Subscribe<ItemAmountDiscountSetEvent>("item", itemReadModelHandler, consoleEventHandler);
             eventMonitor.Subscribe<ItemPercentageDiscountSetEvent>("item", itemReadModelHandler, consoleEventHandler);
 
+            var couponReadModelHandler = new CouponReadModelHandler(new CouponReadRepository(Database.ConnectionString));
+            eventMonitor.Subscribe<CouponCreatedEvent>("coupon", couponReadModelHandler, consoleEventHandler);
+
             var cancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = cancellationTokenSource.Token;
 

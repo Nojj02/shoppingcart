@@ -25,7 +25,8 @@ namespace ShoppingCartApi.Tests.Controllers.Events
             var controller = 
                 new EventsController(
                     itemTypeRepository, 
-                    new InMemoryItemRepository());
+                    new InMemoryItemRepository(),
+                    new InMemoryCouponRepository());
 
             var result = await controller.GetItemTypeEvents(0, 5);
             var transportMessage = (TransportMessage)result.Value;

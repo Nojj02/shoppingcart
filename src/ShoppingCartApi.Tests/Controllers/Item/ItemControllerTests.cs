@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ShoppingCartApi.Controllers;
@@ -6,6 +7,7 @@ using ShoppingCartApi.Controllers.Item;
 using ShoppingCartApi.DataAccess;
 using ShoppingCartApi.Model;
 using ShoppingCartApi.Tests.Helpers;
+using ShoppingCartHandlers.Handlers;
 using ShoppingCartReader.DataAccess;
 using ShoppingCartReader.Model;
 using Xunit;
@@ -41,7 +43,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)
@@ -69,7 +71,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)
@@ -98,7 +100,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)
@@ -133,7 +135,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)
@@ -179,7 +181,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)
@@ -212,7 +214,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)
@@ -247,7 +249,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)
@@ -282,7 +284,7 @@ namespace ShoppingCartApi.Tests.Controllers.Item
             {
                 var repository = new InMemoryItemRepository();
                 var readRepository = new InMemoryItemReadRepository();
-                repository.EventOccurred += entity => readRepository.UpdateAsync(new ItemReadModel());
+                repository.EventOccurred += async entity => await new ItemReadModelHandler(readRepository).Handle(entity.NewEvents.ToList<object>());
 
                 var itemController =
                     new ItemController(repository, readRepository)

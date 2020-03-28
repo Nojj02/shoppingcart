@@ -39,6 +39,7 @@ namespace ShoppingCartApi.IntegrationTests
                     var postResponse = await httpClient.SendAsync(postRequestMessage);
 
                     Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+                    await Task.Delay(2000); // try to get events through first
                 }
             }
         }
@@ -46,7 +47,6 @@ namespace ShoppingCartApi.IntegrationTests
         public static async Task GivenAShopWithItems(List<dynamic> items)
         {
             var itemTypeApi = new ItemTypeApi(ApiUrl);
-            await Task.Delay(2000); // try to get events through first
             foreach (var item in items)
             {
                 var itemType = await itemTypeApi.GetByCodeAsync(item.ItemTypeCode);
@@ -75,6 +75,7 @@ namespace ShoppingCartApi.IntegrationTests
                     var postResponse = await httpClient.SendAsync(postRequestMessage);
 
                     Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+                    await Task.Delay(2000); // try to get events through first
                 }
             }
         }
@@ -104,6 +105,7 @@ namespace ShoppingCartApi.IntegrationTests
                 var postResponse = await httpClient.SendAsync(postRequestMessage);
 
                 Assert.Equal(HttpStatusCode.OK, postResponse.StatusCode);
+                await Task.Delay(2000); // try to get events through first
             }
         }
 
@@ -135,6 +137,7 @@ namespace ShoppingCartApi.IntegrationTests
                 var postResponse = await httpClient.SendAsync(postRequestMessage);
 
                 Assert.Equal(HttpStatusCode.Created, postResponse.StatusCode);
+                await Task.Delay(2000); // try to get events through first
             }
         }
 
